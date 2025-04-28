@@ -16,36 +16,39 @@
             Console.SetCursorPosition(10, 7);
             Console.WriteLine(" -----------------------");
             Console.SetCursorPosition(10, 9);
-            Console.WriteLine("1. Neues Turnier");
+            Console.WriteLine("1. New Tournament");
             Console.SetCursorPosition(10, 10);
-            Console.WriteLine("2. Alte ergebnisse anzeigen");
+            Console.WriteLine("2. Show old results");
             Console.SetCursorPosition(10, 11);
-            Console.WriteLine("3. Einstellungen laden");
+            Console.WriteLine("3. Load settings");
             Console.SetCursorPosition(10, 12);
-            Console.WriteLine("4. Spiel fortsetzen");
+            Console.WriteLine("4. Continue game");
             Console.SetCursorPosition(10, 13);
             Console.Write("5. Exit");
 
 
             char op = Console.ReadKey().KeyChar;
 
-            if (op == '1')
+            switch (op)
             {
-                // TikiTuTo.StartGame();
-            }
-            else if (op == '2')
-            {
-            }
-            if (op == '3')
-            {
-                // TikiTuTo.StartGame();
-            }
-            else if (op == '4')
-            {
-            }
-            else if (op == '5')
-            {
-                Environment.Exit(0);
+                case '1':
+                    // TikiTuTo.StartGame();
+                    break;
+                case '2':
+                    // Implementa la lógica para mostrar resultados antiguos aquí
+                    break;
+                case '3':
+                    // TikiTuTo.StartGame();
+                    break;
+                case '4':
+                    // Implementa la lógica para continuar el juego aquí
+                    break;
+                case '5':
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Opción no válida, por favor elige de nuevo.");
+                    break;
             }
         }
     }
