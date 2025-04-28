@@ -31,7 +31,7 @@
 
             if (op == '1')
             {
-                // TikiTuTo.StartGame();
+                 TikiTuTo.StartGame();
             }
             else if (op == '2')
             {
