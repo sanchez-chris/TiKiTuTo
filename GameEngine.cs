@@ -6,7 +6,7 @@ namespace GameEngine
         
         public void NewGame()
         {
-            Console.writeLine("New game started!");
+            Console.WriteLine("New game started!");
         }
     }
 }
