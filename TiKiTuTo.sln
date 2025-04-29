@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiKiTuTo", "TiKiTuTo.csproj", "{03EA039E-E489-478A-B334-8FA9E6DE8808}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiKiTuTo.Test", "..\TiKiTuTo.Test\TiKiTuTo.Test.csproj", "{4E683175-8739-4743-AFF3-FE47E539E72A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{03EA039E-E489-478A-B334-8FA9E6DE8808} = {03EA039E-E489-478A-B334-8FA9E6DE8808}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +20,15 @@ Global
 		{03EA039E-E489-478A-B334-8FA9E6DE8808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03EA039E-E489-478A-B334-8FA9E6DE8808}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03EA039E-E489-478A-B334-8FA9E6DE8808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E683175-8739-4743-AFF3-FE47E539E72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E683175-8739-4743-AFF3-FE47E539E72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E683175-8739-4743-AFF3-FE47E539E72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E683175-8739-4743-AFF3-FE47E539E72A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FBA19D7-E1A8-4D7A-B15C-4DADD3673903}
 	EndGlobalSection
 EndGlobal
