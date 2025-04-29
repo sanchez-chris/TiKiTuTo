@@ -2,7 +2,7 @@
 {
     static void Main()
     {
-        // var TikiTuTo = new GameEngine.Game();
+        var TikiTuTo = new GameEngine.Game();
         Console.CursorVisible = false;
 
 
@@ -32,7 +32,7 @@
             switch (op)
             {
                 case '1':
-                    // TikiTuTo.StartGame();
+                    TikiTuTo.NewGame();
                     break;
                 case '2':
                     // Implementa la lógica para mostrar resultados antiguos aquí
