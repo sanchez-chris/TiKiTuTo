@@ -1,0 +1,15 @@
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.exe
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.deps.json
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.runtimeconfig.json
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.dll
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.pdb
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.AssemblyInfoInputs.cache
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.AssemblyInfo.cs
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.csproj.CoreCompileInputs.cache
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.sourcelink.json
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.dll
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\refint\TiKiTuTo.dll
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.pdb
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.genruntimeconfig.cache
+C:\Users\csanchez20\Documents\Abschlussprojekt Interflex\TiKiTuTo\obj\Debug\net8.0\ref\TiKiTuTo.dll

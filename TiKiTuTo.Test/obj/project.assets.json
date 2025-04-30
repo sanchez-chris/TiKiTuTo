@@ -878,28 +878,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\npopkov\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\csanchez20\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\npopkov\\source\\repos\\sanchez-chris\\TiKiTuTo\\TiKiTuTo.Test\\TiKiTuTo.Test.csproj",
+      "projectUniqueName": "C:\\Users\\csanchez20\\Documents\\Abschlussprojekt Interflex\\TiKiTuTo\\TiKiTuTo.Test\\TiKiTuTo.Test.csproj",
       "projectName": "TiKiTuTo.Test",
-      "projectPath": "C:\\Users\\npopkov\\source\\repos\\sanchez-chris\\TiKiTuTo\\TiKiTuTo.Test\\TiKiTuTo.Test.csproj",
-      "packagesPath": "C:\\Users\\npopkov\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\npopkov\\source\\repos\\sanchez-chris\\TiKiTuTo\\TiKiTuTo.Test\\obj\\",
+      "projectPath": "C:\\Users\\csanchez20\\Documents\\Abschlussprojekt Interflex\\TiKiTuTo\\TiKiTuTo.Test\\TiKiTuTo.Test.csproj",
+      "packagesPath": "C:\\Users\\csanchez20\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\csanchez20\\Documents\\Abschlussprojekt Interflex\\TiKiTuTo\\TiKiTuTo.Test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\npopkov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\csanchez20\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -912,8 +909,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\npopkov\\source\\repos\\sanchez-chris\\TiKiTuTo\\TiKiTuTo\\TiKiTuTo.csproj": {
-              "projectPath": "C:\\Users\\npopkov\\source\\repos\\sanchez-chris\\TiKiTuTo\\TiKiTuTo\\TiKiTuTo.csproj"
+            "C:\\Users\\csanchez20\\Documents\\Abschlussprojekt Interflex\\TiKiTuTo\\TiKiTuTo\\TiKiTuTo.csproj": {
+              "projectPath": "C:\\Users\\csanchez20\\Documents\\Abschlussprojekt Interflex\\TiKiTuTo\\TiKiTuTo\\TiKiTuTo.csproj"
             }
           }
         }
@@ -928,7 +925,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -965,7 +962,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

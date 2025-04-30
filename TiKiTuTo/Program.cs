@@ -37,25 +37,30 @@ namespace TiKiTuTo
                 {
                     case '1':
                         TikiTuTo.NewGame();
+                        Console.WriteLine("New game started!");
                         break;
                     case '2':
-                        // Implementa la lógica para mostrar resultados antiguos aquí
+                        // TODO: Implement functionality for showing old results
+                        Console.WriteLine("Option 2 selected. Functionality not implemented yet.");
                         break;
                     case '3':
-                        // TikiTuTo.StartGame();
+                        // TODO: Implement functionality for starting a saved game
+                        Console.WriteLine("Option 3 selected. Functionality not implemented yet.");
                         break;
                     case '4':
-                        // Implementa la lógica para continuar el juego aquí
+                        // TODO: Implement functionality for continuing the game
+                        Console.WriteLine("Option 4 selected. Functionality not implemented yet.");
                         break;
                     case '5':
+                        Console.WriteLine("Exiting the program...");
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.WriteLine("Opción no válida, por favor elige de nuevo.");
+                        Console.WriteLine("Invalid option. Please try again.");
                         break;
+                    }
                 }
             }
-        }
     }
 
 }

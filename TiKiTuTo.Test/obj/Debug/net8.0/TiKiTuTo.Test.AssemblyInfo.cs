@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TiKiTuTo.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ead7355f85a4cdd471f83d618f157d157d9f3e5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbccacbbd10b6acd3de9080340ce8a70829bbc8e")]
 [assembly: System.Reflection.AssemblyProductAttribute("TiKiTuTo.Test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TiKiTuTo.Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
