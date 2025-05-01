@@ -1,0 +1,15 @@
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.exe
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.deps.json
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.runtimeconfig.json
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.dll
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\bin\Debug\net8.0\TiKiTuTo.pdb
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.AssemblyInfoInputs.cache
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.AssemblyInfo.cs
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.csproj.CoreCompileInputs.cache
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.sourcelink.json
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.dll
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\refint\TiKiTuTo.dll
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.pdb
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\TiKiTuTo.genruntimeconfig.cache
+C:\Users\malchab\source\repos\sanchez-chris\TiKiTuTo\obj\Debug\net8.0\ref\TiKiTuTo.dll
