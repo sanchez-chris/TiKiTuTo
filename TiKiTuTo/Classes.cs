@@ -16,6 +16,9 @@ namespace Classes
         public Team Team { get; set; }
 
 
+        //Parameterless Constructor for JSON Deserialization
+        public Player(){}
+
         public Player(string name)
         {
             PlayerName = name;
@@ -51,6 +54,9 @@ namespace Classes
         public int GoalDifference { get; private set; }
 
 
+        //Parameterless Constructor for JSON-Deserialization
+        public Team() {}
+
         public Team(string name)
         {
             TeamName = name;
@@ -81,6 +87,8 @@ namespace Classes
         public bool Finished { get; private set; }                      // Status des Spiels (abgeschlossen oder nicht)
 
 
+        //Parameterless Constructor for JSON Deserialization
+        public Match() {}
         public Match(Team team1, Team team2)
         {
             Team1 = team1;
@@ -112,6 +120,9 @@ namespace Classes
         public int ActiveRoundIndex { get; set; }
 
 
+        //Parameterless Constructor for JSON Deserialization
+        public Round(){}
+
         public Round(RoundType typeOf)
         {
             TypeOf = typeOf;
@@ -134,7 +145,6 @@ namespace Classes
         public List<Team> Teams { get; set; }
         public List<Round> Rounds { get; set; }
         public int ActiveRoundIndex { get; set; }
-
 
     }
 }
