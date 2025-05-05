@@ -60,7 +60,7 @@ TiKiTuTo is a modern tournament management software designed to streamline the o
 ### Installation
 1. Clone the repository:
 
-   git clone https://github.com/YourUsername/TiKiTuTo.git
+   git clone https://github.com/sanchez-chris/TiKiTuTo.git
    cd TiKiTuTo              
 2. Build the Project:
 
