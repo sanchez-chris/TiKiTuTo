@@ -62,16 +62,16 @@ TiKiTuTo is a modern tournament management software designed to streamline the o
 
    git clone https://github.com/YourUsername/TiKiTuTo.git
    cd TiKiTuTo              
-2. Build the Project
+2. Build the Project:
 
    Build the application using the following command:
    dotnet build
 
-3. Run the Application
+3. Run the Application:
 
    Start the console application by running:
    dotnet run --project TiKiTuTo.ConsoleApp
 
-4. Follow the Prompts
+4. Follow the Prompts:
 
    The application will guide you through the setup process for the tournament.
