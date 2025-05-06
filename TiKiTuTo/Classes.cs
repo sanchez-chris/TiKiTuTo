@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,33 +11,14 @@ namespace Classes
     public class Player
     {
         public string PlayerName { get; set; }
-        public int GoalsScored { get; private set; }
-        public int GamesWon { get; private set; }
-        public int GamesLost { get; private set; }
         public Team Team { get; set; }
 
 
-        public Player(string name)
+        public Player(string name, Team team1)
         {
             PlayerName = name;
-        }
-
-
-        public void ScoreGoal()
-        {
-            GoalsScored++;
-        }
-
-
-        public void WinGame()
-        {
-            GamesWon++;
-        }
-
-
-        public void LoseGame()
-        {
-            GamesLost++;
+            Team = team1;
+            Team.AddPlayer(this);
         }
     }
 
@@ -44,17 +26,39 @@ namespace Classes
     public class Team
     {
         public string TeamName { get; set; }
-        public List<Player> Players { get; set; } = new List<Player>();
+        public List<Player> TeamMembers { get; set; }
         public int GamesPlayed { get; private set; }
         public int GamesWon { get; private set; }
         public int GoalsTotal { get; private set; }
         public int GoalDifference { get; private set; }
 
 
-        public Team(string name)
+        public Team(string name, Player TeamMember1, Player TeamMember2)
         {
             TeamName = name;
+            TeamMembers = new List<Player>();
+            GamesPlayed = 0;
+            GamesWon = 0;
+            GoalsTotal = 0;
+            GoalDifference = 0;
+
+            if (TeamMembers.Count == 0)
+            {
+                InitializeDefaultPlayers();
+            }
         }
+
+        private void InitializeDefaultPlayers()
+        {
+            // Add default players to the team
+            for (int i = 1; i <= 2; i++) // Example: 2 default players per team
+            {
+                Player defaultPlayer = new Player($"DefaultPlayer{i} ({TeamName})", this);
+                AddPlayer(defaultPlayer);
+            }
+        }
+
+
         public void UpdateTeamScore(int goalsMade, int goalsReceived)
         {
             GamesPlayed++;
@@ -67,6 +71,13 @@ namespace Classes
             else if (goalsMade < goalsReceived)
             {
                 GamesWon--;
+            }
+        }
+        public void AddPlayer(Player player)
+        {
+            if (!TeamMembers.Contains(player))
+            {
+                TeamMembers.Add(player);
             }
         }
     }
@@ -85,6 +96,9 @@ namespace Classes
         {
             Team1 = team1;
             Team2 = team2;
+            Team1Score = 0;
+            Team2Score = 0;
+            Finished = false;
         }
 
 
@@ -107,20 +121,34 @@ namespace Classes
             KO,
             ThirdPlace,
         }
+
         public RoundType TypeOf { get; set; }
-        public List<Match> Matchs { get; set; } = new List<Match>();
+        public List<Match> Matches { get; set; } = new List<Match>();
         public int ActiveRoundIndex { get; set; }
 
 
-        public Round(RoundType typeOf)
+        public Round(RoundType typeOf, List<Match> matches)
         {
             TypeOf = typeOf;
+            Matches = matches;
+            ActiveRoundIndex = 0;
         }
 
 
-        public List<Team> GetWinners()
+        public List<Team> FinishRound()
         {
-            return new List<Team>();                                //Placeholder
+            List<Team> winners = new List<Team>();
+
+            foreach (var match in Matches)
+            {
+                if (match.Team1Score > match.Team2Score)
+                    winners.Add(match.Team1);
+                else if (match.Team2Score > match.Team1Score)
+                    winners.Add(match.Team2);
+            }
+
+            ActiveRoundIndex++;
+            return winners;
         }
     }
 
@@ -135,6 +163,31 @@ namespace Classes
         public List<Round> Rounds { get; set; }
         public int ActiveRoundIndex { get; set; }
 
+        public Tournament(string name)
+        {
+            TournamentName = name;
+        }
 
+        public void AddTeam(Team team)
+        {
+            if (!Teams.Contains(team))
+            {
+                Teams.Add(team);
+            }
+        }
+
+        public void StartRound(Round.RoundType typeOf)
+        {
+            var matches = GenerateMatches();
+            var round = new Round(typeOf, matches);
+            Rounds.Add(round);
+            ActiveRoundIndex = Rounds.Count - 1;
+        }
+
+        private List<Match> GenerateMatches()
+        {
+            // Logic to generate matches for the round
+            return new List<Match>();
+        }
     }
 }
