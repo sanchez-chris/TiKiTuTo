@@ -14,11 +14,11 @@ namespace Classes
         public Team Team { get; set; }
 
 
-        public Player(string name, Team team1)
+        public Player(string name, Team team)
         {
             PlayerName = name;
-            Team = team1;
-            Team.AddPlayer(this);
+            Team = team;
+            Team?.AddPlayer(this);
         }
     }
 
@@ -33,7 +33,7 @@ namespace Classes
         public int GoalDifference { get; private set; }
 
 
-        public Team(string name, Player TeamMember1, Player TeamMember2)
+        public Team(string name, List<Player> initialPlayers = null)
         {
             TeamName = name;
             TeamMembers = new List<Player>();
@@ -42,9 +42,16 @@ namespace Classes
             GoalsTotal = 0;
             GoalDifference = 0;
 
-            if (TeamMembers.Count == 0)
+            if (initialPlayers != null && initialPlayers.Count > 0)
             {
-                InitializeDefaultPlayers();
+                foreach (var player in initialPlayers)
+                {
+                    AddPlayer(player);
+                }
+            }
+            else
+            {
+                InitializeDefaultPlayers(); // Initialize default players if no initial players are provided
             }
         }
 
