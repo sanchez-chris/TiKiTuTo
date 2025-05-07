@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Threading;
+using Rounds; 
 namespace GameEngine
 {
     public class Game
     {
-
         public void NewGame()
         {
-            Console.Clear();
-            Console.WriteLine("New game started!");
-            Thread.Sleep(5000);
+            var Rounds = new Rounds.Rounds();
+
+            Rounds.PreliminaryRound();
+            Rounds.KORound();
         }
     }
 }
