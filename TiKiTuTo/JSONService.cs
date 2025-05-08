@@ -13,17 +13,17 @@ namespace TiKiTuTo
 {
     internal class JSONService
     {
-        public static string saveFolder = "SaveGame";
+        private static string saveFolder = "SaveGame";
 
         public static void SaveGame(Tournament tournament)
         {
-            DateTime now = DateTime.Now;
             
             if (!Directory.Exists(saveFolder))
             {
                 Directory.CreateDirectory(saveFolder);
             }
 
+            DateTime now = DateTime.Now;
             string filePath = $"{saveFolder}\\{tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
 
             JsonSerializerOptions options = new JsonSerializerOptions();
@@ -37,6 +37,7 @@ namespace TiKiTuTo
 
         public static void LoadGame()
         {
+            
             // PART I: Auswahl des SaveGames
             string currentDirectory = Directory.GetCurrentDirectory();
             string[] currentSaveGames = Directory.GetFiles($"{currentDirectory}\\{saveFolder}");
