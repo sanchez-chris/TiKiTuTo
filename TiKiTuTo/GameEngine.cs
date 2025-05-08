@@ -8,6 +8,7 @@ namespace GameEngine
 
         public void NewGame()
         {
+
             Console.Clear();
             Console.WriteLine("New game started!");
             Thread.Sleep(5000);
