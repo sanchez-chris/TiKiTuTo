@@ -23,7 +23,7 @@ namespace TiKiTuTo.Classes
         public Player(string name)
         {
             PlayerName = name;
-            PlayerID = NextID++;
+            PlayerID = NextID++; //nach unique ID methode suchen
         }
     }
 }

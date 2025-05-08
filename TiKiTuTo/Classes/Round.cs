@@ -26,12 +26,14 @@ namespace TiKiTuTo.Classes
             Matches = matches;
             ActiveRoundIndex = 0;
         }
+        Tournament Tournament = new Tournament("Blub");
+        // List<Team> Teams = Tournament.AddTeam();
 
-        public void StartRound(RoundType typeOf)
+        public void StartRound(RoundType typeOf, int koContestants, int gamesPerTeam)
         {
             if (this.TypeOf == RoundType.League)
             {
-                //preliminaryRound();
+                List<Team> finalisten = PreliminaryRound(Tournament.Teams, koContestants, gamesPerTeam);
             }
             else if (this.TypeOf == RoundType.KO)
             {
@@ -39,56 +41,81 @@ namespace TiKiTuTo.Classes
             }
 
         }
-        
-        public List<Team> PreliminaryRound(List<Team> teams, int KOContestants)
+
+
+        public List<Team> PreliminaryRound(List<Team> teams, int KOContestants, int gamesPerTeam)
+        {
+            Console.Clear();
+            Console.WriteLine("=== Preliminary Round ===");
+
+            List<Match> matchesCreated = new List<Match>();
+            var random = new Random();
+
+            while (true)
             {
-                Console.Clear();
-                Console.WriteLine("=== Preliminary Round ===");
+                // Prüfe, ob alle Teams genug Spiele haben
+                if (teams.All(t => t.GamesPlayed >= gamesPerTeam))
+                    break;
 
-                for (int i = 0; i < teams.Count; i++)
+                // Finde zwei Teams, die noch nicht genug Spiele haben
+                var availableTeams = teams.Where(t => t.GamesPlayed < gamesPerTeam).OrderBy(_ => random.Next()).ToList();
+
+                Team team1 = null;
+                Team team2 = null;
+                bool foundPair = false;
+
+                for (int i = 0; i < availableTeams.Count; i++)
                 {
-                    for (int j = i + 1; j < teams.Count; j++) // only once per pair
+                    for (int j = i + 1; j < availableTeams.Count; j++)
                     {
-                        Team team1 = teams[i];
-                        Team team2 = teams[j];
+                        Team t1 = availableTeams[i];
+                        Team t2 = availableTeams[j];
 
-                        Console.WriteLine($"\\nMatch: {team1.TeamName} vs {team2.TeamName}");
+                        // Prüfe, ob diese Paarung schon gespielt wurde
+                        bool alreadyPlayed = Matches.Any(m =>
+                            (m.Team1 == t1 && m.Team2 == t2) ||
+                            (m.Team1 == t2 && m.Team2 == t1));
 
-                        int goalsTeam1 = GetValidGoalInput(team1.TeamName);
-                        int goalsTeam2 = GetValidGoalInput(team2.TeamName);
-
-                        // Create and store the match
-                        Match match = new Match(team1, team2);
-                        match.UpdateMatchResults(goalsTeam1, goalsTeam2);
-                        Matches.Add(match);
-
-                        // Print result
-                        if (goalsTeam1 > goalsTeam2)
+                        if (!alreadyPlayed)
                         {
-                            Console.WriteLine($"{team1.TeamName} wins!");
-                        }
-                        else if (goalsTeam2 > goalsTeam1)
-                        {
-                            Console.WriteLine($"{team2.TeamName} wins!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("It's a draw. No team wins!");
+                            team1 = t1;
+                            team2 = t2;
+                            foundPair = true;
+                            break;
                         }
                     }
-                // After every "match day" (all teams have at least 1 game)
-                if (AllTeamsPlayedSameNumberOfGames(teams))
-                {
-                    Console.WriteLine("\\n=== Standings after the first matches ===");
-                    PrintStandings(teams);
+                    if (foundPair) break;
                 }
+
+                if (!foundPair)
+                {
+                    Console.WriteLine("No more valid matches can be generated.");
+                    break;
+                }
+
+                // Match-Eingabe
+                Console.WriteLine($"\nMatch: {team1.TeamName} vs {team2.TeamName}");
+                int goalsTeam1 = GetValidGoalInput(team1.TeamName);
+                int goalsTeam2 = GetValidGoalInput(team2.TeamName);
+
+                Match match = new Match(team1, team2);
+                match.UpdateMatchResults(goalsTeam1, goalsTeam2);
+                Matches.Add(match);
+
+                // Ausgabe
+                if (goalsTeam1 > goalsTeam2)
+                    Console.WriteLine($"{team1.TeamName} wins!");
+                else if (goalsTeam2 > goalsTeam1)
+                    Console.WriteLine($"{team2.TeamName} wins!");
+                else
+                    Console.WriteLine("It's a draw. No team wins!");
             }
 
-            // Final standings
-            Console.WriteLine("\\n=== Final Standings ===");
+            // Tabelle ausgeben
+            Console.WriteLine("\n=== Standings after the first matches ===");
             PrintStandings(teams);
 
-            // Sort teams: first by wins, then by goal difference
+            // Top-Teams auswählen für KO-Runde
             List<Team> sortedTeams = new List<Team>(teams);
             sortedTeams.Sort((a, b) =>
             {
@@ -97,26 +124,26 @@ namespace TiKiTuTo.Classes
                 return b.GoalDifference.CompareTo(a.GoalDifference);
             });
 
-            // Select the top X teams for KO round
             List<Team> koTeams = sortedTeams.GetRange(0, KOContestants);
 
-            Console.WriteLine($"\\n=== Teams advancing to KO Round ({KOContestants}) ===");
+            Console.WriteLine($"\n=== Teams advancing to KO Round ({KOContestants}) ===");
             foreach (var team in koTeams)
             {
-                Console.WriteLine($"{team.TeamName} | Wins: {team.GamesWon}, Goal Difference: {team.GoalDifference}");
+                Console.WriteLine($"{team.TeamName} | Wins: {team.GamesWon}, Goal Diff: {team.GoalDifference}");
             }
 
-            // Countdown before KO round
+            // Countdown
             for (int i = 5; i > 0; i--)
             {
-                Console.Write($"\\rStarting KO Round in {i} seconds... ");
+                Console.Write($"\rStarting KO Round in {i} seconds... ");
                 Thread.Sleep(1000);
             }
+
             Console.Clear();
-
             return koTeams;
-
         }
+
+
 
         private bool AllTeamsPlayedSameNumberOfGames(List<Team> teams)
         {
@@ -189,6 +216,22 @@ namespace TiKiTuTo.Classes
 
             ActiveRoundIndex++;
             return winners;
+        }
+
+        public void SetupKORound(List<Team> teamsInRound)
+        {
+            Matches.Clear();  // Wichtiger Schritt: alte Matches löschen
+            var random = new Random();
+
+            // Shuffle Teams
+            var shuffledTeams = teamsInRound.OrderBy(t => random.Next()).ToList();
+
+            for (int i = 0; i < shuffledTeams.Count; i += 2)
+            {
+                Team team1 = shuffledTeams[i];
+                Team team2 = shuffledTeams[i + 1];
+                Matches.Add(new Match(team1, team2));
+            }
         }
     }
 

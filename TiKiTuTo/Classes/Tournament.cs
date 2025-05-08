@@ -12,8 +12,8 @@ namespace TiKiTuTo.Classes
         public string TournamentName { get; set; }
         public int TeamCount { get; set; }
         public int Prelimininaries { get; set; }
-        public List<Team> Teams { get; set; }
-        public List<Round> Rounds { get; set; }
+        public List<Team> Teams { get; set; } = new List<Team>();
+        public List<Round> Rounds { get; set; } = new List<Round>();
         public int ActiveRoundIndex { get; set; }
 
         public Tournament(string name)
