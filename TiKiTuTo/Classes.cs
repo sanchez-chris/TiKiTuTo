@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
@@ -14,7 +15,11 @@ namespace Classes
         public Team Team { get; set; }
 
 
+
+        public Player(){}
+
         public Player(string name, Team team)
+
         {
             PlayerName = name;
             Team = team;
@@ -32,8 +37,11 @@ namespace Classes
         public int GoalsTotal { get; private set; }
         public int GoalDifference { get; private set; }
 
+   
+        public Team() {}
 
         public Team(string name, List<Player> initialPlayers = null)
+
         {
             TeamName = name;
             TeamMembers = new List<Player>();
@@ -99,6 +107,8 @@ namespace Classes
         public bool Finished { get; private set; }                      // Status des Spiels (abgeschlossen oder nicht)
 
 
+        //Parameterless Constructor for JSON Deserialization
+        public Match() {}
         public Match(Team team1, Team team2)
         {
             Team1 = team1;
@@ -133,6 +143,7 @@ namespace Classes
         public List<Match> Matches { get; set; } = new List<Match>();
         public int ActiveRoundIndex { get; set; }
 
+        public Round(){}
 
         public Round(RoundType typeOf, List<Match> matches)
         {
@@ -170,6 +181,7 @@ namespace Classes
         public List<Round> Rounds { get; set; }
         public int ActiveRoundIndex { get; set; }
 
+
         public Tournament(string name)
         {
             TournamentName = name;
@@ -196,5 +208,6 @@ namespace Classes
             // Logic to generate matches for the round
             return new List<Match>();
         }
+
     }
 }

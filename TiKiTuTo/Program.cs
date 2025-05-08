@@ -1,4 +1,6 @@
-﻿namespace TiKiTuTo
+﻿using Classes;
+
+namespace TiKiTuTo
 {
 
     public class Program
@@ -59,7 +61,9 @@
                         break;
                 }
             }
+
         }
+
     }
 
 }
