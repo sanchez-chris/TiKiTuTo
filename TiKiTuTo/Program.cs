@@ -1,4 +1,6 @@
-﻿using Classes;
+﻿//using Classes;
+
+using TiKiTuTo.View;
 
 namespace TiKiTuTo
 {
@@ -37,7 +39,7 @@ namespace TiKiTuTo
                 switch (op)
                 {
                     case '1':
-                        TikiTuTo.NewGame();
+                        //TikiTuTo.NewGame();
                         Console.WriteLine("New game started!");
                         break;
                     case '2':
