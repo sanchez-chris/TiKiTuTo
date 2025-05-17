@@ -1,10 +1,36 @@
-﻿namespace TiKiTuTo.Test
+﻿using System.IO;
+using Xunit;
+using TiKiTuTo;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
+
+namespace TiKiTuTo.Test
 {
-    internal class Program
+    public class ProgramTests
     {
-        static void Main(string[] args)
+        [Fact]
+        public void TestExitOption()
         {
-            Console.WriteLine("Hello, World!");
+            // Arrange
+            var input = new StringReader("5");
+            var output = new StringWriter();
+
+            Console.SetIn(input);
+            Console.SetOut(output);
+
+            // Act
+            try
+            {
+                Program.Main(null);
+            }
+            catch (Exception ex)
+            {
+                // Catch the Environment.Exit call
+                Assert.IsType<System.Threading.ThreadAbortException>(ex);
+            }
+
+            // Assert
+            var consoleOutput = output.ToString();
+            Assert.Contains("5. Exit", consoleOutput);
         }
     }
 }
