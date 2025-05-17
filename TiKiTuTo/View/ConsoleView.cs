@@ -8,7 +8,6 @@ namespace TiKiTuTo.View
 {
     public class ConsoleView : IView
     {
-
         public void ShowMenu()
         {
                 Console.Clear();

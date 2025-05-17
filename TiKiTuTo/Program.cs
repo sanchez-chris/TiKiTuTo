@@ -1,8 +1,4 @@
-﻿//using Classes;
-
-using TiKiTuTo.View;
-
-namespace TiKiTuTo
+﻿namespace TiKiTuTo
 {
 
     public class Program
