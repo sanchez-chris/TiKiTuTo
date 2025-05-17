@@ -1,6 +1,4 @@
-﻿using Classes;
-
-namespace TiKiTuTo
+﻿namespace TiKiTuTo
 {
 
     public class Program
