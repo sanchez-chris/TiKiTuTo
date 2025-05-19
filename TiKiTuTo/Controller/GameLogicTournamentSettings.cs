@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TiKiTuTo.Model;
+
+namespace TiKiTuTo.Controller
+{
+    /// <summary>
+    /// Handles business logic regarding TournamentSetting objects. 
+    /// </summary>
+    public class GameLogicTournamentSettings
+    {
+        /// <summary>
+        /// Creates TournamentSettings based on user input. Validates input so that a functional Tournament can be initialized based on these settings.
+        /// </summary>
+        /// <returns>returns a TournamentSettings instance holding all relevant parameters to initialize a new Tournament.</returns>
+        public static TournamentSettings CreateTournamentSettings()
+        {
+
+            int NumberOfTeamsTotal;                 //how many teams attend the tournament?
+            int NumberOfPreliminaryGamesPerTeam;    //how many games will be played per team in the preliminaries?
+            int NumberOfTeamsInKORound;             //how many teams will progress into knockout rounds?
+            List<Team> Teams;                       //the actual teams
+
+            //ask for the necessary inputs
+            NumberOfTeamsTotal = BasicFunctions.GetValidNumberOfTotalTeams();
+            NumberOfPreliminaryGamesPerTeam = BasicFunctions.GetValidPreliminaryGames(NumberOfTeamsTotal);
+            NumberOfTeamsInKORound = BasicFunctions.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
+            Teams = BasicFunctions.CreateNTeams(NumberOfTeamsTotal);
+
+            TournamentSettings settings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams);
+
+            return settings;
+        }
+
+    }
+}
