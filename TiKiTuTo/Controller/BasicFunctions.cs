@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Design;
-using View = TiKiTuTo.View;
+using TiKiTuTo.View;
 using TiKiTuTo.Model;
 
 namespace TiKiTuTo.Controller
@@ -13,10 +13,14 @@ namespace TiKiTuTo.Controller
 
 
 
-        //TODO
+        
+
+        //comment deleted
         public static int GetValidNumberOfTotalTeams()
         {
             int NumberOfTeams = 0;
+
+
             return NumberOfTeams;
         }
 
@@ -45,8 +49,8 @@ namespace TiKiTuTo.Controller
             {
                 name = $"Team {i}";
             }
-            
-            View.ShowMessage($"Welcome {name}");
+
+            ConsoleView.ShowMessage($"Welcome {name}");
 
             //How do we add the players?
             //define number of players before?
