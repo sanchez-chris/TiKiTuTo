@@ -8,14 +8,15 @@ using TiKiTuTo.View;
 namespace TiKiTuTo.Controller
 {
     /// <summary>
-    /// Handles business logic regarding TournamentSetting objects. 
+    /// Handles business logic regarding TournamentSettings objects. 
     /// </summary>
     public class GameLogicTournamentSettings
     {
         /// <summary>
-        /// Creates TournamentSettings based on user input. Validates input so that a functional Tournament can be initialized based on these settings.
+        /// Creates TournamentSettings based on user input.
+        /// Validates input so that a functional Tournament can be initialized based on these settings.
         /// </summary>
-        /// <returns>returns a TournamentSettings instance holding all relevant parameters to initialize a new Tournament.</returns>
+        /// <returns>TournamentSettings instance holding all relevant, validated parameters to initialize a new Tournament.</returns>
         public static TournamentSettings CreateTournamentSettings(IView View)
         {
 

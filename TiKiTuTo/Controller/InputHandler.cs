@@ -1,14 +1,20 @@
-﻿using System.ComponentModel.Design;
-using TiKiTuTo.View;
+﻿using TiKiTuTo.View;
 using TiKiTuTo.Model;
 
 namespace TiKiTuTo.Controller
 {
+    /// <summary>
+    /// This class implements all methods which retrieve user input, for integers as well as strings.
+    /// </summary>
     static class InputHandler
     {
 
 
 
+        /// <summary>
+        /// Asks user for a number to perform a Menu option.
+        /// </summary>
+        /// <returns>A number guaranteed to trigger a valid option in the main menu.</returns>
         public static int GetValidMenuInput(IView View)
         {
             int choice = GetNumber($"Please choose what to do (pick a number).", View);
@@ -22,9 +28,9 @@ namespace TiKiTuTo.Controller
         }
 
         /// <summary>
-        /// Asks user for the number of total teams until a valid value is entered
+        /// Asks user for the number of total teams in a tournament until a valid value is entered.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The number of teams playing in a tournament, guaranteed to be a valid value.</returns>
         public static int GetValidNumberOfTotalTeams(IView View)
         {
             int NumberOfTeams = GetNumber($"How many teams are going to join this tournament?", View);
@@ -63,16 +69,15 @@ namespace TiKiTuTo.Controller
         /// <returns>an integer entered by the user.</returns>
         public static int GetNumber(string prompt, IView View)
         {
-            int result = 0;
+            int result;
+            string? userInput = View.ReadInput();
 
             View.ShowMessage(prompt);
 
-            
-            while (result == 0) 
+            while (!int.TryParse(userInput, out result))
             {
-                //View.ShowMessage("Please enter a natural number.");
-                string? userInput = View.ReadInput();
-                int.TryParse(userInput, out result);
+                View.ShowMessage($"\"{userInput}\" is not a valid input. Try again!");
+                userInput = View.ReadInput();
             }
             return result;
         }
