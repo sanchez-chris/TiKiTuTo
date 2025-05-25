@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TiKiTuTo.Model;
 
 namespace TiKiTuTo.View 
 {
@@ -48,5 +49,12 @@ namespace TiKiTuTo.View
         {
             Console.WriteLine("");
         }
+
+        public string ReadInput()
+        {
+            return Console.ReadLine();
+        }
+
+
     }
 }

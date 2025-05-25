@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using TiKiTuTo.Model;
+using TiKiTuTo.Controller;
+using TiKiTuTo.View;
 
 namespace TiKiTuTo.Controller
 {
@@ -17,15 +19,11 @@ namespace TiKiTuTo.Controller
         /// Creates Tournament based on user input. First creates a TournamentSettings object, then initializes a Tournament based on these settings.
         /// </summary>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public static Tournament CreateTournament()
+        public static Tournament CreateTournament(IView View)
         {
-
-
-            
             TournamentSettings TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
 
-
-            Tournament tournament = CreateTournament(TournamentSettings);
+            Tournament tournament = CreateTournament(TournamentSettings, View);
 
             return tournament;
         }
@@ -38,10 +36,10 @@ namespace TiKiTuTo.Controller
         /// </summary>
         /// <param name="tournamentSettings">a TournamentSettings instance holding all necessary parameters.</param>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public static Tournament CreateTournament(TournamentSettings tournamentSettings)
+        public static Tournament CreateTournament(TournamentSettings tournamentSettings, IView View)
         {
             bool emptyNameAllowed = false;
-            string name = BasicFunctions.GetName("Please enter the name of this tournament!", emptyNameAllowed);
+            string name = InputHandler.GetName("Please enter the name of this tournament!", emptyNameAllowed, View);
 
             Tournament tournament = new Tournament(name, tournamentSettings);
             return tournament;
