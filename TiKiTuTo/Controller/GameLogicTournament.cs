@@ -21,7 +21,7 @@ namespace TiKiTuTo.Controller
         /// <returns>returns a newly initialized Tournament instance.</returns>
         public static Tournament CreateTournament(IView View)
         {
-            TournamentSettings TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
+            TournamentSettings TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(View);
 
             Tournament tournament = CreateTournament(TournamentSettings, View);
 

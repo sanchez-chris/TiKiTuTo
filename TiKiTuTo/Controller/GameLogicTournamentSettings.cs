@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiKiTuTo.Model;
-
+using TiKiTuTo.View;
 namespace TiKiTuTo.Controller
 {
     /// <summary>
@@ -16,7 +16,7 @@ namespace TiKiTuTo.Controller
         /// Creates TournamentSettings based on user input. Validates input so that a functional Tournament can be initialized based on these settings.
         /// </summary>
         /// <returns>returns a TournamentSettings instance holding all relevant parameters to initialize a new Tournament.</returns>
-        public static TournamentSettings CreateTournamentSettings()
+        public static TournamentSettings CreateTournamentSettings(IView View)
         {
 
             int NumberOfTeamsTotal;                 //how many teams attend the tournament?
@@ -25,10 +25,10 @@ namespace TiKiTuTo.Controller
             List<Team> Teams;                       //the actual teams
 
             //ask for the necessary inputs
-            NumberOfTeamsTotal = BasicFunctions.GetValidNumberOfTotalTeams();
-            NumberOfPreliminaryGamesPerTeam = BasicFunctions.GetValidPreliminaryGames(NumberOfTeamsTotal);
-            NumberOfTeamsInKORound = BasicFunctions.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
-            Teams = BasicFunctions.CreateNTeams(NumberOfTeamsTotal);
+            NumberOfTeamsTotal = InputHandler.GetValidNumberOfTotalTeams(View);
+            NumberOfPreliminaryGamesPerTeam = InputHandler.GetValidPreliminaryGames(NumberOfTeamsTotal, View);
+            NumberOfTeamsInKORound = InputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal, View);
+            Teams = BasicFunctions.CreateNTeams(NumberOfTeamsTotal, View);
 
             TournamentSettings settings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams);
 

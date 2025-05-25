@@ -25,7 +25,7 @@ namespace TiKiTuTo.Controller
 
         public static bool IsValidNumberOfTotalTeams(int NumberTeamsTotal)
         {
-            bool result = false;
+            bool result = NumberTeamsTotal >= 4;
 
             return result;
 
@@ -47,11 +47,10 @@ namespace TiKiTuTo.Controller
 
         }
 
-        public static bool IsValidMenuInput(string UserInput)
+        public static bool IsValidMenuInput(int UserInput)
         {
-            bool result = false;
 
-            return result;
+            return UserInput > 0 & UserInput < 7;
         }
     }
 }

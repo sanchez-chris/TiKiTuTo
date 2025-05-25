@@ -8,21 +8,24 @@ namespace TiKiTuTo.Controller
     {
 
 
-        //public IView View { get; }
-        
-        //public InputHandler(IView view) 
-        //{ 
-        //    View = view; 
-        //}
 
+        public static int GetValidMenuInput(IView View)
+        {
+            int choice = GetNumber($"Please choose what to do (pick a number).", View);
 
+            while (!InputValidator.IsValidMenuInput(choice))
+            { 
+                choice = GetNumber($"This was not a valid number!", View);
+            }
 
+            return choice;
+        }
 
         /// <summary>
         /// Asks user for the number of total teams until a valid value is entered
         /// </summary>
         /// <returns></returns>
-        static int GetValidNumberOfTotalTeams(IView View)
+        public static int GetValidNumberOfTotalTeams(IView View)
         {
             int NumberOfTeams = GetNumber($"How many teams are going to join this tournament?", View);
 
@@ -51,45 +54,8 @@ namespace TiKiTuTo.Controller
 
 
 
-        public static Team CreateTeam(int i, IView View)
-        {
-            bool emptyNameAllowed = true;
-            string? name = GetName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed, View);
 
-            if (name == null) 
-            {
-                name = $"Team {i}";
-            }
-
-            View.ShowMessage($"Welcome {name}");
-
-            //How do we add the players?
-            //define number of players before?
-            //do all teams need the same number of players?
-            //Stop once the user gives a certain input?
-
-            List<Player> playerList = new List<Player>();
-
-            Team team = new Team(name, playerList);
-
-            return team;
-        }
-
-
-
-
-        public static List<Team> CreateNTeams(int NumberOfTeamsTotal, IView View)
-        {
-            List<Team> teams = new List<Team>();
-
-            for (int i = 1; i <= NumberOfTeamsTotal; i++)
-            {
-                View.ShowMessage($"Creating Team {i}");
-                teams.Add(CreateTeam(i, View));
-            }
-            return teams;
-        }
-
+        
         /// <summary>
         /// Asks the user to enter a number, using the prompt argument. Repeats until a valid number is added.
         /// </summary>
@@ -104,9 +70,9 @@ namespace TiKiTuTo.Controller
             
             while (result == 0) 
             {
-                View.ShowMessage("Please enter a natural number.");
+                //View.ShowMessage("Please enter a natural number.");
                 string? userInput = View.ReadInput();
-                bool _ = int.TryParse(userInput, out result);
+                int.TryParse(userInput, out result);
             }
             return result;
         }
