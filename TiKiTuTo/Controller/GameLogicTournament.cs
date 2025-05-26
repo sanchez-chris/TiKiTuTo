@@ -39,7 +39,7 @@ namespace TiKiTuTo.Controller
         public static Tournament CreateTournament(TournamentSettings tournamentSettings, InputHandler inputHandler)
         {
             bool emptyNameAllowed = false;
-            string name = inputHandler.GetName("Please enter the name of this tournament!", emptyNameAllowed);
+            string name = inputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
 
             Tournament tournament = new Tournament(name, tournamentSettings);
             return tournament;

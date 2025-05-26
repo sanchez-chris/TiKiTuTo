@@ -10,15 +10,12 @@ namespace TiKiTuTo.Controller
         public static Team CreateTeam(int i, InputHandler inputHandler)
         {
             bool emptyNameAllowed = true;
-            string? name = inputHandler.GetName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed);
+            string? name = inputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed);
 
             if (string.IsNullOrEmpty(name))
             {
                 name = $"Team {i}";
             }
-
-            View.ShowMessage($"Welcome {name}");
-
             //How do we add the players?
             //define number of players before?
             //do all teams need the same number of players?
@@ -31,16 +28,12 @@ namespace TiKiTuTo.Controller
             return team;
         }
 
-
-
-
         public static List<Team> CreateListOfTeams(int NumberOfTeamsTotal, InputHandler inputHandler)
         {
             List<Team> teams = new List<Team>();
 
             for (int i = 1; i <= NumberOfTeamsTotal; i++)
             {
-                View.ShowMessage($"Creating Team {i}");
                 teams.Add(CreateTeam(i, inputHandler));
             }
             return teams;

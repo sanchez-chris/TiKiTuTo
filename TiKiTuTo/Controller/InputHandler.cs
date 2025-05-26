@@ -94,7 +94,7 @@ namespace TiKiTuTo.Controller
         /// <param name="emptyAllowed">boolean defining whether empty result is OK.</param>
         /// <param name="_View">The specific _View implementation to interact with.</param>
         /// <returns>a string entered by the user.</returns>
-        public string? GetName(string prompt, bool emptyAllowed)
+        public string? GetPlayerName(string prompt, bool emptyAllowed)
         {
             _View.ShowMessage(prompt); 
             
@@ -106,6 +106,38 @@ namespace TiKiTuTo.Controller
                 _View.ShowMessage("Your input can not be empty.");
                 userInput = _View.ReadInput();
             }
+            _View.ShowMessage($"Welcome {userInput}");
+            return userInput;
+        }
+        public string? GetTeamName(string prompt, bool emptyAllowed)
+        {
+            _View.ShowMessage(prompt);
+
+            string? userInput = _View.ReadInput();
+
+
+            while (userInput == null & !emptyAllowed)
+            {
+                _View.ShowMessage("Your input can not be empty.");
+                userInput = _View.ReadInput();
+            }
+            _View.ShowMessage($"Creating Team {userInput}");
+            return userInput;
+        }
+
+        public string GetTournamentName(string prompt, bool emptyAllowed)
+        {
+            _View.ShowMessage(prompt);
+
+            string userInput = _View.ReadInput();
+
+
+            while (userInput == null & !emptyAllowed)
+            {
+                _View.ShowMessage("Your input can not be empty.");
+                userInput = _View.ReadInput();
+            }
+            _View.ShowMessage($"Tournament {userInput} created.");
             return userInput;
         }
     }
