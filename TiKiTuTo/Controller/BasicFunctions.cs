@@ -7,10 +7,10 @@ namespace TiKiTuTo.Controller
     public class BasicFunctions
     {
 
-        public static Team CreateTeam(int i, IView View)
+        public static Team CreateTeam(int i, InputHandler inputHandler)
         {
             bool emptyNameAllowed = true;
-            string? name = InputHandler.GetName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed, View);
+            string? name = inputHandler.GetName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed);
 
             if (string.IsNullOrEmpty(name))
             {
@@ -34,14 +34,14 @@ namespace TiKiTuTo.Controller
 
 
 
-        public static List<Team> CreateNTeams(int NumberOfTeamsTotal, IView View)
+        public static List<Team> CreateListOfTeams(int NumberOfTeamsTotal, InputHandler inputHandler)
         {
             List<Team> teams = new List<Team>();
 
             for (int i = 1; i <= NumberOfTeamsTotal; i++)
             {
                 View.ShowMessage($"Creating Team {i}");
-                teams.Add(CreateTeam(i, View));
+                teams.Add(CreateTeam(i, inputHandler));
             }
             return teams;
         }

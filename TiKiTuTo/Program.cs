@@ -9,14 +9,15 @@ namespace TiKiTuTo.Controller
         {
 
             IView view = new ConsoleView();
-            Controller controller = new Controller(view);
+            InputHandler inputHandler = new InputHandler(view);
+            Controller controller = new Controller(view, inputHandler);
 
 
             while (true)
             {
                 view.ShowMenu();
 
-                int UserInput = InputHandler.GetValidMenuInput(view);
+                int UserInput = inputHandler.GetValidMenuInput();
                 
                 switch (UserInput)
                 {

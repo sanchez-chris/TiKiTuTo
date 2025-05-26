@@ -8,19 +8,21 @@ namespace TiKiTuTo.Controller
     {
 
 
-        public IView View { get; }
+        public IView _View { get; }
+        public InputHandler _InputHandler { get; }
 
 
-        public Controller(IView view)
+        public Controller(IView view, InputHandler inputHandler)
         {
-            View = view;
+            _View = view;
+            _InputHandler = inputHandler;
         }
 
 
 
         public void StartTournament()
         {
-            Tournament tournament = GameLogicTournament.CreateTournament(View);
+            Tournament tournament = GameLogicTournament.CreateTournament(_InputHandler);
         }
     }
 }

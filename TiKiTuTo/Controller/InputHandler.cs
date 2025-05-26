@@ -6,22 +6,27 @@ namespace TiKiTuTo.Controller
     /// <summary>
     /// This class implements all methods which retrieve user input, for integers as well as strings.
     /// </summary>
-    static class InputHandler
+    public class InputHandler
     {
 
+        IView _View { get; set; }
 
+        public InputHandler(IView view) 
+        {
+            _View = view;
+        }
 
         /// <summary>
         /// Asks user for a number to perform a Menu option.
         /// </summary>
         /// <returns>A number guaranteed to trigger a valid option in the main menu.</returns>
-        public static int GetValidMenuInput(IView View)
+        public int GetValidMenuInput()
         {
-            int choice = GetNumber($"Please choose what to do (pick a number).", View);
+            int choice = GetNumber($"Please choose what to do (pick a number).");
 
             while (!InputValidator.IsValidMenuInput(choice))
             { 
-                choice = GetNumber($"This was not a valid number!", View);
+                choice = GetNumber($"This was not a valid number!");
             }
 
             return choice;
@@ -31,28 +36,28 @@ namespace TiKiTuTo.Controller
         /// Asks user for the number of total teams in a tournament until a valid value is entered.
         /// </summary>
         /// <returns>The number of teams playing in a tournament, guaranteed to be a valid value.</returns>
-        public static int GetValidNumberOfTotalTeams(IView View)
+        public int GetValidNumberOfTotalTeams()
         {
-            int NumberOfTeams = GetNumber($"How many teams are going to join this tournament?", View);
+            int NumberOfTeams = GetNumber($"How many teams are going to join this tournament?");
 
             while (!InputValidator.IsValidNumberOfTotalTeams(NumberOfTeams))
             {
-                View.ShowMessage("Try again (info what is wrong and how to do it right)");
-                NumberOfTeams = GetNumber("Please give me the number now!!!", View);
+                _View.ShowMessage("Try again (info what is wrong and how to do it right)");
+                NumberOfTeams = GetNumber("Please give me the number now!!!");
             }
 
             return NumberOfTeams;
         }
 
         //TODO
-        public static int GetValidPreliminaryGames(int NumberOfTeamsTotal, IView View)
+        public int GetValidPreliminaryGames(int NumberOfTeamsTotal)
         {
             int NumberOfPreliminaryGames = 0;
             return NumberOfPreliminaryGames;
         }
 
         //TODO
-        public static int GetValidNumberOfTeamsInKORound(int NumberOfTeamsTotal, IView View)
+        public int GetValidNumberOfTeamsInKORound(int NumberOfTeamsTotal)
         {
             int NumberOfTeams = 0;
             return NumberOfTeams;
@@ -67,17 +72,17 @@ namespace TiKiTuTo.Controller
         /// </summary>
         /// <param name="prompt">Message shown to the user to prompt input.</param>
         /// <returns>an integer entered by the user.</returns>
-        public static int GetNumber(string prompt, IView View)
+        public int GetNumber(string prompt)
         {
             int result;
-            string? userInput = View.ReadInput();
+            string? userInput = _View.ReadInput();
 
-            View.ShowMessage(prompt);
+            _View.ShowMessage(prompt);
 
             while (!int.TryParse(userInput, out result))
             {
-                View.ShowMessage($"\"{userInput}\" is not a valid input. Try again!");
-                userInput = View.ReadInput();
+                _View.ShowMessage($"\"{userInput}\" is not a valid input. Try again!");
+                userInput = _View.ReadInput();
             }
             return result;
         }
@@ -87,19 +92,19 @@ namespace TiKiTuTo.Controller
         /// </summary>
         /// <param name="prompt">Message shown to the user to prompt input.</param>
         /// <param name="emptyAllowed">boolean defining whether empty result is OK.</param>
-        /// <param name="View">The specific View implementation to interact with.</param>
+        /// <param name="_View">The specific _View implementation to interact with.</param>
         /// <returns>a string entered by the user.</returns>
-        public static string? GetName(string prompt, bool emptyAllowed, IView View)
+        public string? GetName(string prompt, bool emptyAllowed)
         {
-            View.ShowMessage(prompt); 
+            _View.ShowMessage(prompt); 
             
-            string? userInput = View.ReadInput();
+            string? userInput = _View.ReadInput();
 
             
             while (userInput == null & !emptyAllowed)
             {
-                View.ShowMessage("Your input can not be empty.");
-                userInput = View.ReadInput();
+                _View.ShowMessage("Your input can not be empty.");
+                userInput = _View.ReadInput();
             }
             return userInput;
         }

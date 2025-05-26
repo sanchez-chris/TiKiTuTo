@@ -16,6 +16,7 @@ namespace TiKiTuTo.Controller
 
 
 
+        //TODO
         public static bool IsValidGoalInput(int Goals)
         {
             return (Goals >= 0 & Goals <= 10);
@@ -23,6 +24,7 @@ namespace TiKiTuTo.Controller
 
 
 
+        //TODO
         public static bool IsValidNumberOfTotalTeams(int NumberTeamsTotal)
         {
             bool result = NumberTeamsTotal >= 4;
@@ -31,6 +33,7 @@ namespace TiKiTuTo.Controller
 
         }
 
+        //TODO
         public static bool IsValidNumberOfTeamsInKORound(int NumberInKO, int NumberTeamsTotal)
         {
             bool result = false;
@@ -39,6 +42,7 @@ namespace TiKiTuTo.Controller
 
         }
 
+        //TODO
         public static bool IsValidNumberOfPreliminaryGamesPerTeam(int GamesPerTeam, int NumberTeamsTotal)
         {
             bool result = false;
@@ -47,6 +51,8 @@ namespace TiKiTuTo.Controller
 
         }
 
+
+        //TODO
         public static bool IsValidMenuInput(int UserInput)
         {
 

@@ -13,17 +13,17 @@ namespace TiKiTuTo.Controller
     /// <summary>
     /// Handles business logic regarding Tournament objects. 
     /// </summary>
-    public class GameLogicTournament
+    public static class GameLogicTournament
     {
         /// <summary>
         /// Creates Tournament based on user input. First creates a TournamentSettings object, then initializes a Tournament based on these settings.
         /// </summary>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public static Tournament CreateTournament(IView View)
+        public static Tournament CreateTournament(InputHandler inputHandler)
         {
-            TournamentSettings TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(View);
+            TournamentSettings TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(inputHandler);
 
-            Tournament tournament = CreateTournament(TournamentSettings, View);
+            Tournament tournament = CreateTournament(TournamentSettings, inputHandler);
 
             return tournament;
         }
@@ -36,10 +36,10 @@ namespace TiKiTuTo.Controller
         /// </summary>
         /// <param name="tournamentSettings">a TournamentSettings instance holding all necessary parameters.</param>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public static Tournament CreateTournament(TournamentSettings tournamentSettings, IView View)
+        public static Tournament CreateTournament(TournamentSettings tournamentSettings, InputHandler inputHandler)
         {
             bool emptyNameAllowed = false;
-            string name = InputHandler.GetName("Please enter the name of this tournament!", emptyNameAllowed, View);
+            string name = inputHandler.GetName("Please enter the name of this tournament!", emptyNameAllowed);
 
             Tournament tournament = new Tournament(name, tournamentSettings);
             return tournament;
