@@ -8,21 +8,21 @@ namespace Controller
     {
 
 
-        public IView _View { get; }
-        public InputHandler _InputHandler { get; }
+        public IView View { get; }
+        public InputHandler InputHandler { get; }
 
 
         public Controller(IView view, InputHandler inputHandler)
         {
-            _View = view;
-            _InputHandler = inputHandler;
+            View = view;
+            InputHandler = inputHandler;
         }
 
 
 
         public void StartTournament()
         {
-            Tournament tournament = GameLogicTournament.CreateTournament(_InputHandler);
+            Tournament tournament = GameLogicTournament.CreateTournament(InputHandler);
         }
     }
 }

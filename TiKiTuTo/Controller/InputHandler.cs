@@ -9,12 +9,12 @@ namespace Controller
     public class InputHandler
     {
 
-        IView _View { get; set; }
+        IView View { get; set; }
         readonly int maxMenuOption = 5;
 
         public InputHandler(IView view) 
         {
-            _View = view;
+            View = view;
         }
 
         /// <summary>
@@ -49,18 +49,36 @@ namespace Controller
             return NumberOfTeams;
         }
 
-        //TODO
+        /// <summary>
+        /// Asks user for the number of games each team should play in the preliminaries until a valid value is entered.
+        /// </summary>
+        /// <param name="NumberOfTeamsTotal"> The total number of teams in the tournament defines which values are valid</param>
+        /// <returns>The number of games each team has to play in the preliminaries, guaranteed to be a valid value.</returns>
         public int GetValidPreliminaryGames(int NumberOfTeamsTotal)
         {
-            int NumberOfPreliminaryGames = 0;
+            int NumberOfPreliminaryGames = GetNumber("How many games should each team play in the preliminaries?");
+
+            while (!InputValidator.IsValidNumberOfPreliminaryGamesPerTeam(NumberOfPreliminaryGames, NumberOfTeamsTotal))
+            {
+                NumberOfPreliminaryGames = GetNumber($"This is not a valid number of games per team (minimum 1, maximum {NumberOfTeamsTotal-1}).");
+            }
             return NumberOfPreliminaryGames;
         }
 
-        //TODO
+        /// <summary>
+        /// Asks user for the number of teams progressing into the KO round. Has to be a power of 2 and not larger than the total number of teams.
+        /// </summary>
+        /// <param name="NumberOfTeamsTotal"> The total number of teams in the tournament defines an upper bound to the number of teams progressing.</param>
+        /// <returns>The number of teams progressing into KO, guaranteed to be a valid value.</returns>
         public int GetValidNumberOfTeamsInKORound(int NumberOfTeamsTotal)
         {
-            int NumberOfTeams = 0;
-            return NumberOfTeams;
+            int maxAllowed = BasicFunctions.HighestPowerOf2(NumberOfTeamsTotal);
+            int NumberOfTeamsInKO = GetNumber($"How many teams should continue into the KO phase (minimum 2, maximum {maxAllowed})?");
+            while (!InputValidator.IsValidNumberOfTeamsInKORound(NumberOfTeamsInKO, NumberOfTeamsTotal))
+            {
+                NumberOfTeamsInKO = GetNumber($"This is not a valid number of teams for KO round (has to be 2^n, minimum 2, maximum {maxAllowed}).");
+            }
+            return NumberOfTeamsInKO;
         }
 
 
@@ -76,68 +94,70 @@ namespace Controller
         {
             int result;
 
-            _View.ShowMessage(prompt);
-            string? userInput = _View.ReadInput();
+            View.ShowMessage(prompt);
+            string? userInput = View.ReadInput();
 
             while (!int.TryParse(userInput, out result))
             {
-                _View.ShowMessage($"\"{userInput}\" is not a valid input. Try again!");
-                userInput = _View.ReadInput();
+                View.ShowMessage($"\"{userInput}\" is not a valid number input, please try again!");
+                userInput = View.ReadInput();
             }
             return result;
         }
 
+        
+        
+        //TODO: ADJUST XML COMMENT FOR GetXYName methods
+        
         /// <summary>
         /// Asks the user to enter any string, using the prompt argument. Repeats until valid string is entered.
         /// </summary>
         /// <param name="prompt">Message shown to the user to prompt input.</param>
         /// <param name="emptyAllowed">boolean defining whether empty result is OK.</param>
-        /// <param name="_View">The specific _View implementation to interact with.</param>
         /// <returns>a string entered by the user.</returns>
         public string? GetPlayerName(string prompt, bool emptyAllowed)
         {
-            _View.ShowMessage(prompt); 
-            string? userInput = _View.ReadInput();
+            View.ShowMessage(prompt); 
+            string? userInput = View.ReadInput();
 
-            
+
             while (string.IsNullOrEmpty(userInput) && !emptyAllowed)
             {
-                _View.ShowMessage("Your input can not be empty.");
-                userInput = _View.ReadInput();
+                View.ShowMessage("Your input can not be empty.");
+                userInput = View.ReadInput();
             }
-            _View.ShowMessage($"Welcome {userInput}");
+            View.ShowMessage($"Welcome {userInput}");
             return userInput;
         }
 
         public string? GetTeamName(string prompt, bool emptyAllowed)
         {
-            _View.ShowMessage(prompt);
+            View.ShowMessage(prompt);
+            string? userInput = View.ReadInput();
 
-            string? userInput = _View.ReadInput();
 
-
-            while (userInput == null & !emptyAllowed)
+            while (string.IsNullOrEmpty(userInput) && !emptyAllowed)
             {
-                _View.ShowMessage("Your input can not be empty.");
-                userInput = _View.ReadInput();
+                View.ShowMessage("Your input can not be empty.");
+                userInput = View.ReadInput();
             }
-            _View.ShowMessage($"Creating Team {userInput}");
+            View.ShowMessage($"Creating Team {userInput}");
             return userInput;
         }
 
         public string GetTournamentName(string prompt, bool emptyAllowed)
         {
-            _View.ShowMessage(prompt);
+            View.ShowMessage(prompt);
 
-            string userInput = _View.ReadInput();
+            string userInput = View.ReadInput();
 
 
-            while (userInput == null & !emptyAllowed)
+            while (string.IsNullOrEmpty(userInput) && !emptyAllowed)
             {
-                _View.ShowMessage("Your input can not be empty.");
-                userInput = _View.ReadInput();
+                View.ShowMessage("Your input can not be empty.");
+                userInput = View.ReadInput();
             }
-            _View.ShowMessage($"Tournament {userInput} created.");
+            View.ShowMessage($"Tournament {userInput} created.");
             return userInput;
         }
     }
