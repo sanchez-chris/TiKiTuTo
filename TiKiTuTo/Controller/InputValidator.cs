@@ -7,56 +7,40 @@ namespace Controller
     static class InputValidator
     {
 
-        //static bool ValidateTournamentSettings(TournamentSettings)
-        //{
-        //    bool result;
-
-        //    return result;
-        //}
-
-
-
-        //TODO
-        public static bool IsValidGoalInput(int Goals)
+        public static bool IsValidGoalInput(int goals)
         {
-            return (Goals >= 0 & Goals <= 10);
+            return (goals >= 0 && goals <= 10);
         }
 
 
-
-        //TODO
-        public static bool IsValidNumberOfTotalTeams(int NumberTeamsTotal)
+        public static bool IsValidNumberOfTotalTeams(int numberTeamsTotal)
         {
-            bool result = NumberTeamsTotal >= 4;
-
-            return result;
-
-        }
-
-        //TODO
-        public static bool IsValidNumberOfTeamsInKORound(int NumberInKO, int NumberTeamsTotal)
-        {
-            bool result = false;
-
-            return result;
-
-        }
-
-        //TODO
-        public static bool IsValidNumberOfPreliminaryGamesPerTeam(int GamesPerTeam, int NumberTeamsTotal)
-        {
-            bool result = false;
-
-            return result;
-
+           return numberTeamsTotal >= 4 && numberTeamsTotal %2==0;
         }
 
 
-        //TODO
-        public static bool IsValidMenuInput(int UserInput)
+        public static bool IsValidNumberOfTeamsInKORound(int numberInKO, int numberTeamsTotal)
         {
+            return IsPowerOfTwo(numberInKO) && numberInKO <= numberTeamsTotal;
+        }
 
-            return UserInput > 0 & UserInput < 7;
+
+        public static bool IsPowerOfTwo(int x)
+        {
+            return (x > 0) && ((x & (x - 1)) == 0);
+        }
+
+
+        public static bool IsValidNumberOfPreliminaryGamesPerTeam(int gamesPerTeam, int numberTeamsTotal)
+        {
+            if (gamesPerTeam <= 0 || numberTeamsTotal <= 0) return false;
+            else return (numberTeamsTotal * gamesPerTeam) % 2 == 0;
+        }
+
+
+        public static bool IsValidMenuInput(int userInput, int maxMenuOption)
+        {
+            return userInput > 0 && userInput < maxMenuOption;
         }
     }
 }

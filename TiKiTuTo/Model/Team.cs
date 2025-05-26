@@ -9,8 +9,8 @@ namespace Model
     public class Team
     {
         public string TeamName { get; set; }
-        List<Player> PlayerInTeam { get; set; }
-        int NumberGamesWon { get; set; } = 0;
+        public List<Player> PlayerInTeam { get; set; }
+        public int NumberGamesWon { get; set; } = 0;
         /// <summary>
         /// Konstruktor der Klasse Team, benötigt den Namen des Teams und eine Liste von Teammitgliedern, falls keine angegeben werden werden diese mit default...
         /// </summary>
