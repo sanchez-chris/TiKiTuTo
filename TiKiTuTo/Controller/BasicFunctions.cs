@@ -18,6 +18,20 @@ namespace Controller
             }
         }
 
+        /// <summary>
+        /// Used to add default players should none be given by the user.
+        /// </summary>
+        public static void InitializeDefaultPlayers(Team team)
+        {
+            // Add default players to the team
+            for (int i = 1; i <= 2; i++) // Example: 2 default players per team
+            {
+                Player defaultPlayer = new Player($"DefaultPlayer{i} ({team.TeamName})");
+                AddPlayer(defaultPlayer, team);
+            }
+        }
+
+
         public static Team CreateTeam(int i, InputHandler inputHandler)
         {
             bool emptyNameAllowed = true;
