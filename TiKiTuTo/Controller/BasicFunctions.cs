@@ -6,6 +6,17 @@ namespace Controller
 {
     public class BasicFunctions
     {
+        /// <summary>
+        /// Used to add a Player to a Team, needs a Player Object
+        /// </summary>
+        /// <param name="player"></param>
+        public static void AddPlayer(Player player, Team team)
+        {
+            if (!team.PlayerInTeam.Contains(player))
+            {
+                team.PlayerInTeam.Add(player);
+            }
+        }
 
         public static Team CreateTeam(int i, InputHandler inputHandler)
         {
@@ -37,6 +48,19 @@ namespace Controller
                 teams.Add(CreateTeam(i, inputHandler));
             }
             return teams;
+        }
+
+        /// <summary>
+        /// Enter goals made and goals received to update the TeamScore of the winner.
+        /// </summary>
+        /// <param name="goalsMade"></param>
+        /// <param name="goalsReceived"></param>
+        public static void AddOneWinToTeam(int goalsMade, int goalsReceived, Team team)
+        {
+            if (goalsMade > goalsReceived)
+            {
+                team.NumberGamesWon++;
+            }
         }
 
     }

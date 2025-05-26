@@ -22,7 +22,10 @@ namespace Controller
             return (Goals >= 0 & Goals <= 10);
         }
 
-
+        public static bool IsPowerOfTwo(int x)
+        {
+            return (x > 0) && ((x & (x - 1)) == 0);
+        }
 
         //TODO
         public static bool IsValidNumberOfTotalTeams(int NumberTeamsTotal)

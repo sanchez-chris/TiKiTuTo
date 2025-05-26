@@ -1,6 +1,6 @@
-﻿using TiKiTuTo.View;
+﻿using View;
 
-namespace TiKiTuTo.Controller
+namespace Controller
 {
 
     public class Program
