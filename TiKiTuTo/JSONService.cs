@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using GameEngine;
 using Model;
 
-namespace TiKiTuTo
+namespace Controller
 {
     internal class JSONService
     {
