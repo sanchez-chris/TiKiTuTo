@@ -10,7 +10,7 @@ namespace Controller
     {
 
         IView _View { get; set; }
-        readonly int maxMenuOption = 7;
+        readonly int maxMenuOption = 5;
 
         public InputHandler(IView view) 
         {
@@ -23,14 +23,14 @@ namespace Controller
         /// <returns>A number guaranteed to trigger a valid option in the main menu.</returns>
         public int GetValidMenuInput()
         {
-            int choice = GetNumber($"Please choose what to do (pick a number).");
+            int MenuInput = GetNumber($"Please choose what to do (pick a number between {1} and {maxMenuOption}).");
 
-            while (!InputValidator.IsValidMenuInput(choice, maxMenuOption))
-            { 
-                choice = GetNumber($"This was not a valid number!");
+            while (!InputValidator.IsValidMenuInput(MenuInput, maxMenuOption))
+            {
+                MenuInput = GetNumber($"This was not a valid number!");
             }
 
-            return choice;
+            return MenuInput;
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace Controller
 
         public static bool IsValidNumberOfTotalTeams(int numberTeamsTotal)
         {
-           return numberTeamsTotal >= 4 && numberTeamsTotal %2==0;
+           return numberTeamsTotal >= 4 && numberTeamsTotal <= 256;
         }
 
 
@@ -33,8 +33,7 @@ namespace Controller
 
         public static bool IsValidNumberOfPreliminaryGamesPerTeam(int gamesPerTeam, int numberTeamsTotal)
         {
-            if (gamesPerTeam <= 0 || numberTeamsTotal <= 0) return false;
-            else return (numberTeamsTotal * gamesPerTeam) % 2 == 0;
+            return gamesPerTeam < numberTeamsTotal && numberTeamsTotal * gamesPerTeam / 2.0 % 1 == 0;
         }
 
 
