@@ -9,7 +9,7 @@ namespace Controller
 
         public static bool IsValidGoalInput(int goals)
         {
-            return (goals >= 0 & goals <= 10);
+            return (goals >= 0 && goals <= 10);
         }
 
 
@@ -40,7 +40,7 @@ namespace Controller
 
         public static bool IsValidMenuInput(int userInput, int maxMenuOption)
         {
-            return userInput > 0 & userInput < maxMenuOption;
+            return userInput > 0 && userInput < maxMenuOption;
         }
     }
 }
