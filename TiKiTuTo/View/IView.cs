@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 
-namespace TiKiTuTo.View
+namespace View
 {
-    internal interface IView
+    public interface IView
     {
         public void ShowMenu();
 
@@ -15,6 +16,10 @@ namespace TiKiTuTo.View
         public void ShowStandings();
 
         public void ShowNextMatches(List<Match> matches);
+
+        public void ShowMessage(string message);
+
+        public string ReadInput();
         
     }
 }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 
-namespace TiKiTuTo.View 
+namespace View 
 {
     public class ConsoleView : IView
     {
@@ -48,5 +49,12 @@ namespace TiKiTuTo.View
         {
             Console.WriteLine("");
         }
+
+        public string ReadInput()
+        {
+            return Console.ReadLine();
+        }
+
+
     }
 }
