@@ -10,6 +10,7 @@ namespace Controller
     {
 
         IView _View { get; set; }
+        readonly int maxMenuOption = 7;
 
         public InputHandler(IView view) 
         {
@@ -24,7 +25,7 @@ namespace Controller
         {
             int choice = GetNumber($"Please choose what to do (pick a number).");
 
-            while (!InputValidator.IsValidMenuInput(choice))
+            while (!InputValidator.IsValidMenuInput(choice, maxMenuOption))
             { 
                 choice = GetNumber($"This was not a valid number!");
             }
@@ -42,8 +43,7 @@ namespace Controller
 
             while (!InputValidator.IsValidNumberOfTotalTeams(NumberOfTeams))
             {
-                _View.ShowMessage("Try again (info what is wrong and how to do it right)");
-                NumberOfTeams = GetNumber("Please give me the number now!!!");
+                NumberOfTeams = GetNumber("This is not a valid number of teams (minimum 4, maximum 256).");
             }
 
             return NumberOfTeams;
@@ -75,9 +75,9 @@ namespace Controller
         public int GetNumber(string prompt)
         {
             int result;
-            string? userInput = _View.ReadInput();
 
             _View.ShowMessage(prompt);
+            string? userInput = _View.ReadInput();
 
             while (!int.TryParse(userInput, out result))
             {
@@ -97,11 +97,10 @@ namespace Controller
         public string? GetPlayerName(string prompt, bool emptyAllowed)
         {
             _View.ShowMessage(prompt); 
-            
             string? userInput = _View.ReadInput();
 
             
-            while (userInput == null & !emptyAllowed)
+            while (string.IsNullOrEmpty(userInput) && !emptyAllowed)
             {
                 _View.ShowMessage("Your input can not be empty.");
                 userInput = _View.ReadInput();
