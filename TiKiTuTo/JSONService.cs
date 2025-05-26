@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GameEngine;
-using TiKiTuTo.Model;
+using Model;
 
-namespace TiKiTuTo
+namespace Controller
 {
     internal class JSONService
     {
