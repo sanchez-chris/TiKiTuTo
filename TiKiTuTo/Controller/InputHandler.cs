@@ -1,7 +1,7 @@
-﻿using TiKiTuTo.View;
-using TiKiTuTo.Model;
+﻿using View;
+using Model;
 
-namespace TiKiTuTo.Controller
+namespace Controller
 {
     /// <summary>
     /// This class implements all methods which retrieve user input, for integers as well as strings.
@@ -109,6 +109,7 @@ namespace TiKiTuTo.Controller
             _View.ShowMessage($"Welcome {userInput}");
             return userInput;
         }
+
         public string? GetTeamName(string prompt, bool emptyAllowed)
         {
             _View.ShowMessage(prompt);

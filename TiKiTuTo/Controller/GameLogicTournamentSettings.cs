@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TiKiTuTo.Model;
-using TiKiTuTo.View;
-namespace TiKiTuTo.Controller
+using Model;
+using View;
+namespace Controller
 {
     /// <summary>
     /// Handles business logic regarding TournamentSettings objects. 

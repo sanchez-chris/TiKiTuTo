@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.Design;
-using TiKiTuTo.View;
-using TiKiTuTo.Model;
+using View;
+using Model;
 
-namespace TiKiTuTo.Controller
+namespace Controller
 {
     public class BasicFunctions
     {
