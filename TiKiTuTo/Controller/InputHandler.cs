@@ -23,7 +23,7 @@ namespace Controller
         /// <returns>A number guaranteed to trigger a valid option in the main menu.</returns>
         public int GetValidMenuInput()
         {
-            int MenuInput = GetNumber($"Please choose what to do (pick a number between {1} and {maxMenuOption}).");
+            int MenuInput = GetNumber($"Please choose what to do (pick a number between 1 and {maxMenuOption}).");
 
             while (!InputValidator.IsValidMenuInput(MenuInput, maxMenuOption))
             {
