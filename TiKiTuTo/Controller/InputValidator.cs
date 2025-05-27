@@ -39,7 +39,7 @@ namespace Controller
 
         public static bool IsValidMenuInput(int userInput, int maxMenuOption)
         {
-            return userInput > 0 && userInput < maxMenuOption;
+            return userInput > 0 && userInput <= maxMenuOption;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Controller
 
             //ask for the necessary inputs
             NumberOfTeamsTotal = inputHandler.GetValidNumberOfTotalTeams();
-            NumberOfPreliminaryGamesPerTeam = inputHandler.GetValidPreliminaryGames(NumberOfTeamsTotal);
+            NumberOfPreliminaryGamesPerTeam = inputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
             NumberOfTeamsInKORound = inputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
             Teams = BasicFunctions.CreateListOfTeams(NumberOfTeamsTotal, inputHandler);
 
