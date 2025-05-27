@@ -20,6 +20,8 @@ namespace View
         public void ShowMessage(string message);
 
         public string ReadInput();
+
+        public void WriteEmptyLine();
         
     }
 }

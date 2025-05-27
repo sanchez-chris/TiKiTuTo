@@ -42,7 +42,7 @@ namespace Controller
                     playerName = $"Player {p}";
                 }
                 Player player = new Player(playerName);
-                BasicFunctions.AddPlayer(player, team);
+                AddPlayer(player, team);
 
             }
             return team;
@@ -70,6 +70,7 @@ namespace Controller
                 {
                     inputHandler.View.ShowMessage(player.Name);
                 }
+                inputHandler.View.WriteEmptyLine();
             }
         }
 
