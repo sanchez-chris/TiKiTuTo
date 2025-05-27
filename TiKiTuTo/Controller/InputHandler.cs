@@ -9,7 +9,7 @@ namespace Controller
     public class InputHandler
     {
 
-        IView View { get; set; }
+        public IView View { get; set; }
         readonly int maxMenuOption = 5;
 
         public InputHandler(IView view) 
@@ -119,13 +119,6 @@ namespace Controller
         {
             View.ShowMessage(prompt); 
             string? userInput = View.ReadInput();
-
-
-            while (string.IsNullOrEmpty(userInput) && !emptyAllowed)
-            {
-                View.ShowMessage("Your input can not be empty.");
-                userInput = View.ReadInput();
-            }
             View.ShowMessage($"Welcome {userInput}");
             return userInput;
         }
@@ -134,13 +127,6 @@ namespace Controller
         {
             View.ShowMessage(prompt);
             string? userInput = View.ReadInput();
-
-
-            while (string.IsNullOrEmpty(userInput) && !emptyAllowed)
-            {
-                View.ShowMessage("Your input can not be empty.");
-                userInput = View.ReadInput();
-            }
             View.ShowMessage($"Creating Team {userInput}");
             return userInput;
         }
