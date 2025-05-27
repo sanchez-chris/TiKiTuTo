@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Design;
 using View;
 using Model;
+using System.Runtime.CompilerServices;
 
 namespace Controller
 {
@@ -21,37 +22,46 @@ namespace Controller
         /// <summary>
         /// Used to add default players should none be given by the user.
         /// </summary>
-        public static void InitializeDefaultPlayers(Team team)
+        public static void InitializeDefaultPlayers(Team team, int maxTeamMembers)
         {
-            // Add default players to the team
-            for (int i = 1; i <= 2; i++) // Example: 2 default players per team
+            if (team.PlayerInTeam.Count == 0) // Only add default players if the team is empty
             {
-                Player defaultPlayer = new Player($"DefaultPlayer{i} ({team.TeamName})");
-                AddPlayer(defaultPlayer, team);
+                for (int i = 1; i <= maxTeamMembers; i++)
+                {
+                    Player defaultPlayer = new Player($"DefaultPlayer{i} ({team.TeamName})");
+                    AddPlayer(defaultPlayer, team);
+                }
             }
         }
-
 
         public static Team CreateTeam(int i, InputHandler inputHandler)
         {
             bool emptyNameAllowed = true;
-            string? name = inputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed);
+            string? teamName = inputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed);
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(teamName))
             {
-                name = $"Team {i}";
+                teamName = $"Team {i}";
             }
-            //How do we add the players? -> BasicFunctions.AddPlayer()
-            //define number of players before? -> no!
-            //do all teams need the same number of players? -> no!
-            //Stop once the user gives a certain input? -> yes!
 
             List<Player> playerList = new List<Player>();
+            Team team = new Team(teamName, playerList);
+            int maxTeamMembers = inputHandler.GetNumber("How many Teammembers would you like to have?");
+            for (int p = 1; p <= maxTeamMembers; p++)
+            {
+                string? playerName = inputHandler.GetPlayerName($"Please enter the name of the next team member. Default name when empty: Player {p}.", emptyNameAllowed);
 
-            Team team = new Team(name, playerList);
+                if (string.IsNullOrEmpty(playerName))
+                {
+                    playerName = $"Player {p}";
+                }
+                Player player = new Player(playerName);
+                BasicFunctions.AddPlayer(player, team);
 
+            }
             return team;
         }
+
 
         public static List<Team> CreateListOfTeams(int NumberOfTeamsTotal, InputHandler inputHandler)
         {
@@ -61,8 +71,22 @@ namespace Controller
             {
                 teams.Add(CreateTeam(i, inputHandler));
             }
+            ShowTeamsAndPlayer(teams, inputHandler);
             return teams;
         }
+
+        public static void ShowTeamsAndPlayer(List<Team> teams, InputHandler inputHandler)
+        {
+            foreach (Team team in teams)
+            {
+                inputHandler.View.ShowMessage(team.TeamName);
+                foreach (Player player in team.PlayerInTeam)
+                {
+                    inputHandler.View.ShowMessage(player.Name);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Enter goals made and goals received to update the TeamScore of the winner.
