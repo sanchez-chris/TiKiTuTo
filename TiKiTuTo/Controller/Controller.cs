@@ -20,9 +20,17 @@ namespace Controller
 
 
 
-        public void StartTournament()
+        public Tournament InitTournament()
         {
             Tournament tournament = GameLogicTournament.CreateTournament(InputHandler);
+            //GameLogicRound.InitPreliminaryRound(tournament);
+            //JSONService.SaveGame(tournament);
+            return tournament;
         }
+
+        //public Tournament StartTournament()
+        //{
+            
+        //}
     }
 }
