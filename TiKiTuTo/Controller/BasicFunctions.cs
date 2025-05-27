@@ -19,20 +19,6 @@ namespace Controller
             }
         }
 
-        /// <summary>
-        /// Used to add default players should none be given by the user.
-        /// </summary>
-        public static void InitializeDefaultPlayers(Team team, int maxTeamMembers)
-        {
-            if (team.PlayerInTeam.Count == 0) // Only add default players if the team is empty
-            {
-                for (int i = 1; i <= maxTeamMembers; i++)
-                {
-                    Player defaultPlayer = new Player($"DefaultPlayer{i} ({team.TeamName})");
-                    AddPlayer(defaultPlayer, team);
-                }
-            }
-        }
 
         public static Team CreateTeam(int i, InputHandler inputHandler)
         {
