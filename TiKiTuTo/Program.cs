@@ -1,4 +1,5 @@
-﻿using View;
+﻿using Model;
+using View;
 
 namespace Controller
 {
@@ -22,7 +23,7 @@ namespace Controller
                 switch (UserInput)
                 {
                     case 1:
-                        controller.StartTournament();
+                        Tournament tournament = controller.InitTournament();
                         break;
                     case 2:
                         // TODO: Implement functionality for showing old results

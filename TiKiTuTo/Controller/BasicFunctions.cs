@@ -41,10 +41,10 @@ namespace Controller
             {
                 name = $"Team {i}";
             }
-            //How do we add the players?
-            //define number of players before?
-            //do all teams need the same number of players?
-            //Stop once the user gives a certain input?
+            //How do we add the players? -> BasicFunctions.AddPlayer()
+            //define number of players before? -> no!
+            //do all teams need the same number of players? -> no!
+            //Stop once the user gives a certain input? -> yes!
 
             List<Player> playerList = new List<Player>();
 
