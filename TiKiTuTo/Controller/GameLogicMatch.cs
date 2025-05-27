@@ -9,39 +9,28 @@ namespace Controller
 {
     public static class GameLogicMatch
     {
-        public static Match CreateMatch(Team team1, Team team2, int timer)
+        public static void RunMatch(Match match)
         {
-            return new Match(team1, team2);
+//            GameLogicTournament.Timer.start();
         }
-                private static DateTime _endTime;
-        public static void StartMatchTimer(InputHandler inputHandler, int length = 10)
+        public static void UpdateTeamScores(Team team1, int goals1, Team team2, int goals2)
         {
-            // Set the end time for the specified length in minutes
-            length = inputHandler.GetNumber("How long should a match be? (In minutes)");
-            _endTime = DateTime.Now.AddMinutes(length);
-
-            // Create a timer with a 1 second interval
-            Timer timer = new Timer(1000);
-            timer.Elapsed += OnTimedEvent;
-
-            // Start the timer
-            timer.Start();
-            inputHandler.View.ShowMessage($"Timer started for {length} minutes.");
+            if ( goals1 > goals2)
+            {
+                team1.NumberGamesWon++;
+            }
+            if (goals2 > goals1)
+            {
+                team2.NumberGamesWon++;
+            }
+            team1.Goaldifference = goals1 - goals2;
+            team1.NumberGoals += goals1;
+            team2.Goaldifference = goals2 - goals1;
+            team2.NumberGoals += goals2;
         }
-
-        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        public static void FinishMatch(Match match)
         {
-            TimeSpan timeRemaining = _endTime - DateTime.Now;
-
-            if (timeRemaining.TotalSeconds <= 0)
-            {
-                Console.WriteLine("Time's up!");
-                Timer timer = (Timer)source;
-                timer.Stop();
-            }
-            else
-            {
-                Console.WriteLine($"Time remaining: {timeRemaining:mm\\:ss}");
-            }
+            match.Finished = true;
+        }
     }
 }

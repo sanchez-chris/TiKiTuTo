@@ -13,7 +13,7 @@ namespace Model
         public Team Team2 { get; set; }
         public int GoalsTeam1 { get; set; } = 0;
         public int GoalsTeam2 { get; set; } = 0;
-        public bool Finished { get; private set; }
+        public bool Finished { get; set; }
 
         public Match(Team team1, Team team2)
         {
