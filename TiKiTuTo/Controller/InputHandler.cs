@@ -54,7 +54,7 @@ namespace Controller
         /// </summary>
         /// <param name="NumberOfTeamsTotal"> The total number of teams in the tournament defines which values are valid</param>
         /// <returns>The number of games each team has to play in the preliminaries, guaranteed to be a valid value.</returns>
-        public int GetValidPreliminaryGames(int NumberOfTeamsTotal)
+        public int GetValidNumberOfPreliminaryGames(int NumberOfTeamsTotal)
         {
             int NumberOfPreliminaryGames = GetNumber("How many games should each team play in the preliminaries?");
 
