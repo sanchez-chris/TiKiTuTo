@@ -22,6 +22,9 @@ namespace View
         public string ReadInput();
 
         public void WriteEmptyLine();
+
+        public void ClearCurrentConsoleLine();
         
+
     }
 }

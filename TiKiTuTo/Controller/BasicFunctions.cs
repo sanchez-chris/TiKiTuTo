@@ -1,6 +1,6 @@
 ﻿using Model;
 using Timer = System.Timers.Timer;
-using System.Timers;
+using System.Media;
 
 
 namespace Controller
@@ -102,35 +102,41 @@ namespace Controller
 
 
         private static DateTime _endTime;
-        public static void StartMatchTimer(InputHandler inputHandler, int length =10)
+        public static void StartMatchTimer(InputHandler inputHandler, int? duration = 10)
         {
             // Set the end time for the specified length in minutes
-            length = inputHandler.GetNumber("How long should a match be? (In minutes)");
-            _endTime = DateTime.Now.AddMinutes(length);
+            while (duration == 0) 
+            {
+                duration = inputHandler.GetNumber("Please enter the match duration in full minutes");
+            }
+            _endTime = DateTime.Now.AddMinutes((double)duration);
 
             // Create a timer with a 1 second interval
             Timer timer = new Timer(1000);
-            timer.Elapsed += OnTimedEvent;
+
+            //lambda method to allow for usage of inputHandler.View.
+            timer.Elapsed += (sender, e) =>
+            {
+                TimeSpan timeRemaining = _endTime - DateTime.Now;
+
+                if (timeRemaining.TotalSeconds <= 0)
+                {
+                    inputHandler.View.ShowMessage("Time's up!");
+                    SystemSounds.Asterisk.Play();
+                    timer.Stop();
+                }
+                else
+                {
+                    inputHandler.View.ClearCurrentConsoleLine();
+                    inputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
+                }
+            }; 
 
             // Start the timer
+            inputHandler.View.ShowMessage($"Timer started for {duration} minutes.");
+            inputHandler.View.WriteEmptyLine();
             timer.Start();
-            inputHandler.View.ShowMessage($"Timer started for {length} minutes.");
         }
 
-        private static void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            TimeSpan timeRemaining = _endTime - DateTime.Now;
-
-            if (timeRemaining.TotalSeconds <= 0)
-            {
-                Console.WriteLine("Time's up!");
-                Timer timer = (Timer)source;
-                timer.Stop();
-            }
-            else
-            {
-                Console.WriteLine($"Time remaining: {timeRemaining:mm\\:ss}");
-            }
-        }
     }
 }
