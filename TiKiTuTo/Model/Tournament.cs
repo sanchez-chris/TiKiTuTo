@@ -12,6 +12,7 @@ namespace Model
         public TournamentSettings Settings { get; set; }
         public List<Round> Rounds { get; set; } = new List<Round>();
         public List<Team> PreliminaryStandings { get; set; } = new List<Team>();
+        public List<Match> GamePlanPremilimaryRound { get; set; } = new List<Match>();
 
 
 

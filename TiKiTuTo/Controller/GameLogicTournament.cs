@@ -21,29 +21,13 @@ namespace Controller
         /// <returns>returns a newly initialized Tournament instance.</returns>
         public static Tournament CreateTournament(InputHandler inputHandler)
         {
-            TournamentSettings TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(inputHandler);
+            TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(inputHandler);
 
-            Tournament tournament = CreateTournament(TournamentSettings, inputHandler);
-
-            return tournament;
-        }
-
-
-
-
-        /// <summary>
-        /// Initializes Tournament based on a TournamentSettings object.
-        /// </summary>
-        /// <param name="tournamentSettings">a TournamentSettings instance holding all necessary parameters.</param>
-        /// <returns>returns a newly initialized Tournament instance.</returns>
-        public static Tournament CreateTournament(TournamentSettings tournamentSettings, InputHandler inputHandler)
-        {
             bool emptyNameAllowed = false;
             string name = inputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
 
             Tournament tournament = new Tournament(name, tournamentSettings);
             return tournament;
         }
-
     }
 }

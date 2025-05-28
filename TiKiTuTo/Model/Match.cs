@@ -9,16 +9,16 @@ namespace Model
 {
     public class Match
     {
-        public Team Team1 { get; set; }
-        public Team Team2 { get; set; }
-        public int GoalsTeam1 { get; set; } = 0;
-        public int GoalsTeam2 { get; set; } = 0;
+        public Team TeamA { get; set; }
+        public Team TeamB { get; set; }
+        public int GoalsTeamA { get; set; } = 0;
+        public int GoalsTeamB { get; set; } = 0;
         public bool Finished { get; private set; }
 
-        public Match(Team team1, Team team2)
+        public Match(Team teamA, Team teamB)
         {
-            Team1 = team1;
-            Team2 = team2;
+            TeamA = teamA;
+            TeamB = teamB;
             Finished = false;
         }
 
