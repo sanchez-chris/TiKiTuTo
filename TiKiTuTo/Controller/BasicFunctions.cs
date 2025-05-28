@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.Design;
-using View;
-using Model;
-using System.Runtime.CompilerServices;
+﻿using Model;
+using Timer = System.Timers.Timer;
+using System.Timers;
+
 
 namespace Controller
 {
@@ -99,7 +99,38 @@ namespace Controller
                            Math.Log(2));
             return (int)Math.Pow(2, p);
         }
-        
 
+
+        private static DateTime _endTime;
+        public static void StartMatchTimer(InputHandler inputHandler, int length =10)
+        {
+            // Set the end time for the specified length in minutes
+            length = inputHandler.GetNumber("How long should a match be? (In minutes)");
+            _endTime = DateTime.Now.AddMinutes(length);
+
+            // Create a timer with a 1 second interval
+            Timer timer = new Timer(1000);
+            timer.Elapsed += OnTimedEvent;
+
+            // Start the timer
+            timer.Start();
+            inputHandler.View.ShowMessage($"Timer started for {length} minutes.");
+        }
+
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            TimeSpan timeRemaining = _endTime - DateTime.Now;
+
+            if (timeRemaining.TotalSeconds <= 0)
+            {
+                Console.WriteLine("Time's up!");
+                Timer timer = (Timer)source;
+                timer.Stop();
+            }
+            else
+            {
+                Console.WriteLine($"Time remaining: {timeRemaining:mm\\:ss}");
+            }
+        }
     }
 }
