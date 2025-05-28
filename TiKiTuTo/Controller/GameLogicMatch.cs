@@ -9,9 +9,9 @@ namespace Controller
 {
     public static class GameLogicMatch
     {
-        public static void RunMatch(Match match)
+        public static void RunMatch(Match match, InputHandler inputHandler)
         {
-//            GameLogicTournament.Timer.start();
+            BasicFunctions.StartMatchTimer(inputHandler);
         }
         public static void UpdateTeamScores(Team team1, int goals1, Team team2, int goals2)
         {

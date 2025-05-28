@@ -1,4 +1,5 @@
 ﻿using Model;
+using System.Media;
 using View;
 
 namespace Controller
@@ -17,7 +18,6 @@ namespace Controller
             while (true)
             {
                 view.ShowMenu();
-
                 int UserInput = inputHandler.GetValidMenuInput();
                 
                 switch (UserInput)
@@ -27,7 +27,11 @@ namespace Controller
                         break;
                     case 2:
                         // TODO: Implement functionality for showing old results
-                        Console.WriteLine("Option 2 selected. Functionality not implemented yet.");
+                        Team team1 = new Team("Team1");
+                        Team team2 = new Team("Team2");
+                        Match match = new Match(team1, team2);
+                        GameLogicMatch.RunMatch(match, inputHandler);
+                        Console.WriteLine("Option 2 selected. Testing timer...");
                         break;
                     case 3:
                         // TODO: Implement functionality for starting a saved game

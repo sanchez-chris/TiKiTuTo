@@ -9,9 +9,19 @@ namespace View
 {
     public class ConsoleView : IView
     {
+
+
+
+
+        public ConsoleView() 
+        {
+            Console.CursorVisible = false;
+        }
+
+
         public void ShowMenu()
         {
-                Console.Clear();
+                //Console.Clear();
                 Console.WriteLine(" -----------------------");
                 Console.WriteLine(" |     TiKiTuTo        | ");
                 Console.WriteLine(" -----------------------");
@@ -41,7 +51,6 @@ namespace View
 
         public void ShowMessage(string message)
         {
-            WriteEmptyLine();
             Console.WriteLine(message);
         }
 
@@ -55,6 +64,16 @@ namespace View
             return Console.ReadLine();
         }
 
-
+        /// <summary>
+        /// This method deletes the last line written. Can be used to have a regularly updated display
+        /// without cluttering the Console (e.g. for running timer)
+        /// </summary>
+        public void ClearCurrentConsoleLine()
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, currentLineCursor - 1);
+            Console.WriteLine(new string(' ', Console.BufferWidth));
+            Console.SetCursorPosition(0, currentLineCursor - 1);
+        }
     }
 }
