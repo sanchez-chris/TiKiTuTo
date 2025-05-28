@@ -20,7 +20,7 @@ namespace Controller
 
         public Tournament InitTournament()
         {
-            Tournament tournament = GameLogicTournament.CreateTournament(InputHandler);
+            Tournament tournament = GameLogicTournament.setupTournament(InputHandler);
             GameLogicRound.InitPreliminaryRound(tournament);
             //JSONService.SaveGame(tournament);
             return tournament;

@@ -19,7 +19,7 @@ namespace Controller
         /// Creates Tournament based on user input. First creates a TournamentSettings object, then initializes a Tournament based on these settings.
         /// </summary>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public static Tournament CreateTournament(InputHandler inputHandler)
+        public static Tournament setupTournament(InputHandler inputHandler)
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(inputHandler);
 

@@ -36,7 +36,7 @@ namespace Controller
 
             // Initialize the preliminary round matches
             var teamMatchCount = new Dictionary<Team, int>();
-            var matchesPlayed = new HashSet<(Team, Team)>();
+            var matchesCreated = new HashSet<(Team, Team)>();
 
             // Initialize match count for each team
             foreach (var team in teams)
@@ -58,7 +58,7 @@ namespace Controller
                 Team teamB = availableTeams[random.Next(availableTeams.Count)];
 
                 // Ensure the teams are not the same and have not already played against each other
-                if (teamA != teamB && !matchesPlayed.Contains((teamA, teamB)) && !matchesPlayed.Contains((teamB, teamA)))
+                if (teamA != teamB && !matchesCreated.Contains((teamA, teamB)) && !matchesCreated.Contains((teamB, teamA)))
                 {
                     // Create the match
                     var match = new Match(teamA, teamB);
@@ -67,11 +67,11 @@ namespace Controller
                     // Update counts
                     teamMatchCount[teamA]++;
                     teamMatchCount[teamB]++;
-                    matchesPlayed.Add((teamA, teamB));
+                    matchesCreated.Add((teamA, teamB));
                 }
             }
             Console.WriteLine($"Preliminary round initialized with {tournament.GamePlanPremilimaryRound.Count} matches.");
-            tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.TeamA.TeamName} vs {match.TeamB.TeamName}"));
+            tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
             Console.WriteLine("Good luck to all teams!");
             Thread.Sleep(10000); // Simulate some delay for better readability in console output
         }
