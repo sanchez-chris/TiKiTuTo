@@ -1,10 +1,10 @@
-﻿using Model;
+﻿using TiKiTuTo.Model;
 using Timer = System.Timers.Timer;
 using System.Media;
 using TiKiTuTo.Controller;
 
 
-namespace Controller
+namespace TiKiTuTo.Controller
 {
     public class ModelApi
     {

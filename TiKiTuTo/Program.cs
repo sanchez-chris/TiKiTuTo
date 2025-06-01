@@ -1,8 +1,8 @@
-﻿using Model;
+﻿using TiKiTuTo.Model;
 using TiKiTuTo.Controller;
 using View;
 
-namespace Controller
+namespace TiKiTuTo.Controller
 {
 
     public class Program
@@ -24,7 +24,7 @@ namespace Controller
                 switch (UserInput)
                 {
                     case 1:
-                        Tournament tournament = controller.InitTournament();
+                        Tournament tournament = controller.InitTournament(inputHandler);
                         break;
                     case 2:
                         // TODO: Implement functionality for showing old results

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Controller;
-using Model;
+using TiKiTuTo.Model;
 using TiKiTuTo.Controller;
 using View;
 namespace TiKiTuTo.BusinessLogic.GameLogic

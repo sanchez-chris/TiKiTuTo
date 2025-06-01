@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
-using Model;
+using TiKiTuTo.Model;
 using View;
 
 namespace TiKiTuTo.BusinessLogic.GameLogic

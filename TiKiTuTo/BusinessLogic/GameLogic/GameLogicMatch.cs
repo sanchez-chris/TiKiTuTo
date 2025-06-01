@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Controller;
-using Model;
+using TiKiTuTo.Controller;
+using TiKiTuTo.Model;
 
 namespace TiKiTuTo.BusinessLogic.GameLogic
 {
@@ -31,7 +31,7 @@ namespace TiKiTuTo.BusinessLogic.GameLogic
         }
         public static void FinishMatch(Match match)
         {
-            match.Finished = true;
+            match.finished = true;
         }
     }
 }

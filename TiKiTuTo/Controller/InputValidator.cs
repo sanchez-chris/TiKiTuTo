@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Design;
 using View;
-using Model;
+using TiKiTuTo.Model;
 
 namespace TiKiTuTo.Controller
 {

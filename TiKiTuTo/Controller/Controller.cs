@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Design;
 using View;
-using Model;
+using TiKiTuTo.Model;
 using TiKiTuTo.BusinessLogic.GameLogic;
 
 namespace TiKiTuTo.Controller
@@ -19,9 +19,9 @@ namespace TiKiTuTo.Controller
 
 
 
-        public Tournament InitTournament()
+        public Tournament InitTournament(InputHandler inputHandler)
         {
-            Tournament tournament = GameLogicTournament.setupTournament(InputHandler);
+            Tournament tournament = GameLogicTournament.SetupTournament(inputHandler);
             GameLogicRound.InitPreliminaryRound(tournament);
             //JSONService.SaveGame(tournament);
             return tournament;
