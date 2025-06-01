@@ -6,8 +6,6 @@ namespace Controller
 {
     public class Controller
     {
-
-
         public IView View { get; }
         public InputHandler InputHandler { get; }
 
@@ -22,8 +20,8 @@ namespace Controller
 
         public Tournament InitTournament()
         {
-            Tournament tournament = GameLogicTournament.CreateTournament(InputHandler);
-            //GameLogicRound.InitPreliminaryRound(tournament);
+            Tournament tournament = GameLogicTournament.setupTournament(InputHandler);
+            GameLogicRound.InitPreliminaryRound(tournament);
             //JSONService.SaveGame(tournament);
             return tournament;
         }
