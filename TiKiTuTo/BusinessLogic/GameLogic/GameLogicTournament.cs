@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using Model;
-using Controller;
 using View;
+using TiKiTuTo.Controller;
 
-namespace Controller
+namespace TiKiTuTo.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding Tournament objects. 

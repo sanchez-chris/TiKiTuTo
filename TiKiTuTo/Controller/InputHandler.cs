@@ -1,7 +1,8 @@
 ﻿using View;
 using Model;
+using Controller;
 
-namespace Controller
+namespace TiKiTuTo.Controller
 {
     /// <summary>
     /// This class implements all methods which retrieve user input, for integers as well as strings.
@@ -12,7 +13,7 @@ namespace Controller
         public IView View { get; set; }
         readonly int maxMenuOption = 5;
 
-        public InputHandler(IView view) 
+        public InputHandler(IView view)
         {
             View = view;
         }
@@ -60,7 +61,7 @@ namespace Controller
 
             while (!InputValidator.IsValidNumberOfPreliminaryGamesPerTeam(NumberOfPreliminaryGames, NumberOfTeamsTotal))
             {
-                NumberOfPreliminaryGames = GetNumber($"This is not a valid number of games per team (minimum 1, maximum {NumberOfTeamsTotal-1}).");
+                NumberOfPreliminaryGames = GetNumber($"This is not a valid number of games per team (minimum 1, maximum {NumberOfTeamsTotal - 1}).");
             }
             return NumberOfPreliminaryGames;
         }
@@ -72,7 +73,7 @@ namespace Controller
         /// <returns>The number of teams progressing into KO, guaranteed to be a valid value.</returns>
         public int GetValidNumberOfTeamsInKORound(int NumberOfTeamsTotal)
         {
-            int maxAllowed = BasicFunctions.HighestPowerOf2(NumberOfTeamsTotal);
+            int maxAllowed = ModelApi.HighestPowerOf2(NumberOfTeamsTotal);
             int NumberOfTeamsInKO = GetNumber($"How many teams should continue into the KO phase (minimum 2, maximum {maxAllowed})?");
             while (!InputValidator.IsValidNumberOfTeamsInKORound(NumberOfTeamsInKO, NumberOfTeamsTotal))
             {
@@ -84,7 +85,7 @@ namespace Controller
 
 
 
-        
+
         /// <summary>
         /// Asks the user to enter a number, using the prompt argument. Repeats until a valid number is added.
         /// </summary>
@@ -105,10 +106,10 @@ namespace Controller
             return result;
         }
 
-        
-        
+
+
         //TODO: ADJUST XML COMMENT FOR GetXYName methods
-        
+
         /// <summary>
         /// Asks the user to enter any string, using the prompt argument. Repeats until valid string is entered.
         /// </summary>
@@ -117,7 +118,7 @@ namespace Controller
         /// <returns>a string entered by the user.</returns>
         public string? GetPlayerName(string prompt, bool emptyAllowed)
         {
-            View.ShowMessage(prompt); 
+            View.ShowMessage(prompt);
             string? userInput = View.ReadInput();
             View.ShowMessage($"Welcome {userInput}");
             return userInput;

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.Design;
 using View;
 using Model;
+using TiKiTuTo.BusinessLogic.GameLogic;
 
-namespace Controller
+namespace TiKiTuTo.Controller
 {
     public class Controller
     {
@@ -28,7 +29,7 @@ namespace Controller
 
         //public Tournament StartTournament()
         //{
-            
+
         //}
     }
 }

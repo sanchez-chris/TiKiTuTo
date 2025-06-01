@@ -1,11 +1,12 @@
 ﻿using Model;
 using Timer = System.Timers.Timer;
 using System.Media;
+using TiKiTuTo.Controller;
 
 
 namespace Controller
 {
-    public class BasicFunctions
+    public class ModelApi
     {
         /// <summary>
         /// Used to add a Player to a Team, needs a Player Object
@@ -127,7 +128,7 @@ namespace Controller
                 }
                 else
                 {
-                    inputHandler.View.ClearCurrentConsoleLine();
+                   // inputHandler.View.ClearCurrentConsoleLine();
                     inputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
                 }
             }; 

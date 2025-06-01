@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Controller;
 using Model;
+using TiKiTuTo.Controller;
 using View;
-namespace Controller
+namespace TiKiTuTo.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding TournamentSettings objects. 
@@ -29,7 +31,7 @@ namespace Controller
             NumberOfTeamsTotal = inputHandler.GetValidNumberOfTotalTeams();
             NumberOfPreliminaryGamesPerTeam = inputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
             NumberOfTeamsInKORound = inputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
-            Teams = BasicFunctions.CreateListOfTeams(NumberOfTeamsTotal, inputHandler);
+            Teams = ModelApi.CreateListOfTeams(NumberOfTeamsTotal, inputHandler);
 
             TournamentSettings settings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams);
 
