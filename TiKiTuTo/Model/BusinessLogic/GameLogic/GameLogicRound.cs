@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using TiKiTuTo.Model.DataObjects;
-using View;
+using TiKiTuTo.View;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {

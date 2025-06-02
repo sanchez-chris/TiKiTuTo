@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
-using View;
+using TiKiTuTo.View;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 

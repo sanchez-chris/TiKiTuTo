@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiKiTuTo.Model.DataObjects;
 
-namespace View
+namespace TiKiTuTo.View
 {
     public class ConsoleView : IView
     {
@@ -19,20 +19,51 @@ namespace View
         }
 
 
-        public void ShowMenu()
+        public void ShowMainMenu()
         {
-                //Console.Clear();
-                Console.WriteLine(" -----------------------");
-                Console.WriteLine(" |     TiKiTuTo        | ");
-                Console.WriteLine(" -----------------------");
-                Console.WriteLine("1. New Tournament");
-                Console.WriteLine("2. Show old results");
-                Console.WriteLine("3. Load settings");
-                Console.WriteLine("4. Continue game");
-                Console.WriteLine("5. Exit");
-                
-                WriteEmptyLine();
+            Console.Clear();
+            Console.WriteLine(" -----------------------");
+            Console.WriteLine(" |     TiKiTuTo        | ");
+            Console.WriteLine(" -----------------------");
+            Console.WriteLine(" -------Main Menu-------");
+            Console.WriteLine(" -----------------------");
+            Console.WriteLine("1. Start New Tournament");
+            Console.WriteLine("2. Resume Earlier Tournament");
+            Console.WriteLine("3. Show Results Of Earlier Tournament");
+            Console.WriteLine("4. Manage Tournament Configurations");
+            Console.WriteLine("5. Exit Application");
+
+            WriteEmptyLine();
         }
+
+        public void ShowStartTournamentMenu()
+        {
+            Console.Clear();
+            Console.WriteLine(" ----------------------");
+            Console.WriteLine(" |     TiKiTuTo        | ");
+            Console.WriteLine(" ----------------------");
+            Console.WriteLine(" ---Start Tournament---");
+            Console.WriteLine(" ----------------------");
+            Console.WriteLine("1. Start tournament from scratch");
+            Console.WriteLine("2. Start tournament based on existing tournament settings");
+            Console.WriteLine("3. Back to Main Menu");
+            WriteEmptyLine();
+        }
+
+
+
+        public void ShowInvalidInputMessage()
+        {
+            Console.WriteLine("Invalid input. Please enter a valid number.");
+        }
+
+        public void ShowExitMessage()
+        {
+            Console.WriteLine("Exiting application...");
+        }
+
+
+
 
         public void ShowGamePlan()
         {
