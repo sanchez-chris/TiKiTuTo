@@ -49,7 +49,7 @@ namespace TiKiTuTo.Model.BusinessLogic
             return team;
         }
 
-
+        // tournamentSettings
         public static List<Team> CreateListOfTeams(int NumberOfTeamsTotal, InputHandler inputHandler)
         {
             List<Team> teams = new List<Team>();

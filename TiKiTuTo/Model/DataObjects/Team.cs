@@ -27,5 +27,6 @@ namespace TiKiTuTo.Model.DataObjects
             TeamName = name;
             PlayerInTeam = new List<Player>();
         }
+        // addplayer ?
     }
 }
