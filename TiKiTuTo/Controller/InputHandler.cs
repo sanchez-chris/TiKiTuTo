@@ -1,6 +1,6 @@
 ﻿using View;
 using TiKiTuTo.Model;
-using TiKiTuTo.Controller;
+using TiKiTuTo.Model.BusinessLogic;
 
 namespace TiKiTuTo.Controller
 {

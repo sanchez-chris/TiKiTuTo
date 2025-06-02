@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TiKiTuTo.Controller;
 
-namespace TiKiTuTo.Model
+namespace TiKiTuTo.Model.DataObjects
 {
     public class Team
     {

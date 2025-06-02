@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Design;
 using View;
-using TiKiTuTo.Model;
-using TiKiTuTo.BusinessLogic.GameLogic;
+using TiKiTuTo.Model.BusinessLogic.GameLogic;
+using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Controller
 {

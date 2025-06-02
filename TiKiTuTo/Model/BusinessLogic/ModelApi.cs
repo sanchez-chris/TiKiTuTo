@@ -1,10 +1,10 @@
-﻿using TiKiTuTo.Model;
-using Timer = System.Timers.Timer;
+﻿using Timer = System.Timers.Timer;
 using System.Media;
 using TiKiTuTo.Controller;
+using TiKiTuTo.Model.DataObjects;
 
 
-namespace TiKiTuTo.Controller
+namespace TiKiTuTo.Model.BusinessLogic
 {
     public class ModelApi
     {
@@ -106,7 +106,7 @@ namespace TiKiTuTo.Controller
         public static void StartMatchTimer(InputHandler inputHandler, int? duration = 10)
         {
             // Set the end time for the specified length in minutes
-            while (duration == 0) 
+            while (duration == 0)
             {
                 duration = inputHandler.GetNumber("Please enter the match duration in full minutes");
             }
@@ -128,10 +128,10 @@ namespace TiKiTuTo.Controller
                 }
                 else
                 {
-                   // inputHandler.View.ClearCurrentConsoleLine();
+                    // inputHandler.View.ClearCurrentConsoleLine();
                     inputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
                 }
-            }; 
+            };
 
             // Start the timer
             inputHandler.View.ShowMessage($"Timer started for {duration} minutes.");

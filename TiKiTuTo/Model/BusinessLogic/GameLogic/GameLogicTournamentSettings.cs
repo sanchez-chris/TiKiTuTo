@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TiKiTuTo.Model;
-using TiKiTuTo.Controller;
 using TiKiTuTo.Controller;
 using View;
-namespace TiKiTuTo.BusinessLogic.GameLogic
+using TiKiTuTo.Model.BusinessLogic;
+using TiKiTuTo.Model.DataObjects;
+namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding TournamentSettings objects. 

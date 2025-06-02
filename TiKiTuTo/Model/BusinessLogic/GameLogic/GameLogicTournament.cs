@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
-using TiKiTuTo.Model;
 using View;
 using TiKiTuTo.Controller;
+using TiKiTuTo.Model.DataObjects;
 
-namespace TiKiTuTo.BusinessLogic.GameLogic
+namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding Tournament objects. 

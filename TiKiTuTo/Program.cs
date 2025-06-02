@@ -1,6 +1,6 @@
-﻿using TiKiTuTo.Model;
-using TiKiTuTo.Controller;
+﻿using TiKiTuTo.Controller;
 using View;
+using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Controller
 {

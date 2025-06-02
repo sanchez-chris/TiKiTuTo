@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
-using TiKiTuTo.Model;
+using TiKiTuTo.Model.DataObjects;
 using View;
 
-namespace TiKiTuTo.BusinessLogic.GameLogic
+namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding Rounds objects. 

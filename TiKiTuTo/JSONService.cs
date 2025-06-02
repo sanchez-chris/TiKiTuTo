@@ -6,8 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using GameEngine;
-using TiKiTuTo.Model;
+using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Controller
 {
