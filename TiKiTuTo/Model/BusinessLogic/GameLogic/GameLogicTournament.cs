@@ -22,12 +22,20 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public static Tournament SetupTournament(InputHandler inputHandler)
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(inputHandler);
+            Tournament tournament = CreateTournament(inputHandler, tournamentSettings);
 
-            bool emptyNameAllowed = false;
-            string name = inputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
-
-            Tournament tournament = new Tournament(name, tournamentSettings);
             return tournament;
         }
+
+        public static Tournament CreateTournament(InputHandler inputHandler, TournamentSettings tournamentSettings)
+        {
+             bool emptyNameAllowed = false;
+            string name = inputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
+            Tournament tournament = new Tournament(name, tournamentSettings);
+
+            return tournament;
+        }
+       
+
     }
 }
