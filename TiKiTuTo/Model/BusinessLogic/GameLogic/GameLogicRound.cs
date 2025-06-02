@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
-using Model;
-using Controller;
+using TiKiTuTo.Model.DataObjects;
 using View;
 
-namespace Controller
+namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding Rounds objects. 
@@ -28,7 +27,7 @@ namespace Controller
 
             // Verify if it's possible to generate the required number of matches
             int totalGamesNeeded = teams.Count * gamesPerTeam / 2;
-            int totalPossibleMatches = (teams.Count * (teams.Count - 1)) / 2;
+            int totalPossibleMatches = teams.Count * (teams.Count - 1) / 2;
             if (totalGamesNeeded > totalPossibleMatches)
             {
                 throw new InvalidOperationException("Not enough teams to generate the required number of matches.");
@@ -49,10 +48,10 @@ namespace Controller
             {
                 // Select two random teams
                 var availableTeams = teams.Where(t => teamMatchCount[t] < gamesPerTeam).ToList();
-             //   if (availableTeams.Count < 2)
-             //   {
-             //       throw new InvalidOperationException("Unable to generate more matches while satisfying constraints.");
-             //   }
+                //   if (availableTeams.Count < 2)
+                //   {
+                //       throw new InvalidOperationException("Unable to generate more matches while satisfying constraints.");
+                //   }
 
                 Team teamA = availableTeams[random.Next(availableTeams.Count)];
                 Team teamB = availableTeams[random.Next(availableTeams.Count)];

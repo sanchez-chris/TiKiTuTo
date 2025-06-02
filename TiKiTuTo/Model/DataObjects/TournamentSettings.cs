@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model
+namespace TiKiTuTo.Model.DataObjects
 {
     public class TournamentSettings
     {
@@ -14,7 +14,7 @@ namespace Model
         public List<Team> TeamsInTournament { get; set; }
         public int MatchDuration { get; set; }
 
-        public TournamentSettings(int totalteams, int preliminaryTeamNumber, int koteams,List<Team> teams)
+        public TournamentSettings(int totalteams, int preliminaryTeamNumber, int koteams, List<Team> teams)
         {
             NumberOfTeamsTotal = totalteams;
             NumberOfPreliminaryGamesPerTeam = preliminaryTeamNumber;

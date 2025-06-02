@@ -1,11 +1,12 @@
-﻿using Model;
-using Timer = System.Timers.Timer;
+﻿using Timer = System.Timers.Timer;
 using System.Media;
+using TiKiTuTo.Controller;
+using TiKiTuTo.Model.DataObjects;
 
 
-namespace Controller
+namespace TiKiTuTo.Model.BusinessLogic
 {
-    public class BasicFunctions
+    public class ModelApi
     {
         /// <summary>
         /// Used to add a Player to a Team, needs a Player Object
@@ -48,7 +49,7 @@ namespace Controller
             return team;
         }
 
-
+        // tournamentSettings
         public static List<Team> CreateListOfTeams(int NumberOfTeamsTotal, InputHandler inputHandler)
         {
             List<Team> teams = new List<Team>();
@@ -105,7 +106,7 @@ namespace Controller
         public static void StartMatchTimer(InputHandler inputHandler, int? duration = 10)
         {
             // Set the end time for the specified length in minutes
-            while (duration == 0) 
+            while (duration == 0)
             {
                 duration = inputHandler.GetNumber("Please enter the match duration in full minutes");
             }
@@ -127,10 +128,10 @@ namespace Controller
                 }
                 else
                 {
-                    inputHandler.View.ClearCurrentConsoleLine();
+                    // inputHandler.View.ClearCurrentConsoleLine();
                     inputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
                 }
-            }; 
+            };
 
             // Start the timer
             inputHandler.View.ShowMessage($"Timer started for {duration} minutes.");

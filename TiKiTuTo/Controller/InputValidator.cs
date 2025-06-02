@@ -1,21 +1,21 @@
 ﻿using System.ComponentModel.Design;
 using View;
-using Model;
+using TiKiTuTo.Model;
 
-namespace Controller
+namespace TiKiTuTo.Controller
 {
     static class InputValidator
     {
 
         public static bool IsValidGoalInput(int goals)
         {
-            return (goals >= 0 && goals <= 10);
+            return goals >= 0 && goals <= 10;
         }
 
 
         public static bool IsValidNumberOfTotalTeams(int numberTeamsTotal)
         {
-           return numberTeamsTotal >= 4 && numberTeamsTotal <= 256;
+            return numberTeamsTotal >= 4 && numberTeamsTotal <= 256;
         }
 
 
@@ -27,7 +27,7 @@ namespace Controller
 
         public static bool IsPowerOfTwo(int x)
         {
-            return (x > 0) && ((x & (x - 1)) == 0);
+            return x > 0 && (x & x - 1) == 0;
         }
 
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using Controller;
+using TiKiTuTo.Controller;
 
-namespace Model
+namespace TiKiTuTo.Model.DataObjects
 {
     public class Team
     {
@@ -27,5 +27,6 @@ namespace Model
             TeamName = name;
             PlayerInTeam = new List<Player>();
         }
+        // addplayer ?
     }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
-using Model;
-using Controller;
 using View;
+using TiKiTuTo.Controller;
+using TiKiTuTo.Model.DataObjects;
 
-namespace Controller
+namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding Tournament objects. 
@@ -22,12 +22,20 @@ namespace Controller
         public static Tournament SetupTournament(InputHandler inputHandler)
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings(inputHandler);
+            Tournament tournament = CreateTournament(inputHandler, tournamentSettings);
 
-            bool emptyNameAllowed = false;
-            string name = inputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
-
-            Tournament tournament = new Tournament(name, tournamentSettings);
             return tournament;
         }
+
+        public static Tournament CreateTournament(InputHandler inputHandler, TournamentSettings tournamentSettings)
+        {
+             bool emptyNameAllowed = false;
+            string name = inputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
+            Tournament tournament = new Tournament(name, tournamentSettings);
+
+            return tournament;
+        }
+       
+
     }
 }

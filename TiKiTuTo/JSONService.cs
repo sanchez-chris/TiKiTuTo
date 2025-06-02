@@ -6,10 +6,9 @@ using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using GameEngine;
-using Model;
+using TiKiTuTo.Model.DataObjects;
 
-namespace Controller
+namespace TiKiTuTo.Controller
 {
     internal class JSONService
     {
