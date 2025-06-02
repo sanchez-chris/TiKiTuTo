@@ -82,10 +82,6 @@ namespace TiKiTuTo.Controller
             return NumberOfTeamsInKO;
         }
 
-
-
-
-
         /// <summary>
         /// Asks the user to enter a number, using the prompt argument. Repeats until a valid number is added.
         /// </summary>

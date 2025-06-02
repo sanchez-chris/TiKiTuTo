@@ -15,24 +15,25 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             ModelApi.StartMatchTimer(inputHandler);
         }
-        public static void UpdateTeamScores(Team team1, int goals1, Team team2, int goals2)
+        public static void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
         {
-            if (goals1 > goals2)
+            if (goalsA > goalsB)
             {
-                team1.NumberGamesWon++;
+                teamA.NumberGamesWon++;
             }
-            if (goals2 > goals1)
+            if (goalsB > goalsA)
             {
-                team2.NumberGamesWon++;
+                teamB.NumberGamesWon++;
             }
-            team1.Goaldifference = goals1 - goals2;
-            team1.NumberGoals += goals1;
-            team2.Goaldifference = goals2 - goals1;
-            team2.NumberGoals += goals2;
+            teamA.Goaldifference = goalsA - goalsB;
+            teamA.NumberGoals += goalsB;
+            teamB.Goaldifference = goalsB - goalsA;
+            teamB.NumberGoals += goalsB;
         }
         public static void FinishMatch(Match match)
         {
             match.finished = true;
+            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
         }
     }
 }
