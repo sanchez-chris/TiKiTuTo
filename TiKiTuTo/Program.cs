@@ -15,49 +15,17 @@ namespace TiKiTuTo.Controller
             InputValidator inputValidator = new InputValidator();
             InputHandler inputHandler = new InputHandler(view, inputValidator);
             StateMachine stateMachine = new StateMachine(view);
-            Controller controller = new Controller(view, stateMachine, inputHandler);
             Model.Model model = new();
-
             JSONService json = new JSONService(model);
-
             GameLogicMatch gameLogicMatch = new(inputHandler, json);
             GameLogicRound gameLogicRound = new(inputHandler, json);
             GameLogicTournamentSettings gameLogicTournamentSettings = new(inputHandler);
             GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler);
-
+            Controller controller = new Controller(view, stateMachine, inputHandler, gameLogicMatch, gameLogicRound, gameLogicTournament, gameLogicTournamentSettings);
+            
             while (true)
             {
-
                 controller.Run();
-                //view.ShowMainMenu();
-
-                //int UserInput = inputHandler.GetValidMenuInput();
-                
-                //switch (UserInput)
-                //{
-                //    case 1:
-                //        Tournament tournament = controller.InitTournament(inputHandler);
-                //        break;
-                //    case 2:
-                //        // TODO: Implement functionality for showing old results
-                //        Console.WriteLine("Option 2 selected. Functionality not implemented yet.");
-                //        break;
-                //    case 3:
-                //        // TODO: Implement functionality for starting a saved game
-                //        Console.WriteLine("Option 3 selected. Functionality not implemented yet.");
-                //        break;
-                //    case 4:
-                //        // TODO: Implement functionality for continuing the game
-                //        Console.WriteLine("Option 4 selected. Functionality not implemented yet.");
-                //        break;
-                //    case 5:
-                //        Console.WriteLine("Exiting the program...");
-                //        Environment.Exit(0);
-                //        break;
-                //    default:
-                //        Console.WriteLine("Invalid option. Please try again.");
-                //        break;
-                //}
             }
 
         }

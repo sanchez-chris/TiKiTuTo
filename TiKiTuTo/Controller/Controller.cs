@@ -10,13 +10,28 @@ namespace TiKiTuTo.Controller
         private IView _view { get; }
         private StateMachine _stateMachine { get; }
         public InputHandler InputHandler { get; }
+        private GameLogicMatch GameLogicMatch { get; }
+        private GameLogicRound GameLogicRound { get; }
+        private GameLogicTournament GameLogicTournament { get; }
+        private GameLogicTournamentSettings GameLogicTournamentSettings { get; }
 
 
-        public Controller(IView view, StateMachine stateMachine, InputHandler inputHandler)
+        public Controller(
+            IView view, 
+            StateMachine stateMachine, 
+            InputHandler inputHandler, 
+            GameLogicMatch gameLogicMatch, 
+            GameLogicRound gameLogicRound, 
+            GameLogicTournament gameLogicTournament, 
+            GameLogicTournamentSettings gameLogicTournamentSettings)
         {
             _view = view;
             _stateMachine = stateMachine;
             InputHandler = inputHandler;
+            GameLogicMatch = gameLogicMatch;
+            GameLogicRound = gameLogicRound;
+            GameLogicTournament = gameLogicTournament;
+            GameLogicTournamentSettings = gameLogicTournamentSettings;
         }
 
 
