@@ -7,8 +7,7 @@ using System.Xml.Schema;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
-using Timer = System.Timers.Timer;
-using System.Media;
+
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
@@ -99,42 +98,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             // at the end there is a winner
         }
 
-        private DateTime _endTime;
-        public void StartMatchTimer( int? duration = 10)
-        {
-            // Set the end time for the specified length in minutes
-            while (duration == 0)
-            {
-                duration = InputHandler.GetNumber("Please enter the match duration in full minutes");
-            }
-            _endTime = DateTime.Now.AddMinutes((double)duration);
 
-            // Create a timer with a 1 second interval
-            Timer timer = new Timer(1000);
-
-            //lambda method to allow for usage of inputHandler.View.
-            timer.Elapsed += (sender, e) =>
-            {
-                TimeSpan timeRemaining = _endTime - DateTime.Now;
-
-                if (timeRemaining.TotalSeconds <= 0)
-                {
-                    InputHandler.View.ShowMessage("Time's up!");
-                    SystemSounds.Asterisk.Play();
-                    //                    GameLogicMatch.FinishMatch();
-                    timer.Stop();
-                }
-                else
-                {
-                    // inputHandler.View.ClearCurrentConsoleLine();
-                    InputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
-                }
-            };
-
-            // Start the timer
-            InputHandler.View.ShowMessage($"Timer started for {duration} minutes.");
-            InputHandler.View.WriteEmptyLine();
-            timer.Start();
-        }
     }
     }

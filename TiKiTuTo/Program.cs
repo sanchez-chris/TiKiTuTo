@@ -16,8 +16,9 @@ namespace TiKiTuTo.Controller
             InputHandler inputHandler = new InputHandler(view, inputValidator);
             StateMachine stateMachine = new StateMachine(view);
             Controller controller = new Controller(view, stateMachine, inputHandler);
+            Model.Model model = new();
 
-            JSONService json = new JSONService();
+            JSONService json = new JSONService(model);
 
             GameLogicMatch gameLogicMatch = new(inputHandler, json);
             GameLogicRound gameLogicRound = new(inputHandler, json);
