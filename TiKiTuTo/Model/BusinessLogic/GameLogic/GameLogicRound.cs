@@ -4,19 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
+using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
+using Timer = System.Timers.Timer;
+using System.Media;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding Rounds objects. 
     /// </summary>
-    public static class GameLogicRound
+    public class GameLogicRound
     {
-        private static Random random = new Random();
+        InputHandler InputHandler { get; set; }
+        JSONService JSONService { get; set; }
+        public GameLogicRound(InputHandler inputHandler, JSONService json) 
+        {
+            InputHandler = inputHandler;
+            JSONService = json;
+        }
+        private Random random = new Random();
 
-        public static void InitPreliminaryRound(Tournament tournament)
+        public void InitPreliminaryRound(Tournament tournament)
         {
             // fill the list of matches tournament.GamePlanPreliminaryRound
             if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
@@ -72,21 +82,59 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             Thread.Sleep(10000); // Simulate some delay for better readability in console output - delete it in prod
         }
 
-        public static void RunPreliminaryRound(Tournament tournament)
+        public void RunPreliminaryRound(Tournament tournament)
         {
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
         }
 
-        public static void InitKoRound(Tournament tournament)
+        public void InitKoRound(Tournament tournament)
         {
             // teams for ko round are selected -> fill tournament.TeamsInKoRound
             // and organice them for the knockout round -> fill list of matches for KO round "tournament.GamePlanKoRound"
         }
 
-        public static void RunKoRound(Tournament tournament)
+        public void RunKoRound(Tournament tournament)
         {
             // take a list of matches tournament.GamePlanKoRound and execute it, asking the goals scored, updating the teams accordingly
             // at the end there is a winner
+        }
+
+        private DateTime _endTime;
+        public void StartMatchTimer( int? duration = 10)
+        {
+            // Set the end time for the specified length in minutes
+            while (duration == 0)
+            {
+                duration = InputHandler.GetNumber("Please enter the match duration in full minutes");
+            }
+            _endTime = DateTime.Now.AddMinutes((double)duration);
+
+            // Create a timer with a 1 second interval
+            Timer timer = new Timer(1000);
+
+            //lambda method to allow for usage of inputHandler.View.
+            timer.Elapsed += (sender, e) =>
+            {
+                TimeSpan timeRemaining = _endTime - DateTime.Now;
+
+                if (timeRemaining.TotalSeconds <= 0)
+                {
+                    InputHandler.View.ShowMessage("Time's up!");
+                    SystemSounds.Asterisk.Play();
+                    //                    GameLogicMatch.FinishMatch();
+                    timer.Stop();
+                }
+                else
+                {
+                    // inputHandler.View.ClearCurrentConsoleLine();
+                    InputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
+                }
+            };
+
+            // Start the timer
+            InputHandler.View.ShowMessage($"Timer started for {duration} minutes.");
+            InputHandler.View.WriteEmptyLine();
+            timer.Start();
         }
     }
     }

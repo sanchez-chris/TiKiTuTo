@@ -9,13 +9,25 @@ using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
-    public static class GameLogicMatch
+    public class GameLogicMatch
     {
-        public static void RunMatch(Match match, InputHandler inputHandler)
+        GameLogicRound GameLogicRound { get; set; }
+        InputHandler InputHandler { get; set; }
+        JSONService JSONService { get; set; }
+
+        public GameLogicMatch(InputHandler inputHandler, JSONService json)
         {
-            ModelApi.StartMatchTimer(inputHandler);
+            GameLogicRound = new GameLogicRound(inputHandler, json);
+            InputHandler = inputHandler;
+            JSONService = json;
         }
-        public static void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
+
+        public void RunMatch(Match match, InputHandler inputHandler)
+        {
+            GameLogicRound.StartMatchTimer();
+        }
+
+        public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
         {
             if (goalsA > goalsB)
             {
@@ -30,10 +42,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             teamB.Goaldifference = goalsB - goalsA;
             teamB.NumberGoals += goalsB;
         }
-        public static void FinishMatch(Match match)
+
+        public void FinishMatch(Match match, Tournament tournament)
         {
             match.finished = true;
             UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
+            JSONService.SaveGame(tournament);
         }
     }
 }

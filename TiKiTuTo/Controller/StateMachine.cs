@@ -1,5 +1,6 @@
 ﻿
 
+using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.View;
 
 namespace TiKiTuTo.Controller
@@ -86,6 +87,11 @@ namespace TiKiTuTo.Controller
             }
         }
 
+/*        private void HandelRunTournamentChoice(int choice)
+        {
+
+        }
+*/
 
 
     }

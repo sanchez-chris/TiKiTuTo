@@ -30,6 +30,8 @@ namespace TiKiTuTo.View
         public void WriteEmptyLine();
 
         public void ClearCurrentConsoleLine();
+
+        public void ShowTeamsAndPlayer(List<Team> teams);
         
 
     }

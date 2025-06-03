@@ -47,17 +47,6 @@ namespace TiKiTuTo.Controller
             }
         }
 
-        //public Tournament InitTournament(InputHandler inputHandler)
-        //{
-        //    Tournament tournament = GameLogicTournament.SetupTournament(inputHandler);
-        //    GameLogicRound.InitPreliminaryRound(tournament);
-        //    //JSONService.SaveGame(tournament);
-        //    return tournament;
-        //}
 
-        //public Tournament StartTournament()
-        //{
-
-        //}
     }
 }
