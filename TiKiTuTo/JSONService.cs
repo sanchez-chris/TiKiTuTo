@@ -78,5 +78,23 @@ namespace TiKiTuTo.Controller
             }
         }
 
+        /// <summary>
+        /// Returns all files containing unfinished tournaments (ready to be continued)
+        /// </summary>
+        /// <returns> List<string> of file names for the tournament JSON files.</returns>
+        public static List<string> GetUnfinishedTournamentFiles()
+        {
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// Returns all files containing finished tournaments (ready to show results)
+        /// </summary>
+        /// <returns> List<string> of file names for the tournament JSON files.</returns>
+        public static List<string> GetFinishedTournamentFiles()
+        {
+            return new List<string>();
+        }
+
     }
 }

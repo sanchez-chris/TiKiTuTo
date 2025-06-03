@@ -10,13 +10,12 @@ namespace TiKiTuTo.Controller
     {
         public static void Main()
         {
-
+            Model.Model model = new();
+            JSONService json = new JSONService(model);
             IView view = new ConsoleView();
             InputValidator inputValidator = new InputValidator();
             InputHandler inputHandler = new InputHandler(view, inputValidator);
-            StateMachine stateMachine = new StateMachine(view);
-            Model.Model model = new();
-            JSONService json = new JSONService(model);
+            StateMachine stateMachine = new StateMachine(view, json, model);
             GameLogicMatch gameLogicMatch = new(inputHandler, json);
             GameLogicRound gameLogicRound = new(inputHandler, json);
             GameLogicTournamentSettings gameLogicTournamentSettings = new(inputHandler);
