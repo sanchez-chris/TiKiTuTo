@@ -137,7 +137,7 @@ namespace TiKiTuTo.View
             return userChoice;
         }
 
-        //hardcoded ShowMenu in case we do not use PromptSelection
+        //hardcoded ShowMenu functionality in case we do not use PromptSelection
         public string ShowSpectreMenu()
         {
             var userChoice = AnsiConsole.Prompt(
