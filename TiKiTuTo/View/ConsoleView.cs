@@ -122,11 +122,11 @@ namespace TiKiTuTo.View
         /*reusable promptSelection function recieving an IEnumerable<string> (so it doesnt matter if the argument is list, array ...)
         Please note, that Page Size only determines how many options are visible on the screen at one time.
         Additional options may be available through scrolling.*/
-        public string PromptSelection(string title, IEnumerable<string> options)
+        public string PromptSelection(string headline, IEnumerable<string> options)
         {
             var userChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"[yellow]{title}[/]")
+                    .Title($"[yellow]{headline}[/]")
                     .PageSize(5)
                     .AddChoices(options));
 
@@ -134,12 +134,12 @@ namespace TiKiTuTo.View
         }
 
         //hardcoded ShowMenu in case we do not use PromptSelection
-        public string ShowMenu()
+        public string ShowSpectreMenu()
         {
             var userChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("[yellow]Bitte wähle eine Option aus:[/]")
-                    .PageSize(5)
+                    .PageSize(4)
                     .AddChoices(
                         "   1: New Tournament",
                         "   2: Show old results",

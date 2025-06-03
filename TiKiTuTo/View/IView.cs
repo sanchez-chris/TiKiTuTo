@@ -33,7 +33,9 @@ namespace TiKiTuTo.View
 
         public void ShowTeamsAndPlayer(List<Team> teams);
 
-        public string PromptSelection(string title, int choiceNumber, IEnumerable<string> options);
+        public string PromptSelection(string title, IEnumerable<string> options);
+
+        public string ShowSpectreMenu();
 
 
 
