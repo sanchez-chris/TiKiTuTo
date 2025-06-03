@@ -28,6 +28,7 @@ namespace TiKiTuTo.Controller
                 RenderCurrentState();
                 int userChoice = InputHandler.GetValidMenuInput();
                 _stateMachine.HandleInput(userChoice);
+                
             }
         }
 
@@ -40,6 +41,9 @@ namespace TiKiTuTo.Controller
                     break;
                 case AppState.StartTournamentMenu:
                     _view.ShowStartTournamentMenu();
+                    break;
+                case AppState.RunTournament:
+//                  CreateTournament(GameLogicTournamentSettings.CreateTournamentSettings());
                     break;
                 case AppState.Exit:
                     _view.ShowExitMessage();

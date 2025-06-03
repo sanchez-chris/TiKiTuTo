@@ -25,6 +25,7 @@ namespace TiKiTuTo.Controller
         public void TransitionTo(AppState newState)
         {
             CurrentState = newState;
+
         }
 
 
@@ -48,6 +49,7 @@ namespace TiKiTuTo.Controller
             {
                 case 1:
                     TransitionTo(AppState.StartTournamentMenu);
+ //                  
                     break;
                 case 2:
                     TransitionTo(AppState.ShowSavedTournaments);

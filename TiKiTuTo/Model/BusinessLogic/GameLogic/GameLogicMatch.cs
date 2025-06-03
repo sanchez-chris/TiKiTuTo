@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.BusinessLogic;
 using TiKiTuTo.Model.DataObjects;
+using Timer = System.Timers.Timer;
+using System.Media;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
@@ -22,9 +24,47 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             JSONService = json;
         }
 
-        public void RunMatch(Match match, InputHandler inputHandler)
+        public void RunMatch(Match match)
         {
-            GameLogicRound.StartMatchTimer();
+            StartMatchTimer(match);
+        }
+
+        private DateTime _endTime;
+        public void StartMatchTimer(Match match, int? duration = 10)
+        {
+            // Set the end time for the specified length in minutes
+            while (duration == 0)
+            {
+                duration = InputHandler.GetNumber("Please enter the match duration in full minutes");
+            }
+            _endTime = DateTime.Now.AddMinutes((double)duration);
+
+            // Create a timer with a 1 second interval
+            Timer timer = new Timer(1000);
+
+            //lambda method to allow for usage of inputHandler.View.
+            timer.Elapsed += (sender, e) =>
+            {
+                TimeSpan timeRemaining = _endTime - DateTime.Now;
+
+                if (timeRemaining.TotalSeconds <= 0)
+                {
+                    InputHandler.View.ShowMessage("Time's up!");
+                    SystemSounds.Asterisk.Play();
+                    FinishMatch(match);
+                    timer.Stop();
+                }
+                else
+                {
+                    // inputHandler.View.ClearCurrentConsoleLine();
+                    InputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
+                }
+            };
+
+            // Start the timer
+            InputHandler.View.ShowMessage($"Timer started for {duration} minutes.");
+            InputHandler.View.WriteEmptyLine();
+            timer.Start();
         }
 
         public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
@@ -43,11 +83,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             teamB.NumberGoals += goalsB;
         }
 
-        public void FinishMatch(Match match, Tournament tournament)
+        public void FinishMatch(Match match)
         {
             match.finished = true;
             UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
-            JSONService.SaveGame(tournament);
+            JSONService.SaveGame();
         }
     }
 }

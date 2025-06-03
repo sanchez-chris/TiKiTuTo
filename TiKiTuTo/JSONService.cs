@@ -13,8 +13,14 @@ namespace TiKiTuTo.Controller
     public class JSONService
     {
         private string saveFolder = "SaveGame";
+        public Model.Model Model { get; set; }
 
-        public void SaveGame(Tournament tournament)
+        public JSONService(Model.Model model) 
+        {
+            Model = model;
+        }
+
+        public void SaveGame()
         {
             
             if (!Directory.Exists(saveFolder))
@@ -23,12 +29,12 @@ namespace TiKiTuTo.Controller
             }
 
             DateTime now = DateTime.Now;
-            string filePath = $"{saveFolder}\\{tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
+            string filePath = $"{saveFolder}\\{Model.Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
 
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.WriteIndented = true;
 
-            string jsonString = JsonSerializer.Serialize(tournament, options);
+            string jsonString = JsonSerializer.Serialize(Model.Tournament, options);
             File.WriteAllText(filePath, jsonString );
             Console.WriteLine($"Tournament has been saved: {filePath}");
         }
