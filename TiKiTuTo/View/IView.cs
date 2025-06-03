@@ -5,11 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using TiKiTuTo.Model.DataObjects;
 
-namespace View
+namespace TiKiTuTo.View
 {
     public interface IView
     {
-        public void ShowMenu();
+        public void ShowMainMenu();
+
+        public void ShowStartTournamentMenu();
+
+        public void ShowInvalidInputMessage();
+
+        public void ShowExitMessage();
 
         public void ShowGamePlan();
 

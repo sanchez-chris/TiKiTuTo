@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Design;
-using View;
+using TiKiTuTo.View;
 using TiKiTuTo.Model;
 
 namespace TiKiTuTo.Controller
