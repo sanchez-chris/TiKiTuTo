@@ -94,6 +94,9 @@ namespace TiKiTuTo.View
         public void ShowMessage(string message)
         {
             Console.WriteLine(message);
+            /*Alternatives
+             * AnsiConsole.WriteLine(message) 
+             * AnsiConsole.Markup($"[bold]{message}[/]");*/
         }
 
         public void WriteEmptyLine()
@@ -119,9 +122,10 @@ namespace TiKiTuTo.View
         }
 
 
-        /*reusable promptSelection function recieving an IEnumerable<string> (so it doesnt matter if the argument is list, array ...)
-        Please note, that Page Size only determines how many options are visible on the screen at one time.
-        Additional options may be available through scrolling.*/
+        /*reusable promptSelection function recieving an IEnumerable<string> (so it doesnt matter if the 
+         * argument is type list<string>, string[] ...)
+         * Please note, that PageSize only determines how many options are visible on the screen at one time.
+         * Additional options may be available through scrolling.*/
         public string PromptSelection(string headline, IEnumerable<string> options)
         {
             var userChoice = AnsiConsole.Prompt(
