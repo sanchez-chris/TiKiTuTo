@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.View
@@ -63,6 +64,18 @@ namespace TiKiTuTo.View
         }
 
 
+        public void ShowTeamsAndPlayer(List<Team> teams)
+        {
+            foreach (Team team in teams)
+            {
+                ShowMessage(team.TeamName);
+                foreach (Player player in team.PlayerInTeam)
+                {
+                    ShowMessage(player.Name);
+                }
+                WriteEmptyLine();
+            }
+        }
 
 
         public void ShowGamePlan()

@@ -10,11 +10,11 @@ using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Controller
 {
-    internal class JSONService
+    public class JSONService
     {
-        private static string saveFolder = "SaveGame";
+        private string saveFolder = "SaveGame";
 
-        public static void SaveGame(Tournament tournament)
+        public void SaveGame(Tournament tournament)
         {
             
             if (!Directory.Exists(saveFolder))
@@ -34,7 +34,7 @@ namespace TiKiTuTo.Controller
         }
 
 
-        public static void LoadGame()
+        public void LoadGame()
         {
             
             // PART I: Auswahl des SaveGames

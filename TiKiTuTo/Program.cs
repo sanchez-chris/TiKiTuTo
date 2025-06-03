@@ -1,6 +1,7 @@
 ﻿using TiKiTuTo.Controller;
 using TiKiTuTo.View;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Model.BusinessLogic.GameLogic;
 
 namespace TiKiTuTo.Controller
 {
@@ -11,10 +12,17 @@ namespace TiKiTuTo.Controller
         {
 
             IView view = new ConsoleView();
-            InputHandler inputHandler = new InputHandler(view);
+            InputValidator inputValidator = new InputValidator();
+            InputHandler inputHandler = new InputHandler(view, inputValidator);
             StateMachine stateMachine = new StateMachine(view);
             Controller controller = new Controller(view, stateMachine, inputHandler);
 
+            JSONService json = new JSONService();
+
+            GameLogicMatch gameLogicMatch = new(inputHandler, json);
+            GameLogicRound gameLogicRound = new(inputHandler, json);
+            GameLogicTournamentSettings gameLogicTournamentSettings = new(inputHandler);
+            GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler);
 
             while (true)
             {
