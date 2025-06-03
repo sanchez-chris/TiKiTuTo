@@ -18,6 +18,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public static void InitPreliminaryRound(Tournament tournament)
         {
+            // fill the list of matches tournament.GamePlanPreliminaryRound
             if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
@@ -48,10 +49,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 // Select two random teams
                 var availableTeams = teams.Where(t => teamMatchCount[t] < gamesPerTeam).ToList();
-                //   if (availableTeams.Count < 2)
-                //   {
-                //       throw new InvalidOperationException("Unable to generate more matches while satisfying constraints.");
-                //   }
 
                 Team teamA = availableTeams[random.Next(availableTeams.Count)];
                 Team teamB = availableTeams[random.Next(availableTeams.Count)];
@@ -72,7 +69,24 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             Console.WriteLine($"Preliminary round initialized with {tournament.GamePlanPremilimaryRound.Count} matches.");
             tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
             Console.WriteLine("Good luck to all teams!");
-            Thread.Sleep(10000); // Simulate some delay for better readability in console output
+            Thread.Sleep(10000); // Simulate some delay for better readability in console output - delete it in prod
+        }
+
+        public static void RunPreliminaryRound(Tournament tournament)
+        {
+            // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
+        }
+
+        public static void InitKoRound(Tournament tournament)
+        {
+            // teams for ko round are selected -> fill tournament.TeamsInKoRound
+            // and organice them for the knockout round -> fill list of matches for KO round "tournament.GamePlanKoRound"
+        }
+
+        public static void RunKoRound(Tournament tournament)
+        {
+            // take a list of matches tournament.GamePlanKoRound and execute it, asking the goals scored, updating the teams accordingly
+            // at the end there is a winner
         }
     }
-}
+    }
