@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spectre.Console;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 
@@ -10,8 +11,6 @@ namespace TiKiTuTo.View
 {
     public class ConsoleView : IView
     {
-
-
 
 
         public ConsoleView() 
@@ -50,7 +49,6 @@ namespace TiKiTuTo.View
             Console.WriteLine("3. Back to Main Menu");
             WriteEmptyLine();
         }
-
 
 
         public void ShowInvalidInputMessage()
@@ -119,5 +117,40 @@ namespace TiKiTuTo.View
             Console.WriteLine(new string(' ', Console.BufferWidth));
             Console.SetCursorPosition(0, currentLineCursor - 1);
         }
+
+
+        /*reusable promptSelection function recieving an IEnumerable<string> (so it doesnt matter if the argument is list, array ...)
+        Please note, that Page Size only determines how many options are visible on the screen at one time.
+        Additional options may be available through scrolling.*/
+        public string PromptSelection(string title, IEnumerable<string> options)
+        {
+            var userChoice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title($"[yellow]{title}[/]")
+                    .PageSize(5)
+                    .AddChoices(options));
+
+            return userChoice;
+        }
+
+        //hardcoded ShowMenu in case we do not use PromptSelection
+        public string ShowMenu()
+        {
+            var userChoice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[yellow]Bitte wähle eine Option aus:[/]")
+                    .PageSize(5)
+                    .AddChoices(
+                        "   1: New Tournament",
+                        "   2: Show old results",
+                        "   3: Load Settings",
+                        "   4: Continue game",
+                        "   5: Exit"));
+            return userChoice;
+        }
+
+        
+
+
     }
 }
