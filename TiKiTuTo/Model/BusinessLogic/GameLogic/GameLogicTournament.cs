@@ -18,6 +18,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         GameLogicRound GameLogicRound { get; set; }
         GameLogicTournamentSettings GameLogicTournamentSettings { get; set; }
         InputHandler InputHandler { get; set; }
+        
         /// <summary>
         /// Creates Tournament based on user input. First creates a TournamentSettings object, then initializes a Tournament based on these settings.
         /// </summary>
@@ -27,7 +28,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             GameLogicRound = glRound;
             GameLogicTournamentSettings = glTournamentSettings;
             InputHandler = inputHandler;
-
         }
 
 
