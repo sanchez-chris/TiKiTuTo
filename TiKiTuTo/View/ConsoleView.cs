@@ -65,6 +65,20 @@ namespace TiKiTuTo.View
         }
 
 
+        public void ShowStartTournamentMenu() { }
+        //{
+        //    Console.Clear();
+        //    Console.WriteLine(" ----------------------");
+        //    Console.WriteLine(" |     TiKiTuTo        | ");
+        //    Console.WriteLine(" ----------------------");
+        //    Console.WriteLine(" ---Start Tournament---");
+        //    Console.WriteLine(" ----------------------");
+        //    Console.WriteLine("1. Start tournament from scratch");
+        //    Console.WriteLine("2. Start tournament based on existing tournament settings");
+        //    Console.WriteLine("3. Back to Main Menu");
+        //    WriteEmptyLine();
+        //}
+
 
         public int StartTournamentMenuSelection()
         {
@@ -90,19 +104,29 @@ namespace TiKiTuTo.View
 
         }
 
-        public void ShowStartTournamentMenu()
+        public int SavedTournamentsSelection(IEnumerable<string> loadableFiles)
         {
-            Console.Clear();
-            Console.WriteLine(" ----------------------");
-            Console.WriteLine(" |     TiKiTuTo        | ");
-            Console.WriteLine(" ----------------------");
-            Console.WriteLine(" ---Start Tournament---");
-            Console.WriteLine(" ----------------------");
-            Console.WriteLine("1. Start tournament from scratch");
-            Console.WriteLine("2. Start tournament based on existing tournament settings");
-            Console.WriteLine("3. Back to Main Menu");
-            WriteEmptyLine();
+            List<string> headerLines = new()
+            {
+                "-----------------------",
+                "|     TiKiTuTo        |",
+                "-----------------------",
+                "---Saved Tournaments---",
+                "-----------------------"
+            };
+
+            List<string> options = loadableFiles.ToList();
+            options.Add("Back to Main Menu");
+
+
+            int userChoice = PromptSelectionMulti(headerLines, options);
+
+            return userChoice;
+
         }
+
+
+
 
 
         public void ShowInvalidInputMessage()
