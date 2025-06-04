@@ -17,7 +17,7 @@ namespace TiKiTuTo.Controller
             Model.TournamentModel model = new();
             JSONService json = new JSONService(model);
             GameLogicMatch gameLogicMatch = new(inputHandler, json);
-            GameLogicRound gameLogicRound = new(inputHandler, json, inputValidator);
+            GameLogicRound gameLogicRound = new(inputHandler, json, inputValidator, model);
             GameLogicTournamentSettings gameLogicTournamentSettings = new(inputHandler);
             GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler, model);
             StateMachine stateMachine = new StateMachine(view, gameLogicTournament,model);

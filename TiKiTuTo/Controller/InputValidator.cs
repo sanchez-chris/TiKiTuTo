@@ -43,7 +43,7 @@ namespace TiKiTuTo.Controller
             return userInput > 0 && userInput <= maxMenuOption;
         }
 
-        public bool IsValidTournamentSettings(Tournament tournament)
+        public bool HasValidTournamentSettings(Tournament tournament)
         {
 
             if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
