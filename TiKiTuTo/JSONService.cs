@@ -49,11 +49,11 @@ namespace TiKiTuTo.Controller
             }
             catch (JsonException ex)
             {
-                Console.WriteLine($"Fehler bei der Serialisierung: {ex.Message}");
+                Console.WriteLine($"Error during serialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ein unerwarteter Fehler ist aufgetreten: {ex.Message}");
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
             }
 
         }
