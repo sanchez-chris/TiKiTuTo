@@ -18,11 +18,16 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
     {
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
+
+        GameLogicMatch GameLogicMatch { get; set; }
+
+
         public GameLogicRound(InputHandler inputHandler, JSONService json) 
         {
             InputHandler = inputHandler;
             JSONService = json;
         }
+
         private Random random = new Random();
 
         public void InitPreliminaryRound(Tournament tournament)
@@ -84,18 +89,53 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void RunPreliminaryRound(Tournament tournament)
         {
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
+            foreach (var match in tournament.GamePlanPremilimaryRound)
+            {
+                GameLogicMatch.RunMatch(match);
+            }
         }
 
         public void InitKoRound(Tournament tournament)
         {
-            // teams for ko round are selected -> fill tournament.TeamsInKoRound
+            // teams for ko round are selected (how many teams, in Tournament.TournamentSettings.NumberOfTeamsInKoRound) -> fill Tournament.TeamsInKoRound
+            if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
+            {
+                throw new ArgumentException("Tournament settings or teams are not properly configured.");
+            }
+            int numberOfTeamsInKoRound = tournament.Settings.NumberOfTeamsInKoRound;
+            tournament.TeamsInKoRound = tournament.PreliminaryStandings.OrderByDescending(t => t.NumberGoals).Take(numberOfTeamsInKoRound).ToList();
             // and organice them for the knockout round -> fill list of matches for KO round "tournament.GamePlanKoRound"
+            tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
+            // shuffle the list
+            var shuffledTeams = tournament.TeamsInKoRound.OrderBy(x => random.Next()).ToList();
+            // create matches in pairs
+            for (int i = 0; i < shuffledTeams.Count; i += 2)
+            {
+                if (i + 1 < shuffledTeams.Count) // Ensure there is a pair
+                {
+                    var match = new Match(shuffledTeams[i], shuffledTeams[i + 1]);
+                    tournament.GamePlanKoRound.Add(match);
+                }
+            }
         }
 
         public void RunKoRound(Tournament tournament)
         {
             // take a list of matches tournament.GamePlanKoRound and execute it, asking the goals scored, updating the teams accordingly
+            foreach (var match in tournament.GamePlanKoRound)
+            {
+                GameLogicMatch.RunMatch(match);
+            }
             // at the end there is a winner
+            if (tournament.GamePlanKoRound.Count > 0)
+            {
+                var winner = tournament.GamePlanKoRound[0].teamA; // Assuming the first match's teamA is the winner
+                InputHandler.View.ShowMessage($"The winner of the knockout round is {winner.TeamName}!");
+            }
+            else
+            {
+                InputHandler.View.ShowMessage("No matches were played in the knockout round.");
+            }
         }
 
 

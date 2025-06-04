@@ -26,7 +26,21 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunMatch(Match match)
         {
+            int goalsA = 0;
+            int goalsB = 0;
             StartMatchTimer(match);
+            while (goalsA > 0 && goalsA < 100)
+            {
+                Console.WriteLine($"How many goals has {match.teamA}?");
+                goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
+            }
+            while (goalsB > 0 && goalsB < 100)
+            {
+                Console.WriteLine($"How many goals has {match.teamB}?");
+                goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
+            }
+            InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
+            FinishMatch(match);
         }
 
         private DateTime _endTime;
