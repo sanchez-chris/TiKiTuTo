@@ -26,7 +26,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunMatch(Match match)
         {
-            Console.WriteLine("run match"); // TEMP
             int goalsA = 0;
             int goalsB = 0;
            // StartMatchTimer(match);

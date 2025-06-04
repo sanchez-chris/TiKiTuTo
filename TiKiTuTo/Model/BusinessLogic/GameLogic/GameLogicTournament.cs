@@ -34,7 +34,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public Tournament InitTournament()
         {
             Tournament tournament = SetupTournament();
-            Console.WriteLine("setup completed"); //TEMP
             GameLogicRound.InitPreliminaryRound(tournament);
             GameLogicRound.RunPreliminaryRound(tournament);
             GameLogicRound.InitKoRound(tournament);

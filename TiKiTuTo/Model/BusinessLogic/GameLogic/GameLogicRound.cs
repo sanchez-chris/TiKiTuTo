@@ -47,6 +47,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             int gamesPerTeam = tournament.Settings.NumberOfPreliminaryGamesPerTeam;
             List<Team> teams = tournament.Settings.TeamsInTournament;
 
+            Console.WriteLine("Teams in Tournament:");
+            foreach (Team team in teams)
+            {
+                Console.WriteLine(team);
+            }
+
             // Verify if it's possible to generate the required number of matches
             int totalGamesNeeded = teams.Count * gamesPerTeam / 2;
             int totalPossibleMatches = teams.Count * (teams.Count - 1) / 2;
@@ -78,7 +84,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 if (teamA != teamB && !matchesCreated.Contains((teamA, teamB)) && !matchesCreated.Contains((teamB, teamA)))
                 {
                     // Create the match
-                    var match = new Match(teamA, teamB);
+                    Match match = new Match(teamA, teamB);
+
                     tournament.GamePlanPremilimaryRound.Add(match);
 
                     // Update counts
@@ -88,8 +95,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
             }
             Console.WriteLine($"Preliminary round initialized with {tournament.GamePlanPremilimaryRound.Count} matches.");
-            Thread.Sleep(3000); // Simulate some delay for better readability in console output - TEMP
-           // tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
+            tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
             Console.WriteLine("Good luck to all teams!");
             Thread.Sleep(3000); // Simulate some delay for better readability in console output - TEMP
         }

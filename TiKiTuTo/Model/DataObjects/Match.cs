@@ -17,9 +17,9 @@ namespace TiKiTuTo.Model.DataObjects
 
         public Match(Team teamA, Team teamB)
         {
-            teamA = teamA;
-            teamB = teamB;
-            finished = false;
+            this.teamA = teamA;
+            this.teamB = teamB;
+            this.finished = false;
         }
 
     }
