@@ -9,6 +9,11 @@ namespace TiKiTuTo.View
 {
     public interface IView
     {
+
+        public int MainMenuSelection();
+
+        public int StartTournamentMenuSelection();
+
         public void ShowMainMenu();
 
         public void ShowStartTournamentMenu();

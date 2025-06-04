@@ -55,15 +55,17 @@ namespace TiKiTuTo.Controller
         //InGameMenu  TODO
         //Exit  TODO
 
-        public void ExecuteCurrentState()
+        public int ExecuteCurrentState()
         {
             switch (CurrentState)
             {
                 case AppState.MainMenu:
-                    _view.ShowMainMenu();
+                    //_view.ShowMainMenu();
+                    return _view.MainMenuSelection();
                     break;
                 case AppState.StartTournamentMenu:
-                    _view.ShowStartTournamentMenu();
+                    //_view.ShowStartTournamentMenu();
+                    return _view.StartTournamentMenuSelection();
                     break;
                 case AppState.ShowSavedTournaments:
                     _view.ShowMessage("Saved tournaments (not implemented yet).");
@@ -100,6 +102,7 @@ namespace TiKiTuTo.Controller
                     _view.ShowMessage("Not a valid state.");
                     break;
             }
+            return 0;
         }
 
 
