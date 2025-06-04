@@ -16,17 +16,24 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
     /// </summary>
     public class GameLogicRound
     {
+
+        // Declare properties
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
 
-        GameLogicMatch GameLogicMatch { get; set; }
+        // Declare GameLogicMatch without initializing it here
+        GameLogicMatch GameLogicMatch;
 
-
-        public GameLogicRound(InputHandler inputHandler, JSONService json) 
+        // Constructor
+        public GameLogicRound(InputHandler inputHandler, JSONService json)
         {
+            // Set properties
             InputHandler = inputHandler;
             JSONService = json;
-        }
+
+            // Initialize GameLogicMatch after properties are set
+            GameLogicMatch = new GameLogicMatch(InputHandler, JSONService);
+        }   
 
         private Random random = new Random();
 
@@ -81,9 +88,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
             }
             Console.WriteLine($"Preliminary round initialized with {tournament.GamePlanPremilimaryRound.Count} matches.");
-            tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
+            Thread.Sleep(3000); // Simulate some delay for better readability in console output - TEMP
+           // tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
             Console.WriteLine("Good luck to all teams!");
-            Thread.Sleep(10000); // Simulate some delay for better readability in console output - delete it in prod
+            Thread.Sleep(3000); // Simulate some delay for better readability in console output - TEMP
         }
 
         public void RunPreliminaryRound(Tournament tournament)

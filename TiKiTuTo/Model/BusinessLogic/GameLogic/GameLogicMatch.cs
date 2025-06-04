@@ -13,28 +13,29 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     public class GameLogicMatch
     {
-        GameLogicRound GameLogicRound { get; set; }
+        //GameLogicRound GameLogicRound { get; set; }
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
 
         public GameLogicMatch(InputHandler inputHandler, JSONService json)
         {
-            GameLogicRound = new GameLogicRound(inputHandler, json);
+            //GameLogicRound = new GameLogicRound(inputHandler, json);
             InputHandler = inputHandler;
             JSONService = json;
         }
 
         public void RunMatch(Match match)
         {
+            Console.WriteLine("run match"); // TEMP
             int goalsA = 0;
             int goalsB = 0;
-            StartMatchTimer(match);
-            while (goalsA > 0 && goalsA < 100)
+           // StartMatchTimer(match);
+            while (goalsA >= 0 && goalsA < 100)
             {
                 Console.WriteLine($"How many goals has {match.teamA}?");
                 goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
             }
-            while (goalsB > 0 && goalsB < 100)
+            while (goalsB >= 0 && goalsB < 100)
             {
                 Console.WriteLine($"How many goals has {match.teamB}?");
                 goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");

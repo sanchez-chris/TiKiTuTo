@@ -58,7 +58,8 @@ namespace TiKiTuTo.Controller
                     _view.ShowStartTournamentMenu();
                     break;
                 case AppState.RunTournament:
-//                  CreateTournament(GameLogicTournamentSettings.CreateTournamentSettings());
+                    GameLogicTournament.InitTournament();
+                    //CreateTournament(GameLogicTournamentSettings.CreateTournamentSettings());
                     break;
                 case AppState.Exit:
                     _view.ShowExitMessage();
