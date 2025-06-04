@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using TiKiTuTo.Controller;
@@ -18,6 +19,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
     {
 
         // Declare properties
+        private InputValidator _inputValidator;
+
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
 
@@ -25,9 +28,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         GameLogicMatch GameLogicMatch;
 
         // Constructor
-        public GameLogicRound(InputHandler inputHandler, JSONService json)
+        public GameLogicRound(InputHandler inputHandler, JSONService json, InputValidator inputValidator)
         {
             // Set properties
+            _inputValidator = inputValidator;
             InputHandler = inputHandler;
             JSONService = json;
 
@@ -103,7 +107,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 GameLogicMatch.RunMatch(match);
             }
             
-            tournament.PreliminaryStandings = GenerateRanking(tournament.GamePlanPremilimaryRound);
+            tournament.PreliminaryStandings = GenerateRanking(tournament);
             InputHandler.View.ShowMessage("Rankings:");
             foreach (var team in tournament.PreliminaryStandings)
             {
@@ -123,9 +127,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
 
 
-
-
-            if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
+            if (!_inputValidator.IsValidTournamentSettings(tournament))
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
@@ -166,40 +168,16 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
-        public List<Team> GenerateRanking(List<Match> GamePlanPreliminaryRound)
+        public List<Team> GenerateRanking(Tournament tournament)
         {
-                List<Team> Teams = new List<Team>();
+            List<Team> Teams = tournament.Settings.TeamsInTournament;
 
-                foreach (var match in GamePlanPreliminaryRound)
-                {
-                    if (!Teams.Contains(match.teamA))
-                    {
-                        Teams.Add(match.teamA);
-                    }
 
-                    if (!Teams.Contains(match.teamB))
-                    {
-                        Teams.Add(match.teamB);
-                    }
-
-                    if (match.goalsTeamA > match.goalsTeamB)
-                    {
-                        match.teamA.NumberGamesWon++;
-                    }
-                    else if (match.goalsTeamA < match.goalsTeamB)
-                    {
-                        match.teamB.NumberGamesWon++;
-                    }
-
-                match.teamA.Goaldifference += (match.goalsTeamA - match.goalsTeamB);
-                match.teamB.Goaldifference += (match.goalsTeamB - match.goalsTeamA);
-                }
-
-                 return Teams
+            return Teams
                     .OrderByDescending(t => t.NumberGamesWon)
                     .ThenByDescending(t => t.Goaldifference)
                     .ToList();
-                }
+         }
 
             public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
             {
@@ -215,7 +193,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             teamA.NumberGoals += goalsA;
             teamB.Goaldifference += goalsB - goalsA;
             teamB.NumberGoals += goalsB;
-        }
+            }
 
 
     }
