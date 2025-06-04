@@ -153,6 +153,26 @@ namespace TiKiTuTo.View
             return userChoice;
         }
 
+        public void SavingTournamentAnimation(string filePath)
+        {
+            AnsiConsole.Progress()
+            .Start(ctx =>
+            {
+                // Add a task for the progress bar
+                var task = ctx.AddTask("[green]Saving Tournament...[/]");
+
+                // Simulate progress over 3 seconds
+                while (!task.IsFinished)
+                {
+                    task.Increment(10); // Increment progress by 10%
+                    Task.Delay(120).Wait(); // Wait for 300ms
+                }
+            });
+
+            ShowMessage($"Tournament has been saved: {filePath}");
+            WriteEmptyLine();
+        }
+
         
 
 

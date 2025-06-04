@@ -37,6 +37,8 @@ namespace TiKiTuTo.View
 
         public string ShowSpectreMenu();
 
+        public void SavingTournamentAnimation(string filePath);
+
 
 
     }

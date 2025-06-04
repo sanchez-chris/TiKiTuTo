@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.View;
 
 namespace TiKiTuTo.Controller
 {
@@ -15,38 +16,50 @@ namespace TiKiTuTo.Controller
     {
         private string saveFolder = "SaveGame";
         public TournamentModel TournamentModel { get; set; }
+        IView View { get; set; }
 
-        public JSONService(TournamentModel model) 
+        public JSONService(TournamentModel model, IView view)
         {
             TournamentModel = model;
+            View = view;
         }
 
         public void SaveGame()
         {
-            var Tournament = TournamentModel.Tournament;  
-            
-            
-            if (!Directory.Exists(saveFolder))
+            var Tournament = TournamentModel.Tournament;
+
+            try
             {
-                Directory.CreateDirectory(saveFolder);
+                if (!Directory.Exists(saveFolder))
+                {
+                    Directory.CreateDirectory(saveFolder);
+                }
+
+                DateTime now = DateTime.Now;
+
+                string filePath = $"{saveFolder}\\{Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
+
+                JsonSerializerOptions options = new JsonSerializerOptions();
+                options.WriteIndented = true;
+
+                string jsonString = JsonSerializer.Serialize(Tournament, options);
+                File.WriteAllText(filePath, jsonString);
+
+                View.SavingTournamentAnimation(filePath);
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"Fehler bei der Serialisierung: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ein unerwarteter Fehler ist aufgetreten: {ex.Message}");
             }
 
-            DateTime now = DateTime.Now;
-            
-            string filePath = $"{saveFolder}\\{Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
-
-            JsonSerializerOptions options = new JsonSerializerOptions();
-            options.WriteIndented = true;
-
-            string jsonString = JsonSerializer.Serialize(Tournament, options);
-            File.WriteAllText(filePath, jsonString );
-            Console.WriteLine($"Tournament has been saved: {filePath}");
         }
-
-
         public void LoadGame()
         {
-            
+
             // PART I: Auswahl des SaveGames
             string currentDirectory = Directory.GetCurrentDirectory();
             string[] currentSaveGames = Directory.GetFiles($"{currentDirectory}\\{saveFolder}");
