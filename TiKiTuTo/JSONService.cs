@@ -29,6 +29,7 @@ namespace TiKiTuTo.Controller
             }
 
             DateTime now = DateTime.Now;
+            
             string filePath = $"{saveFolder}\\{Model.Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
 
             JsonSerializerOptions options = new JsonSerializerOptions();

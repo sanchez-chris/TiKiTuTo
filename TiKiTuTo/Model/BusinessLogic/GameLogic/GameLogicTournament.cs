@@ -35,6 +35,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             Tournament tournament = SetupTournament();
             GameLogicRound.InitPreliminaryRound(tournament);
+            GameLogicRound.RunPreliminaryRound(tournament);
+            GameLogicRound.InitKoRound(tournament);
+            GameLogicRound.RunKoRound(tournament);
             //JSONService.SaveGame(tournament);
             return tournament;
         }

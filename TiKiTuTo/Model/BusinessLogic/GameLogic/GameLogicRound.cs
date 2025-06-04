@@ -16,13 +16,25 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
     /// </summary>
     public class GameLogicRound
     {
+
+        // Declare properties
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
-        public GameLogicRound(InputHandler inputHandler, JSONService json) 
+
+        // Declare GameLogicMatch without initializing it here
+        GameLogicMatch GameLogicMatch;
+
+        // Constructor
+        public GameLogicRound(InputHandler inputHandler, JSONService json)
         {
+            // Set properties
             InputHandler = inputHandler;
             JSONService = json;
-        }
+
+            // Initialize GameLogicMatch after properties are set
+            GameLogicMatch = new GameLogicMatch(InputHandler, JSONService);
+        }   
+
         private Random random = new Random();
 
         public void InitPreliminaryRound(Tournament tournament)
@@ -34,6 +46,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
             int gamesPerTeam = tournament.Settings.NumberOfPreliminaryGamesPerTeam;
             List<Team> teams = tournament.Settings.TeamsInTournament;
+
+            InputHandler.View.ShowMessage("Teams in Tournament:");
 
             // Verify if it's possible to generate the required number of matches
             int totalGamesNeeded = teams.Count * gamesPerTeam / 2;
@@ -66,7 +80,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 if (teamA != teamB && !matchesCreated.Contains((teamA, teamB)) && !matchesCreated.Contains((teamB, teamA)))
                 {
                     // Create the match
-                    var match = new Match(teamA, teamB);
+                    Match match = new Match(teamA, teamB);
+
                     tournament.GamePlanPremilimaryRound.Add(match);
 
                     // Update counts
@@ -75,27 +90,122 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     matchesCreated.Add((teamA, teamB));
                 }
             }
-            Console.WriteLine($"Preliminary round initialized with {tournament.GamePlanPremilimaryRound.Count} matches.");
-            tournament.GamePlanPremilimaryRound.ForEach(match => Console.WriteLine($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
-            Console.WriteLine("Good luck to all teams!");
-            Thread.Sleep(10000); // Simulate some delay for better readability in console output - delete it in prod
+            InputHandler.View.ShowMessage($"Preliminary round initialized with {tournament.GamePlanPremilimaryRound.Count} matches.");
+            tournament.GamePlanPremilimaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
+            InputHandler.View.ShowMessage("Good luck to all teams!");
         }
 
         public void RunPreliminaryRound(Tournament tournament)
         {
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
+            foreach (var match in tournament.GamePlanPremilimaryRound)
+            {
+                GameLogicMatch.RunMatch(match);
+            }
+            
+            List<Team> rankings = GenerateRanking(tournament.GamePlanPremilimaryRound);
+            InputHandler.View.ShowMessage("Rankings:");
+            foreach (var team in rankings)
+            {
+                InputHandler.View.ShowMessage(team.TeamName);
+            }
         }
 
         public void InitKoRound(Tournament tournament)
         {
-            // teams for ko round are selected -> fill tournament.TeamsInKoRound
+            tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
+
+            // teams for ko round are selected (how many teams, in Tournament.TournamentSettings.NumberOfTeamsInKoRound) -> fill Tournament.TeamsInKoRound
+            if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
+            {
+                throw new ArgumentException("Tournament settings or teams are not properly configured.");
+            }
+            
+            
+            int numberOfTeamsInKoRound = tournament.Settings.NumberOfTeamsInKoRound;
+            tournament.TeamsInKoRound = tournament.PreliminaryStandings.OrderByDescending(t => t.NumberGoals).Take(numberOfTeamsInKoRound).ToList();
             // and organice them for the knockout round -> fill list of matches for KO round "tournament.GamePlanKoRound"
+            // shuffle the list
+            var shuffledTeams = tournament.TeamsInKoRound.OrderBy(x => random.Next()).ToList();
+            // create matches in pairs
+            for (int i = 0; i < shuffledTeams.Count; i += 2)
+            {
+                if (i + 1 < shuffledTeams.Count) // Ensure there is a pair
+                {
+                    var match = new Match(shuffledTeams[i], shuffledTeams[i + 1]);
+                    tournament.GamePlanKoRound.Add(match);
+                }
+            }
         }
 
         public void RunKoRound(Tournament tournament)
         {
             // take a list of matches tournament.GamePlanKoRound and execute it, asking the goals scored, updating the teams accordingly
+            foreach (var match in tournament.GamePlanKoRound)
+            {
+                GameLogicMatch.RunMatch(match);
+            }
             // at the end there is a winner
+            if (tournament.GamePlanKoRound.Count > 0)
+            {
+                var winner = tournament.GamePlanKoRound[0].teamA; // Assuming the first match's teamA is the winner
+                InputHandler.View.ShowMessage($"The winner of the knockout round is {winner.TeamName}!");
+            }
+            else
+            {
+                InputHandler.View.ShowMessage("No matches were played in the knockout round.");
+            }
+        }
+
+        public List<Team> GenerateRanking(List<Match> GamePlanPreliminaryRound)
+        {
+                List<Team> Teams = new List<Team>();
+
+                foreach (var match in GamePlanPreliminaryRound)
+                {
+                    if (!Teams.Contains(match.teamA))
+                    {
+                        Teams.Add(match.teamA);
+                    }
+
+                    if (!Teams.Contains(match.teamB))
+                    {
+                        Teams.Add(match.teamB);
+                    }
+
+                    if (match.goalsTeamA > match.goalsTeamB)
+                    {
+                        match.teamA.NumberGamesWon++;
+                    }
+                    else if (match.goalsTeamA < match.goalsTeamB)
+                    {
+                        match.teamB.NumberGamesWon++;
+                    }
+
+                match.teamA.Goaldifference += (match.goalsTeamA - match.goalsTeamB);
+                match.teamB.Goaldifference += (match.goalsTeamB - match.goalsTeamA);
+                }
+
+                 return Teams
+                    .OrderByDescending(t => t.NumberGamesWon)
+                    .ThenByDescending(t => t.Goaldifference)
+                    .ToList();
+                }
+
+            public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
+            {
+            if (goalsA > goalsB)
+            {
+                teamA.NumberGamesWon++;
+            }
+            if (goalsB > goalsA)
+            {
+                teamB.NumberGamesWon++;
+            }
+            teamA.Goaldifference += goalsA - goalsB;
+            teamA.NumberGoals += goalsA;
+            teamB.Goaldifference += goalsB - goalsA;
+            teamB.NumberGoals += goalsB;
         }
 
 

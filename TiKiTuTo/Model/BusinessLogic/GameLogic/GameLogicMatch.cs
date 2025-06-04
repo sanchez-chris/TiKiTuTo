@@ -1,32 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Media;
 using TiKiTuTo.Controller;
-using TiKiTuTo.Model.BusinessLogic;
 using TiKiTuTo.Model.DataObjects;
 using Timer = System.Timers.Timer;
-using System.Media;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     public class GameLogicMatch
     {
-        GameLogicRound GameLogicRound { get; set; }
+        //GameLogicRound GameLogicRound { get; set; }
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
 
         public GameLogicMatch(InputHandler inputHandler, JSONService json)
         {
-            GameLogicRound = new GameLogicRound(inputHandler, json);
+            //GameLogicRound = new GameLogicRound(inputHandler, json);
             InputHandler = inputHandler;
             JSONService = json;
         }
 
         public void RunMatch(Match match)
         {
-            StartMatchTimer(match);
+            int goalsA = 0;
+            int goalsB = 0;
+            // StartMatchTimer(match);
+
+            goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
+            match.goalsTeamA = goalsA;
+
+            goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
+            match.goalsTeamB = goalsB;
+
+            InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
+            FinishMatch(match);
         }
 
         private DateTime _endTime;
@@ -77,17 +82,19 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 teamB.NumberGamesWon++;
             }
-            teamA.Goaldifference = goalsA - goalsB;
-            teamA.NumberGoals += goalsB;
-            teamB.Goaldifference = goalsB - goalsA;
+            teamA.Goaldifference += goalsA - goalsB;
+            teamA.NumberGoals += goalsA;
+            teamB.Goaldifference += goalsB - goalsA;
             teamB.NumberGoals += goalsB;
         }
+
+
 
         public void FinishMatch(Match match)
         {
             match.finished = true;
-            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
-            JSONService.SaveGame();
+            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB); // it does not update the goals
+            //JSONService.SaveGame();
         }
     }
 }
