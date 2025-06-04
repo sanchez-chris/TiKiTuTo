@@ -94,7 +94,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             match.finished = true;
             UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB); // it does not update the goals
-            //JSONService.SaveGame();
+            JSONService.SaveGame();
         }
     }
 }

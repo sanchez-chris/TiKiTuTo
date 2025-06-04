@@ -165,7 +165,7 @@ namespace TiKiTuTo.View
                 while (!task.IsFinished)
                 {
                     task.Increment(10); // Increment progress by 10%
-                    Task.Delay(120).Wait(); // Wait for 300ms
+                    Task.Delay(80).Wait(); // Wait for 300ms
                 }
             });
 
