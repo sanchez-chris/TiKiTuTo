@@ -158,14 +158,12 @@ namespace TiKiTuTo.View
             AnsiConsole.Progress()
             .Start(ctx =>
             {
-                // Add a task for the progress bar
                 var task = ctx.AddTask("[green]Saving Tournament...[/]");
 
-                // Simulate progress over 3 seconds
                 while (!task.IsFinished)
                 {
                     task.Increment(10); // Increment progress by 10%
-                    Task.Delay(80).Wait(); // Wait for 300ms
+                    Task.Delay(80).Wait(); // Wait for 80ms
                 }
             });
 
