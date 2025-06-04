@@ -14,6 +14,7 @@ namespace TiKiTuTo.Controller
         RunTournament,
         ShowEditableTournamentSettings,
         TournamentSettingsEditingDialogue,
+        InGameMenu,
         Exit
     } 
 }

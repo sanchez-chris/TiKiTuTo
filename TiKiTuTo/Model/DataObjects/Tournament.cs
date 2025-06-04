@@ -11,9 +11,9 @@ namespace TiKiTuTo.Model.DataObjects
         public string TournamentName { get; set; }
         public TournamentSettings Settings { get; set; }
         public List<Team> PreliminaryStandings { get; set; } = new List<Team>();
+        public List<Team> KoStandings { get; set; } = new List<Team>();
         public List<Match> GamePlanPremilimaryRound { get; set; } = new List<Match>();
         public List<Match> GamePlanKoRound { get; set; } = new List<Match>();
-        public List<Team> TeamsInKoRound { get; set; } = new List<Team>();
 
 
 

@@ -2,6 +2,7 @@
 using TiKiTuTo.View;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Model;
 
 namespace TiKiTuTo.Controller
 {
@@ -14,18 +15,23 @@ namespace TiKiTuTo.Controller
         private GameLogicRound GameLogicRound { get; }
         private GameLogicTournament GameLogicTournament { get; }
         private GameLogicTournamentSettings GameLogicTournamentSettings { get; }
+        private Model.TournamentModel _TournamentModel { get; }
 
 
-        public Controller(
+        public Controller
+            (
             IView view, 
+            Model.TournamentModel tournamentModel,
             StateMachine stateMachine, 
             InputHandler inputHandler, 
             GameLogicMatch gameLogicMatch, 
             GameLogicRound gameLogicRound, 
             GameLogicTournament gameLogicTournament, 
-            GameLogicTournamentSettings gameLogicTournamentSettings)
+            GameLogicTournamentSettings gameLogicTournamentSettings
+            )
         {
             _view = view;
+            _TournamentModel = tournamentModel;
             _stateMachine = stateMachine;
             InputHandler = inputHandler;
             GameLogicMatch = gameLogicMatch;
@@ -40,31 +46,13 @@ namespace TiKiTuTo.Controller
         {
             while (_stateMachine.CurrentState != AppState.Exit)
             {
-                RenderCurrentState();
+                _stateMachine.ExecuteCurrentState();
                 int userChoice = InputHandler.GetValidMenuInput();
                 _stateMachine.HandleInput(userChoice);
-                
             }
         }
 
-        private void RenderCurrentState()
-        {
-            switch (_stateMachine.CurrentState)
-            {
-                case AppState.MainMenu:
-                    _view.ShowMainMenu();
-                    break;
-                case AppState.StartTournamentMenu:
-                    _view.ShowStartTournamentMenu();
-                    break;
-                case AppState.RunTournament:
-//                  CreateTournament(GameLogicTournamentSettings.CreateTournamentSettings());
-                    break;
-                case AppState.Exit:
-                    _view.ShowExitMessage();
-                    break;
-            }
-        }
+
 
 
     }

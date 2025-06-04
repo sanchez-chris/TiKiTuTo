@@ -13,13 +13,14 @@ namespace TiKiTuTo.Model.DataObjects
         public Team teamB { get; set; }
         public int goalsTeamA { get; set; } = 0;
         public int goalsTeamB { get; set; } = 0;
+
         public bool finished { get; set; }
 
         public Match(Team teamA, Team teamB)
         {
-            teamA = teamA;
-            teamB = teamB;
-            finished = false;
+            this.teamA = teamA;
+            this.teamB = teamB;
+            this.finished = false;
         }
 
     }

@@ -49,17 +49,17 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public List<Team> CreateListOfTeams(int NumberOfTeamsTotal)
         {
             List<Team> teams = new List<Team>();
-
+            int maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
             for (int i = 1; i <= NumberOfTeamsTotal; i++)
             {
-                teams.Add(CreateTeam(i));
+                teams.Add(CreateTeam(i, maxTeamMembers));
             }
             InputHandler.View.ShowTeamsAndPlayer(teams);
             return teams;
         }
 
 
-        public Team CreateTeam(int i)
+        public Team CreateTeam(int i, int maxTeamMembers)
         {
             bool emptyNameAllowed = true;
             string? teamName = InputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed);
@@ -71,7 +71,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             List<Player> playerList = new List<Player>();
             Team team = new Team(teamName, playerList);
-            int maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
+//           maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
             for (int p = 1; p <= maxTeamMembers; p++)
             {
                 string? playerName = InputHandler.GetPlayerName($"Please enter the name of the next team member. Default name when empty: Player {p}.", emptyNameAllowed);

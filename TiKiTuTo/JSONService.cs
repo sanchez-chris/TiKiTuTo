@@ -13,9 +13,9 @@ namespace TiKiTuTo.Controller
     public class JSONService
     {
         private string saveFolder = "SaveGame";
-        public Model.Model Model { get; set; }
+        public Model.TournamentModel Model { get; set; }
 
-        public JSONService(Model.Model model) 
+        public JSONService(Model.TournamentModel model) 
         {
             Model = model;
         }
@@ -29,6 +29,7 @@ namespace TiKiTuTo.Controller
             }
 
             DateTime now = DateTime.Now;
+            
             string filePath = $"{saveFolder}\\{Model.Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
 
             JsonSerializerOptions options = new JsonSerializerOptions();

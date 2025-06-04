@@ -32,7 +32,12 @@ namespace TiKiTuTo.View
         public void ClearCurrentConsoleLine();
 
         public void ShowTeamsAndPlayer(List<Team> teams);
-        
+
+        public string PromptSelection(string title, IEnumerable<string> options);
+
+        public string ShowSpectreMenu();
+
+
 
     }
 }
