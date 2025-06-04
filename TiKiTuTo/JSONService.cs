@@ -13,9 +13,9 @@ namespace TiKiTuTo.Controller
     public class JSONService
     {
         private string saveFolder = "SaveGame";
-        public Model.Model Model { get; set; }
+        public Model.TournamentModel Model { get; set; }
 
-        public JSONService(Model.Model model) 
+        public JSONService(Model.TournamentModel model) 
         {
             Model = model;
         }
