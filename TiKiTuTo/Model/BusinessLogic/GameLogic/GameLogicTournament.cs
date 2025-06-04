@@ -37,7 +37,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void InitTournament()
         {
             SetupTournament();
-            GameLogicRound.InitPreliminaryRound(TournamentModel.Tournament);
+            GameLogicRound.InitPreliminaryRound();
             
             //JSONService.SaveGame(tournament);
         }
