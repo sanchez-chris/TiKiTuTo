@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using TiKiTuTo.Controller;
@@ -118,6 +117,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void InitKoRound(Tournament tournament)
         {
             tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
+            InputHandler.View.ShowMessage("KO Round contestants:");
 
             // teams for ko round are selected (how many teams, in Tournament.TournamentSettings.NumberOfTeamsInKoRound) -> fill Tournament.TeamsInKoRound
             tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.Settings.NumberOfTeamsInKoRound).ToList();
@@ -151,15 +151,27 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunKoRound(Tournament tournament)
         {
-            // take a list of matches tournament.GamePlanKoRound and execute it, asking the goals scored, updating the teams accordingly
             foreach (var match in tournament.GamePlanKoRound)
             {
                 GameLogicMatch.RunMatch(match);
+
+                if (match.goalsTeamA > match.goalsTeamB)
+                {
+                    tournament.KoStandings.Remove(match.teamB);
+                }
+                else if (match.goalsTeamA < match.goalsTeamB)
+                {
+                    tournament.KoStandings.Remove(match.teamA);
+                }
+                else
+                {
+                    // draw
+                }
             }
-            // at the end there is a winner
-            if (tournament.GamePlanKoRound.Count > 0)
+
+            if (tournament.KoStandings.Count == 1)
             {
-                var winner = tournament.GamePlanKoRound[0].teamA; // Assuming the first match's teamA is the winner
+                Team winner = tournament.KoStandings.First();
                 InputHandler.View.ShowMessage($"The winner of the knockout round is {winner.TeamName}!");
             }
             else
@@ -168,10 +180,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
+
         public List<Team> GenerateRanking(Tournament tournament)
         {
             List<Team> Teams = tournament.Settings.TeamsInTournament;
-
 
             return Teams
                     .OrderByDescending(t => t.NumberGamesWon)
