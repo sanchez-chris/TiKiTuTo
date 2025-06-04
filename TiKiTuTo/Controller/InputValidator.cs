@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Design;
 using TiKiTuTo.View;
 using TiKiTuTo.Model;
+using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Controller
 {
@@ -40,6 +41,16 @@ namespace TiKiTuTo.Controller
         public bool IsValidMenuInput(int userInput, int maxMenuOption)
         {
             return userInput > 0 && userInput <= maxMenuOption;
+        }
+
+        public bool IsValidTournamentSettings(Tournament tournament)
+        {
+
+            if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
