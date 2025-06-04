@@ -159,42 +159,53 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public List<Team> GenerateRanking(List<Match> GamePlanPreliminaryRound)
         {
-            List<Team> Teams = new List<Team>();
+                List<Team> Teams = new List<Team>();
 
-            foreach (var match in GamePlanPreliminaryRound)
-            {
-                if (!Teams.Contains(match.teamA))
+                foreach (var match in GamePlanPreliminaryRound)
                 {
-                    Teams.Add(match.teamA);
-                }
+                    if (!Teams.Contains(match.teamA))
+                    {
+                        Teams.Add(match.teamA);
+                    }
 
-                if (!Teams.Contains(match.teamB))
-                {
-                    Teams.Add(match.teamB);
-                }
+                    if (!Teams.Contains(match.teamB))
+                    {
+                        Teams.Add(match.teamB);
+                    }
 
-                if (match.goalsTeamA > match.goalsTeamB)
-                {
-                    match.teamA.pointsInTheTable += 3;
-                }
-                else if (match.goalsTeamA < match.goalsTeamB)
-                {
-                    match.teamB.pointsInTheTable += 3;
-                }
-                else
-                {
-                    match.teamA.pointsInTheTable += 1;
-                    match.teamB.pointsInTheTable += 1;
-                }
+                    if (match.goalsTeamA > match.goalsTeamB)
+                    {
+                        match.teamA.NumberGamesWon++;
+                    }
+                    else if (match.goalsTeamA < match.goalsTeamB)
+                    {
+                        match.teamB.NumberGamesWon++;
+                    }
 
                 match.teamA.Goaldifference += (match.goalsTeamA - match.goalsTeamB);
                 match.teamB.Goaldifference += (match.goalsTeamB - match.goalsTeamA);
-            }
+                }
 
-            return Teams
-                .OrderByDescending(t => t.pointsInTheTable)
-                .ThenByDescending(t => t.Goaldifference)
-                .ToList();
+                 return Teams
+                    .OrderByDescending(t => t.NumberGamesWon)
+                    .ThenByDescending(t => t.Goaldifference)
+                    .ToList();
+                }
+
+            public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
+            {
+            if (goalsA > goalsB)
+            {
+                teamA.NumberGamesWon++;
+            }
+            if (goalsB > goalsA)
+            {
+                teamB.NumberGamesWon++;
+            }
+            teamA.Goaldifference += goalsA - goalsB;
+            teamA.NumberGoals += goalsA;
+            teamB.Goaldifference += goalsB - goalsA;
+            teamB.NumberGoals += goalsB;
         }
 
 

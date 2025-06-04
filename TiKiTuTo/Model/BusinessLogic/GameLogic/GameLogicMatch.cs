@@ -24,11 +24,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             int goalsB = 0;
             // StartMatchTimer(match);
 
-            InputHandler.View.ShowMessage($"How many goals has {match.teamA}?");
             goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
             match.goalsTeamA = goalsA;
 
-            InputHandler.View.ShowMessage($"How many goals has {match.teamB}?");
             goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
             match.goalsTeamB = goalsB;
 
@@ -78,17 +76,19 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             if (goalsA > goalsB)
             {
-                teamA.NumberGamesWon++; //goals a und B are 0
+                teamA.NumberGamesWon++;
             }
             if (goalsB > goalsA)
             {
                 teamB.NumberGamesWon++;
             }
-            teamA.Goaldifference = goalsA - goalsB;
-            teamA.NumberGoals += goalsB;
-            teamB.Goaldifference = goalsB - goalsA;
+            teamA.Goaldifference += goalsA - goalsB;
+            teamA.NumberGoals += goalsA;
+            teamB.Goaldifference += goalsB - goalsA;
             teamB.NumberGoals += goalsB;
         }
+
+
 
         public void FinishMatch(Match match)
         {
