@@ -103,9 +103,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 GameLogicMatch.RunMatch(match);
             }
             
-            List<Team> rankings = GenerateRanking(tournament.GamePlanPremilimaryRound);
+            tournament.PreliminaryStandings = GenerateRanking(tournament.GamePlanPremilimaryRound);
             InputHandler.View.ShowMessage("Rankings:");
-            foreach (var team in rankings)
+            foreach (var team in tournament.PreliminaryStandings)
             {
                 InputHandler.View.ShowMessage(team.TeamName);
             }
@@ -116,6 +116,15 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
 
             // teams for ko round are selected (how many teams, in Tournament.TournamentSettings.NumberOfTeamsInKoRound) -> fill Tournament.TeamsInKoRound
+            tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.Settings.NumberOfTeamsInKoRound).ToList();
+            foreach (var team in tournament.KoStandings)
+            {
+                InputHandler.View.ShowMessage(team.TeamName);
+            }
+
+
+
+
             if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
@@ -123,10 +132,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             
             
             int numberOfTeamsInKoRound = tournament.Settings.NumberOfTeamsInKoRound;
-            tournament.TeamsInKoRound = tournament.PreliminaryStandings.OrderByDescending(t => t.NumberGoals).Take(numberOfTeamsInKoRound).ToList();
+            tournament.KoStandings = tournament.PreliminaryStandings.OrderByDescending(t => t.NumberGoals).Take(numberOfTeamsInKoRound).ToList();
             // and organice them for the knockout round -> fill list of matches for KO round "tournament.GamePlanKoRound"
             // shuffle the list
-            var shuffledTeams = tournament.TeamsInKoRound.OrderBy(x => random.Next()).ToList();
+            var shuffledTeams = tournament.KoStandings.OrderBy(x => random.Next()).ToList();
             // create matches in pairs
             for (int i = 0; i < shuffledTeams.Count; i += 2)
             {
