@@ -24,16 +24,13 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             int goalsB = 0;
             // StartMatchTimer(match);
 
-            Console.WriteLine($"How many goals has {match.teamA}?");
+            InputHandler.View.ShowMessage($"How many goals has {match.teamA}?");
             goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
             match.goalsTeamA = goalsA;
-   
-            Console.WriteLine($"How many goals has {match.teamB}?");
+
+            InputHandler.View.ShowMessage($"How many goals has {match.teamB}?");
             goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
             match.goalsTeamB = goalsB;
-
-
-            // WE NEED TO UPDATE THE OBJECT MATCH!! TEMP
 
             InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
             FinishMatch(match);
