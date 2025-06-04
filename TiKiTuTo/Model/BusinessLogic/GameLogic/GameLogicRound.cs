@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using TiKiTuTo.Controller;
@@ -118,7 +117,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void InitKoRound(Tournament tournament)
         {
             tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
-
+            InputHandler.View.ShowMessage("KO Round contestants:");
             // teams for ko round are selected (how many teams, in Tournament.TournamentSettings.NumberOfTeamsInKoRound) -> fill Tournament.TeamsInKoRound
             tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.Settings.NumberOfTeamsInKoRound).ToList();
             foreach (var team in tournament.KoStandings)
