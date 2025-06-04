@@ -51,7 +51,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
 
             // fill the list of matches tournament.GamePlanPreliminaryRound
-            if (!_inputValidator.HasValidTournamentSettings(Tournament))
+            if (!_inputValidator.HasValidTournamentSettings(TournamentModel.Tournament))
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
