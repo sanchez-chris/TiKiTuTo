@@ -79,6 +79,65 @@ namespace TiKiTuTo.Controller
             }
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///space for Dominiks JSON magic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Returns all files containing unfinished tournaments (ready to be continued)
         /// </summary>
