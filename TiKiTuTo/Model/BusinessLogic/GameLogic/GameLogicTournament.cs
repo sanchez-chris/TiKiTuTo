@@ -58,12 +58,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
 
 
-
         public void StartTournament()
         {
-            GameLogicRound.RunPreliminaryRound(TournamentModel.Tournament);
-            GameLogicRound.InitKoRound(TournamentModel.Tournament);
-            GameLogicRound.RunKoRound(TournamentModel.Tournament);
+            GameLogicRound.RunPreliminaryRound();
+            GameLogicRound.InitKoRound();
+            GameLogicRound.RunKoRound();
         }
 
 
