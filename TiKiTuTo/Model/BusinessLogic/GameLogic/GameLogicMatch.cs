@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Media;
 using TiKiTuTo.Controller;
-using TiKiTuTo.Model.BusinessLogic;
 using TiKiTuTo.Model.DataObjects;
 using Timer = System.Timers.Timer;
-using System.Media;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
@@ -28,17 +22,14 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             int goalsA = 0;
             int goalsB = 0;
-           // StartMatchTimer(match);
-            while (goalsA >= 0 && goalsA < 100)
-            {
-                Console.WriteLine($"How many goals has {match.teamA}?");
-                goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
-            }
-            while (goalsB >= 0 && goalsB < 100)
-            {
-                Console.WriteLine($"How many goals has {match.teamB}?");
-                goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
-            }
+            // StartMatchTimer(match);
+
+            Console.WriteLine($"How many goals has {match.teamA}?");
+            goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
+   
+            Console.WriteLine($"How many goals has {match.teamB}?");
+            goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
+
             InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
             FinishMatch(match);
         }
