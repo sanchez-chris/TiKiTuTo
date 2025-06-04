@@ -47,11 +47,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             var Tournament = TournamentModel.Tournament;
             var Settings = TournamentModel.Tournament.Settings;
-            var GamePlanPreliminaryRound = TournamentModel.Tournament.GamePlanPreliminaryRound;
+            List<Match> GamePlanPreliminaryRound = TournamentModel.Tournament.GamePlanPreliminaryRound;
 
 
             // fill the list of matches tournament.GamePlanPreliminaryRound
-            if (!_inputValidator.HasValidTournamentSettings(TournamentModel.Tournament))
+            if (!_inputValidator.HasValidTournamentSettings(Tournament))
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
@@ -131,10 +131,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void InitKoRound()
         {
             var Tournament = TournamentModel.Tournament;
-            var GamePlanKoRound = TournamentModel.Tournament.GamePlanKoRound;
-            var KoStandings = TournamentModel.Tournament.KoStandings;
-            var PreliminaryStandings = TournamentModel.Tournament.PreliminaryStandings;
             var Settings = TournamentModel.Tournament.Settings;
+            List<Match> GamePlanKoRound = TournamentModel.Tournament.GamePlanKoRound;
+            List<Team> KoStandings = TournamentModel.Tournament.KoStandings;
+            List<Team> PreliminaryStandings = TournamentModel.Tournament.PreliminaryStandings;
 
 
             GamePlanKoRound.Clear(); // Clear previous matches if any
@@ -171,7 +171,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunKoRound()
         {
-            var GamePlanKoRound = TournamentModel.Tournament.GamePlanKoRound;
+            List<Match> GamePlanKoRound = TournamentModel.Tournament.GamePlanKoRound;
 
 
             // take a list of matches tournament.GamePlanKoRound and execute it, asking the goals scored, updating the teams accordingly
