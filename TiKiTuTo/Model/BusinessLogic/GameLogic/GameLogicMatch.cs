@@ -26,9 +26,14 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             Console.WriteLine($"How many goals has {match.teamA}?");
             goalsA = InputHandler.GetNumber($"How many goals has {match.teamA.TeamName}?");
+            match.goalsTeamA = goalsA;
    
             Console.WriteLine($"How many goals has {match.teamB}?");
             goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
+            match.goalsTeamB = goalsB;
+
+
+            // WE NEED TO UPDATE THE OBJECT MATCH!! TEMP
 
             InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
             FinishMatch(match);
@@ -76,7 +81,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             if (goalsA > goalsB)
             {
-                teamA.NumberGamesWon++;
+                teamA.NumberGamesWon++; //goals a und B are 0
             }
             if (goalsB > goalsA)
             {
@@ -91,8 +96,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void FinishMatch(Match match)
         {
             match.finished = true;
-            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
-            JSONService.SaveGame();
+            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB); // it does not update the goals
+            //JSONService.SaveGame();
         }
     }
 }

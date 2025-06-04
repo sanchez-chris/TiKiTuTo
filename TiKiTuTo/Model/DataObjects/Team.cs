@@ -13,6 +13,8 @@ namespace TiKiTuTo.Model.DataObjects
         public string TeamName { get; set; }
         public List<Player> PlayerInTeam { get; set; }
         public int NumberGamesWon { get; set; } = 0;
+        public int pointsInTheTable { get; set; } = 0;
+
         public int NumberGoals { get; set; } = 0;
         public int Goaldifference { get; set; } = 0;
 

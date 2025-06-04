@@ -48,10 +48,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             List<Team> teams = tournament.Settings.TeamsInTournament;
 
             Console.WriteLine("Teams in Tournament:");
-            foreach (Team team in teams)
-            {
-                Console.WriteLine(team);
-            }
 
             // Verify if it's possible to generate the required number of matches
             int totalGamesNeeded = teams.Count * gamesPerTeam / 2;
@@ -107,19 +103,30 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 GameLogicMatch.RunMatch(match);
             }
+            
+            List<Team> rankings = GenerateRanking(tournament.GamePlanPremilimaryRound);
+            Console.WriteLine("Rankings:");
+            foreach (var team in rankings)
+            {
+                Console.WriteLine(team.TeamName);
+            }
         }
 
         public void InitKoRound(Tournament tournament)
         {
+            tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
+
             // teams for ko round are selected (how many teams, in Tournament.TournamentSettings.NumberOfTeamsInKoRound) -> fill Tournament.TeamsInKoRound
             if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
-            int numberOfTeamsInKoRound = tournament.Settings.NumberOfTeamsInKoRound;
-            tournament.TeamsInKoRound = tournament.PreliminaryStandings.OrderByDescending(t => t.NumberGoals).Take(numberOfTeamsInKoRound).ToList();
+            
+            
+            int numberOfTeamsInKoRound = tournament.Settings.NumberOfTeamsInKoRound; // temp teamsinkoround 0
+            // temp preliminarystandings is empty
+            tournament.TeamsInKoRound = tournament.PreliminaryStandings.OrderByDescending(t => t.NumberGoals).Take(numberOfTeamsInKoRound).ToList(); //temp does not work - teamsinkoround ist null
             // and organice them for the knockout round -> fill list of matches for KO round "tournament.GamePlanKoRound"
-            tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
             // shuffle the list
             var shuffledTeams = tournament.TeamsInKoRound.OrderBy(x => random.Next()).ToList();
             // create matches in pairs
@@ -150,6 +157,46 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 InputHandler.View.ShowMessage("No matches were played in the knockout round.");
             }
+        }
+
+        public List<Team> GenerateRanking(List<Match> GamePlanPreliminaryRound)
+        {
+            List<Team> Teams = new List<Team>();
+
+            foreach (var match in GamePlanPreliminaryRound)
+            {
+                if (!Teams.Contains(match.teamA))
+                {
+                    Teams.Add(match.teamA);
+                }
+
+                if (!Teams.Contains(match.teamB))
+                {
+                    Teams.Add(match.teamB);
+                }
+
+                if (match.goalsTeamA > match.goalsTeamB)
+                {
+                    match.teamA.pointsInTheTable += 3;
+                }
+                else if (match.goalsTeamA < match.goalsTeamB)
+                {
+                    match.teamB.pointsInTheTable += 3;
+                }
+                else
+                {
+                    match.teamA.pointsInTheTable += 1;
+                    match.teamB.pointsInTheTable += 1;
+                }
+
+                match.teamA.Goaldifference += (match.goalsTeamA - match.goalsTeamB);
+                match.teamB.Goaldifference += (match.goalsTeamB - match.goalsTeamA);
+            }
+
+            return Teams
+                .OrderByDescending(t => t.pointsInTheTable)
+                .ThenByDescending(t => t.Goaldifference)
+                .ToList();
         }
 
 
