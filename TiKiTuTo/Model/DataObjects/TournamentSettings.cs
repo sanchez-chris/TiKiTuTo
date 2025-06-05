@@ -23,5 +23,7 @@ namespace TiKiTuTo.Model.DataObjects
             MatchDuration = 10;
         }
 
+        public TournamentSettings() { }
+
     }
 }

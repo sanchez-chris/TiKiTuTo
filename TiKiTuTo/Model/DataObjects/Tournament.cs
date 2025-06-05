@@ -24,5 +24,7 @@ namespace TiKiTuTo.Model.DataObjects
             TournamentName = name;
             Settings = settings;
         }
+
+        public Tournament() { }
     }
 }

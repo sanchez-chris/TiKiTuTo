@@ -36,6 +36,14 @@ namespace TiKiTuTo.Controller
             return MenuInput;
         }
 
+        public int GetValidFileSelection()
+        {
+            //no input validation here, because Spectre will change this logic at all
+            int fileChoice = GetNumber($"Please enter the number corresponding to the file you wish to load");
+
+            return fileChoice;
+        }
+
         /// <summary>
         /// Asks user for the number of total teams in a tournament until a valid value is entered.
         /// </summary>

@@ -23,5 +23,7 @@ namespace TiKiTuTo.Model.DataObjects
             this.finished = false;
         }
 
+        public Match() { }
+
     }
 }

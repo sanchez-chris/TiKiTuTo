@@ -68,8 +68,7 @@ namespace TiKiTuTo.Controller
                     return _view.StartTournamentMenuSelection();
                     break;
                 case AppState.ShowSavedTournaments:
-                    //_view.ShowMessage("Saved tournaments (not implemented yet).");
-                    List<string> loadableFiles = _jsonService.GetUnfinishedTournamentFiles();
+                    string[] loadableFiles = _jsonService.GetUnfinishedTournamentFiles();
                     return _view.SavedTournamentsSelection(loadableFiles);
                     break;
                 case AppState.ShowFinishedTournaments:
@@ -263,15 +262,15 @@ namespace TiKiTuTo.Controller
         /// <param name="choice">user input</param>
         private void HandleShowSavedTournamentsChoice(int choice)
         {
-            List<string> unfinishedTournamentFiles = _jsonService.GetUnfinishedTournamentFiles();
-            if (choice <= unfinishedTournamentFiles.Count) //a valid tournament file
+            string[] unfinishedTournamentFiles = _jsonService.GetUnfinishedTournamentFiles();
+            if (choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = unfinishedTournamentFiles[choice];
                 _view.ShowMessage($"Opening {chosenTournament}");
-                //_tournamentModel.Tournament = _jsonService.LoadGame(chosenTournament); jsonService.LoadGame should take a filename or path, no?
+                _jsonService.LoadTournament(chosenTournament); //jsonService.LoadGame should take a filename or path, no?
                 TransitionTo(AppState.RunTournament);
             }
-            else if (choice == unfinishedTournamentFiles.Count + 1) //back to main menu
+            else if (choice == unfinishedTournamentFiles.Length + 1) //back to main menu
             {
                 TransitionTo(AppState.MainMenu);
             }
@@ -289,14 +288,14 @@ namespace TiKiTuTo.Controller
         /// <param name="choice">user input</param>
         private void HandleShowFinishedTournamentsChoice(int choice)
         {
-            List<string> unfinishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
-            if (choice <= unfinishedTournamentFiles.Count) //a valid tournament file
+            string[] unfinishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
+            if (choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = unfinishedTournamentFiles[choice];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 TransitionTo(AppState.RunTournament);
             }
-            else if (choice == unfinishedTournamentFiles.Count + 1) //back to main menu
+            else if (choice == unfinishedTournamentFiles.Length + 1) //back to main menu
             {
                 TransitionTo(AppState.MainMenu);
             }
@@ -331,13 +330,13 @@ namespace TiKiTuTo.Controller
             switch (choice)
             {
                 case 1:
-                    _jsonService.SaveGame();
+                    _jsonService.SaveTournament();
                     break;
                 case 2:
                     TransitionTo(AppState.MainMenu);
                     break;
                 case 3:
-                    _jsonService.SaveGame();
+                    _jsonService.SaveTournament();
                     TransitionTo(AppState.Exit);
                     break;
                 default:

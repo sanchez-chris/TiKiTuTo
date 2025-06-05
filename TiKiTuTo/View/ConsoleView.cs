@@ -226,6 +226,17 @@ namespace TiKiTuTo.View
         }
 
 
+        public void DisplayFiles(string[] currentFiles)
+        {
+            for (int i = 0; i < currentFiles.Length; i++)
+            {
+                string fileName = Path.GetFileName(currentFiles[i]);
+                ShowMessage($"{i}: {fileName}");
+            }
+        }
+
+
+
         /*reusable promptSelection function recieving an IEnumerable<string> (so it doesnt matter if the 
          * argument is type list<string>, string[] ...)
          * Please note, that PageSize only determines how many options are visible on the screen at one time.
@@ -278,6 +289,26 @@ namespace TiKiTuTo.View
                         "   5: Exit"));
             return userChoice;
         }
+
+        public void SavingTournamentAnimation(string filePath)
+        {
+            AnsiConsole.Progress()
+            .Start(ctx =>
+            {
+                var task = ctx.AddTask("[green]Saving Tournament...[/]");
+
+                while (!task.IsFinished)
+                {
+                    task.Increment(10); // Increment progress by 10%
+                    Task.Delay(80).Wait(); // Wait for 80ms
+                }
+            });
+
+            ShowMessage($"Tournament has been saved: {filePath}");
+            WriteEmptyLine();
+        }
+
+        
 
 
     }

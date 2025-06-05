@@ -8,136 +8,104 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.View;
 
 namespace TiKiTuTo.Controller
 {
     public class JSONService
     {
-        private string saveFolder = "SaveGame";
-        public TournamentModel TournamentModel { get; set; }
+        private string saveFolder = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "TikiTuto", "SaveGames");
 
-        public JSONService(TournamentModel model) 
+        public TournamentModel _tournamentModel;
+        private IView _view;
+        private InputHandler _inputHandler;
+
+
+        public JSONService(TournamentModel tournamentModel, IView view, InputHandler inputHandler)
         {
-            TournamentModel = model;
+            _tournamentModel = tournamentModel;
+            _view = view;
+            _inputHandler = inputHandler;
         }
 
-        public void SaveGame()
+        public void SaveTournament()
         {
-            var Tournament = TournamentModel.Tournament;  
-            
-            
-            if (!Directory.Exists(saveFolder))
-            {
-                Directory.CreateDirectory(saveFolder);
-            }
+            var Tournament = _tournamentModel.Tournament;
 
-            DateTime now = DateTime.Now;
-            
-            string filePath = $"{saveFolder}\\{Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
-
-            JsonSerializerOptions options = new JsonSerializerOptions();
-            options.WriteIndented = true;
-
-            string jsonString = JsonSerializer.Serialize(Tournament, options);
-            File.WriteAllText(filePath, jsonString );
-            Console.WriteLine($"Tournament has been saved: {filePath}");
-        }
-
-
-        public void LoadGame()
-        {
-            
-            // PART I: Auswahl des SaveGames
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string[] currentSaveGames = Directory.GetFiles($"{currentDirectory}\\{saveFolder}");
-
-            for (int i = 0; i < currentSaveGames.Length; i++)
-            {
-                string fileName = Path.GetFileName(currentSaveGames[i]);
-                Console.WriteLine($"{i}: {fileName}");
-            }
-            Console.WriteLine("Please enter the number corresponding to the game you wish to load.");
-            int number = Convert.ToInt32(Console.ReadLine());
-
-            string filePath = currentSaveGames[number];
-
-            // PART II: JSON-Konvertierung
             try
             {
-                string tournamentJSON = File.ReadAllText(filePath);
-                Tournament loadedTournament = JsonSerializer.Deserialize<Tournament>(tournamentJSON);
+                if (!Directory.Exists(saveFolder))
+                {
+                    Directory.CreateDirectory(saveFolder);
+                }
 
-                if (loadedTournament != null)
-                {
-                    Console.WriteLine($"Turnier {loadedTournament.TournamentName} geladen");
-                }
-                else
-                {
-                    Console.WriteLine("Fehler beim Laden des Turniers: Das JSON konnte nicht deserialisiert werden.");
-                }
+                DateTime now = DateTime.Now;
+
+                string filePath = $"{saveFolder}\\{Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
+
+                JsonSerializerOptions options = new JsonSerializerOptions();
+                options.WriteIndented = true;
+
+                string jsonString = JsonSerializer.Serialize(Tournament, options);
+                File.WriteAllText(filePath, jsonString);
+
+                _view.SavingTournamentAnimation(filePath);
+            }
+            catch (JsonException ex)
+            {
+                _view.ShowMessage($"Error during serialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Fehler beim Lesen der Datei: {ex.Message}");
+                _view.ShowMessage($"An unexpected error occurred: {ex.Message}");
             }
+
         }
+        public void LoadTournament(string chosenFile)
+        {
+
+            //string[] currentSaveGames = Directory.GetFiles(saveFolder);
+
+            //_view.DisplayFiles(currentSaveGames);
+            //int chosenFileIndex = _inputHandler.GetValidFileSelection();
+
+            try
+            {
+
+                string tournamentJSON = File.ReadAllText(chosenFile);
+
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true 
+                };
+                Tournament loadedTournament = JsonSerializer.Deserialize<Tournament>(tournamentJSON, options);
+             
+
+                if (loadedTournament != null)
+                {
+                    _view.ShowMessage($"Turnier {loadedTournament.TournamentName} geladen");
+                    _tournamentModel.Tournament = loadedTournament;
+                }
+                
+
+            }
+            catch (JsonException ex)
+            {
+                _view.ShowMessage($"Error during serialization: {ex.Message}");
+            }
+            catch (FileNotFoundException ex)
+            {
+                _view.ShowMessage($"File not Found");
+            }
+            catch (Exception ex)
+            {
+                _view.ShowMessage($"An unexpected error occured {ex.Message}");
+            }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///space for Dominiks JSON magic
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
 
 
@@ -145,22 +113,23 @@ namespace TiKiTuTo.Controller
         /// Returns all files containing unfinished tournaments (ready to be continued)
         /// </summary>
         /// <returns> List<string> of file names for the tournament JSON files.</returns>
-        public List<string> GetUnfinishedTournamentFiles()
+        public string[] GetUnfinishedTournamentFiles()
         {
-            return new List<string>() 
-            { 
-                "testfile1",
-                "testfile2"
-            };
+            //Array because of return tye of Directory.GetFiles()
+            string[] currentSaveGames = Directory.GetFiles(saveFolder);
+
+            return currentSaveGames;
         }
 
         /// <summary>
         /// Returns all files containing finished tournaments (ready to show results)
         /// </summary>
         /// <returns> List<string> of file names for the tournament JSON files.</returns>
-        public List<string> GetFinishedTournamentFiles()
+        public string[] GetFinishedTournamentFiles()
         {
-            return new List<string>();
+            string[] finishedTournamentFiles = Directory.GetFiles(saveFolder);
+
+            return finishedTournamentFiles;
         }
 
     }
