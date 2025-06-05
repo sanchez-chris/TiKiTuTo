@@ -30,7 +30,7 @@ namespace TiKiTuTo.Controller
             _inputHandler = inputHandler;
         }
 
-        public void SaveGame()
+        public void SaveTournament()
         {
             var Tournament = _tournamentModel.Tournament;
 
@@ -63,15 +63,13 @@ namespace TiKiTuTo.Controller
             }
 
         }
-        public void LoadGame()
+        public void LoadTournament(string chosenFile)
         {
 
-            string[] currentSaveGames = Directory.GetFiles(saveFolder);
+            //string[] currentSaveGames = Directory.GetFiles(saveFolder);
 
-            _view.DisplayFiles(currentSaveGames);
-            int chosenFileIndex = _inputHandler.GetValidFileSelection();
-            string chosenFile = currentSaveGames[chosenFileIndex];
-
+            //_view.DisplayFiles(currentSaveGames);
+            //int chosenFileIndex = _inputHandler.GetValidFileSelection();
 
             try
             {
@@ -88,8 +86,10 @@ namespace TiKiTuTo.Controller
                 if (loadedTournament != null)
                 {
                     _view.ShowMessage($"Turnier {loadedTournament.TournamentName} geladen");
+                    _tournamentModel.Tournament = loadedTournament;
                 }
                 
+
             }
             catch (JsonException ex)
             {
@@ -104,64 +104,8 @@ namespace TiKiTuTo.Controller
                 _view.ShowMessage($"An unexpected error occured {ex.Message}");
             }
 
+
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///space for Dominiks JSON magic
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -169,22 +113,23 @@ namespace TiKiTuTo.Controller
         /// Returns all files containing unfinished tournaments (ready to be continued)
         /// </summary>
         /// <returns> List<string> of file names for the tournament JSON files.</returns>
-        public List<string> GetUnfinishedTournamentFiles()
+        public string[] GetUnfinishedTournamentFiles()
         {
-            return new List<string>() 
-            { 
-                "testfile1",
-                "testfile2"
-            };
+            //Array because of return tye of Directory.GetFiles()
+            string[] currentSaveGames = Directory.GetFiles(saveFolder);
+
+            return currentSaveGames;
         }
 
         /// <summary>
         /// Returns all files containing finished tournaments (ready to show results)
         /// </summary>
         /// <returns> List<string> of file names for the tournament JSON files.</returns>
-        public List<string> GetFinishedTournamentFiles()
+        public string[] GetFinishedTournamentFiles()
         {
-            return new List<string>();
+            string[] finishedTournamentFiles = Directory.GetFiles(saveFolder);
+
+            return finishedTournamentFiles;
         }
 
     }
