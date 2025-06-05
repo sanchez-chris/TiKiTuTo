@@ -80,6 +80,8 @@ namespace TiKiTuTo.Controller
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
                     _gameLogicTournament.InitTournament();
+                    _gameLogicTournament.StartTournament();
+//Here we actually need to differentiate between initiation and starting. Between the two, the user should be able to decide whether to start immediately or whether to go back and start later.
                     break;
                 case AppState.ShowLoadableTournamentSettings:
                     _view.ShowMessage("ShowLoadableTournamentSettings (not implemented yet).");
