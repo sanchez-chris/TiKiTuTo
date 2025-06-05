@@ -24,22 +24,25 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         List<Team> semifinalists = new List<Team>();
         bool isSemifinalPlayed = false;
 
+
         // Declare properties
         private InputValidator _inputValidator;
 
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
+        TournamentModel TournamentModel { get; set; }
 
         // Declare GameLogicMatch without initializing it here
         GameLogicMatch GameLogicMatch;
 
         // Constructor
-        public GameLogicRound(InputHandler inputHandler, JSONService json, InputValidator inputValidator)
+        public GameLogicRound(InputHandler inputHandler, JSONService json, InputValidator inputValidator, TournamentModel tournamentModel)
         {
             // Set properties
             _inputValidator = inputValidator;
             InputHandler = inputHandler;
             JSONService = json;
+            TournamentModel = tournamentModel;
 
             // Initialize GameLogicMatch after properties are set
             GameLogicMatch = new GameLogicMatch(InputHandler, JSONService);
@@ -47,15 +50,21 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         private Random random = new Random();
 
-        public void InitPreliminaryRound(Tournament tournament)
+        public void InitPreliminaryRound()
         {
+            var Tournament = TournamentModel.Tournament;
+
+            var Settings = TournamentModel.Tournament.Settings;
+
+            List<Match> GamePlanPreliminaryRound = Tournament.GamePlanPreliminaryRound;
+
             // fill the list of matches tournament.GamePlanPreliminaryRound
-            if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
+            if (Settings == null || Settings.TeamsInTournament == null || Settings.TeamsInTournament.Count < 2)
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
-            int gamesPerTeam = tournament.Settings.NumberOfPreliminaryGamesPerTeam;
-            List<Team> teams = tournament.Settings.TeamsInTournament;
+            int gamesPerTeam = Settings.NumberOfPreliminaryGamesPerTeam;
+            List<Team> teams = Settings.TeamsInTournament;
 
             InputHandler.View.ShowMessage("\n\nTeams in Tournament:");
 
@@ -92,7 +101,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     // Create the match
                     Match match = new Match(teamA, teamB);
 
-                    tournament.GamePlanPremilimaryRound.Add(match);
+                    GamePlanPreliminaryRound.Add(match);
 
                     // Update counts
                     teamMatchCount[teamA]++;
@@ -100,15 +109,16 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     matchesCreated.Add((teamA, teamB));
                 }
             }
-            InputHandler.View.ShowMessage($"Preliminary round initialized with {tournament.GamePlanPremilimaryRound.Count} matches.");
-            tournament.GamePlanPremilimaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
+            InputHandler.View.ShowMessage($"Preliminary round initialized with {GamePlanPreliminaryRound.Count} matches.");
+            GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
             InputHandler.View.ShowMessage("\n\nGood luck to all teams!");
         }
 
-        public void RunPreliminaryRound(Tournament tournament)
+        public void RunPreliminaryRound()
         {
+            var tournament = TournamentModel.Tournament;
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
-            foreach (var match in tournament.GamePlanPremilimaryRound)
+            foreach (var match in tournament.GamePlanPreliminaryRound)
             {
                 GameLogicMatch.RunMatch(match);
             }
@@ -121,10 +131,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
-        public void InitKoRound(Tournament tournament)
+        public void InitKoRound()
         {
+            var tournament = TournamentModel.Tournament;
+
             int currentRound = 0;
-            if (!_inputValidator.IsValidTournamentSettings(tournament))
+            if (!_inputValidator.HasValidTournamentSettings(tournament))
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
@@ -195,8 +207,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         }
 
-        public void RunKoRound(Tournament tournament)
+        public void RunKoRound()
         {
+            var tournament = TournamentModel.Tournament;
+
             // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
             int currentRound = 0;

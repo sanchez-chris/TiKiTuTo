@@ -7,8 +7,11 @@ using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Model
 {
-    public class Model
+    public class TournamentModel
     {
         public Tournament Tournament { get; set; }
+
+        public TournamentModel() { }
     }
+
 }

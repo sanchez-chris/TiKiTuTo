@@ -12,7 +12,7 @@ namespace TiKiTuTo.Model.DataObjects
         public TournamentSettings Settings { get; set; }
         public List<Team> PreliminaryStandings { get; set; } = new List<Team>();
         public List<Team> KoStandings { get; set; } = new List<Team>();
-        public List<Match> GamePlanPremilimaryRound { get; set; } = new List<Match>();
+        public List<Match> GamePlanPreliminaryRound { get; set; } = new List<Match>();
         public List<List<Match>> GamePlanKoRound { get; set; } = new List<List<Match>>();
 
 
@@ -24,5 +24,7 @@ namespace TiKiTuTo.Model.DataObjects
             TournamentName = name;
             Settings = settings;
         }
+
+        public Tournament() { }
     }
 }

@@ -22,7 +22,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             int goalsA = 0;
             int goalsB = 0;
-            // StartMatchTimer(match);
+            //StartMatchTimer(match);
 
             goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?");
             match.goalsTeamA = goalsA;
@@ -36,7 +36,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
 
         private DateTime _endTime;
-        public void StartMatchTimer(Match match, int? duration = 10)
+        public void StartMatchTimer(Match match, double? duration = 1) //duration has to be 10 for production
         {
             // Set the end time for the specified length in minutes
             while (duration == 0)
@@ -62,7 +62,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
                 else
                 {
-                    // inputHandler.View.ClearCurrentConsoleLine();
+                    InputHandler.View.ClearCurrentConsoleLine();
                     InputHandler.View.ShowMessage($"Time remaining: {timeRemaining:mm\\:ss}");
                 }
             };
@@ -98,8 +98,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void FinishMatch(Match match)
         {
             match.finished = true;
-            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
-            //JSONService.SaveGame();
+            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB); // it does not update the goals
+            JSONService.SaveTournament();
         }
     }
 }

@@ -14,6 +14,8 @@ namespace TiKiTuTo.Model.DataObjects
         {
             Name = name;
         }
+
+        public Player() { }
     }
 
 }
