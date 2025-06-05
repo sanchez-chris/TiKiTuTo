@@ -8,6 +8,7 @@ using TiKiTuTo.View;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.Model;
+using Spectre.Console;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
@@ -61,9 +62,17 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunTournament()
         {
-            GameLogicRound.RunPreliminaryRound();
-            GameLogicRound.InitKoRound();
-            GameLogicRound.RunKoRound();
+            if(!TournamentModel.Tournament.GamePlanKoRound.Any())
+            {
+                GameLogicRound.RunPreliminaryRound();
+                GameLogicRound.InitKoRound();
+            }
+            else
+            {
+                GameLogicRound.RunKoRound();
+            }
+
+
         }
 
 

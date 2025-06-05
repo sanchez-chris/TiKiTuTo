@@ -168,7 +168,7 @@ namespace TiKiTuTo.View
             // TODO: Implement functionality for showing the next match
         }
 
-        public int ShowIngameMenu()
+        public int InGameMenuSelection()
         {
             {
                 List<string> headerLines = new()
@@ -182,9 +182,9 @@ namespace TiKiTuTo.View
 
                 List<string> options = new()
             {
-            "Save current Tournament",
+            "Continue Tournament",
             "Back to Main Menu",
-            "Exit and Save.",
+            "Exit",
             };
 
                 int userChoice = PromptSelectionMulti(headerLines, options);

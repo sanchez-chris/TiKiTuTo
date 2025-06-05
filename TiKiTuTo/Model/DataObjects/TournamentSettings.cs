@@ -13,14 +13,16 @@ namespace TiKiTuTo.Model.DataObjects
         public int NumberOfTeamsTotal { get; set; }
         public List<Team> TeamsInTournament { get; set; }
         public int MatchDuration { get; set; }
+        public string SettingsName;
 
-        public TournamentSettings(int totalteams, int preliminaryTeamNumber, int koteams, List<Team> teams)
+        public TournamentSettings(int totalteams, int preliminaryTeamNumber, int koteams, List<Team> teams, string settingsName)
         {
             NumberOfTeamsTotal = totalteams;
             NumberOfPreliminaryGamesPerTeam = preliminaryTeamNumber;
             NumberOfTeamsInKoRound = koteams;
             TeamsInTournament = teams;
             MatchDuration = 10;
+            SettingsName = settingsName;
         }
 
         public TournamentSettings() { }

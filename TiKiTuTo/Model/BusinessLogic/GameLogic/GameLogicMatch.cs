@@ -22,6 +22,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             int goalsA = 0;
             int goalsB = 0;
+            
             //StartMatchTimer(match);
 
             goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?");

@@ -21,7 +21,7 @@ namespace TiKiTuTo.View
 
         public void ShowStartTournamentMenu();
 
-        public int ShowIngameMenu();
+        public int InGameMenuSelection();
 
         public void ShowInvalidInputMessage();
 
