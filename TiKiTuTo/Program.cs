@@ -20,7 +20,7 @@ namespace TiKiTuTo.Controller
             GameLogicRound gameLogicRound = new(inputHandler, json, inputValidator, model);
             GameLogicTournamentSettings gameLogicTournamentSettings = new(inputHandler);
             GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler, model, json);
-            StateMachine stateMachine = new StateMachine(view, gameLogicTournament, model, json);
+            StateMachine stateMachine = new StateMachine(view, gameLogicTournament, model, json, gameLogicTournamentSettings);
             Controller controller = new Controller(view, model, stateMachine, inputHandler, gameLogicMatch, gameLogicRound, gameLogicTournament, gameLogicTournamentSettings);
             
             while (true)

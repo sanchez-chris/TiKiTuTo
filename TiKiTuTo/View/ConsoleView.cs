@@ -252,7 +252,8 @@ namespace TiKiTuTo.View
 
         public void ShowMessage(string message)
         {
-            AnsiConsole.Markup($"[bold]{message}[/]");
+            //AnsiConsole.Markup($"[bold]{message}[/]");
+            AnsiConsole.WriteLine(message);
         }
 
         public void WriteEmptyLine()
