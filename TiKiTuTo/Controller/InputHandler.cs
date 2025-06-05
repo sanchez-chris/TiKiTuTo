@@ -38,7 +38,7 @@ namespace TiKiTuTo.Controller
 
         public int GetValidFileSelection()
         {
-            //no input validation yet
+            //no input validation here, because Spectre will change this logic at all
             int fileChoice = GetNumber($"Please enter the number corresponding to the file you wish to load");
 
             return fileChoice;
