@@ -79,13 +79,12 @@ namespace TiKiTuTo.Controller
                     _view.ShowMessage("Settings menu (not implemented yet).");
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
-                    _view.ShowMessage("TournamentSettingsCreationDialogue (not implemented yet).");
+                    _gameLogicTournament.InitTournament();
                     break;
                 case AppState.ShowLoadableTournamentSettings:
                     _view.ShowMessage("ShowLoadableTournamentSettings (not implemented yet).");
                     break;
                 case AppState.RunTournament:
-                    _gameLogicTournament.InitTournament();
                     _gameLogicTournament.StartTournament();
                     break;
                 case AppState.ShowEditableTournamentSettings:
@@ -152,7 +151,7 @@ namespace TiKiTuTo.Controller
                     //HandleTournamentSettingsEditingDialogueChoice(choice);
                     break;
                 case AppState.InGameMenu:
-                    //HandleInGameMenuChoice(choice);
+                    HandleInGameMenuChoice(choice);
                     break;
                 case AppState.Exit:
                     //HandleExitChoice(choice);
@@ -308,9 +307,42 @@ namespace TiKiTuTo.Controller
 
         private void HandleRunTournamentChoice(int choice)
         {
-
+            switch (choice)
+            {
+                case 1:
+                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
+                    break;
+                case 2:
+                    TransitionTo(AppState.ShowEditableTournamentSettings);
+                    break;
+                case 3:
+                    TransitionTo(AppState.MainMenu);
+                    break;
+                default:
+                    _view.ShowInvalidInputMessage();
+                    break;
+            }
         }
 
+        private void HandleInGameMenuChoice(int choice)
+        {
+            switch (choice)
+            {
+                case 1:
+                    _jsonService.SaveGame();
+                    break;
+                case 2:
+                    TransitionTo(AppState.MainMenu);
+                    break;
+                case 3:
+                    _jsonService.SaveGame();
+                    TransitionTo(AppState.Exit);
+                    break;
+                default:
+                    _view.ShowInvalidInputMessage();
+                    break;
+            }
+        }
 
         //TODO: HandleShowAvailableTournamentSettingsChoice (variable number of valid options...)
 
