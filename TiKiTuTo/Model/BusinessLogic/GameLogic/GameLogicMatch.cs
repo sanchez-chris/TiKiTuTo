@@ -31,6 +31,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             match.goalsTeamB = goalsB;
 
             InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
+
             FinishMatch(match);
         }
 
@@ -77,10 +78,14 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             if (goalsA > goalsB)
             {
                 teamA.NumberGamesWon++;
+                InputHandler.View.ShowMessage($"{teamA.TeamName} won");
+
             }
             if (goalsB > goalsA)
             {
                 teamB.NumberGamesWon++;
+                InputHandler.View.ShowMessage($"{teamB.TeamName} won");
+
             }
             teamA.Goaldifference += goalsA - goalsB;
             teamA.NumberGoals += goalsA;
@@ -93,7 +98,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void FinishMatch(Match match)
         {
             match.finished = true;
-            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB); // it does not update the goals
+            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
             //JSONService.SaveGame();
         }
     }

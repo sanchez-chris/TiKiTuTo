@@ -154,10 +154,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
 
-            InputHandler.View.ShowMessage("\n🏆 Knockout Bracket 🏆\n");
+            InputHandler.View.ShowMessage("\n KO Round\n");
 
             // Validate that the current round is valid
-            if (currentRound < 0 || currentRound >= totalRounds)
+            if (currentRound < 0 || currentRound > totalRounds)
             {
                 InputHandler.View.ShowMessage($"Invalid round number: {currentRound}. There are {totalRounds} rounds in the tournament.");
                 return;
