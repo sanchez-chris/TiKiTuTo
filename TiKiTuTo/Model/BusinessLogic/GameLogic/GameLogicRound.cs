@@ -110,7 +110,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             InputHandler.View.ShowMessage("Rankings:");
             foreach (var team in tournament.PreliminaryStandings)
             {
-                InputHandler.View.ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals scored: {team.NumberGoals}");
+                InputHandler.View.ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
             }
         }
 
@@ -244,6 +244,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             return Teams
                     .OrderByDescending(t => t.NumberGamesWon)
+                    .ThenByDescending(t => t.Goaldifference)
                     .ThenByDescending(t => t.NumberGoals)
                     .ToList();
          }
