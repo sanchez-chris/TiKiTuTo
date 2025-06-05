@@ -20,28 +20,17 @@ namespace TiKiTuTo.Controller
             _inputValidator = inputValidator;
         }
 
-        /// <summary>
-        /// Asks user for a number to perform a Menu option.
-        /// </summary>
-        /// <returns>A number guaranteed to trigger a valid option in the main menu.</returns>
-        public int GetValidMenuInput()
+        
+        public int GetValidGoalInput(string teamName)
         {
-            int MenuInput = GetNumber($"Please choose what to do (pick a number between 1 and {maxMenuOption}).");
+            int GoalInput = GetNumber($"\nHow many goals has {teamName}?");
 
-            while (!_inputValidator.IsValidMenuInput(MenuInput, maxMenuOption))
+            while (!_inputValidator.IsValidGoalInput(GoalInput))
             {
-                MenuInput = GetNumber($"This was not a valid number!");
+                GoalInput = GetNumber($"This was not a valid goal Input (max 10)!");
             }
 
-            return MenuInput;
-        }
-
-        public int GetValidFileSelection()
-        {
-            //no input validation here, because Spectre will change this logic at all
-            int fileChoice = GetNumber($"Please enter the number corresponding to the file you wish to load");
-
-            return fileChoice;
+            return GoalInput;
         }
 
         /// <summary>
@@ -120,38 +109,48 @@ namespace TiKiTuTo.Controller
         /// Asks the user to enter any string, using the prompt argument. Repeats until valid string is entered.
         /// </summary>
         /// <param name="prompt">Message shown to the user to prompt input.</param>
-        /// <param name="emptyAllowed">boolean defining whether empty result is OK.</param>
         /// <returns>a string entered by the user.</returns>
-        public string? GetPlayerName(string prompt, bool emptyAllowed)
+        public string? GetPlayerName(string prompt, int playerNumber)
         {
             View.ShowMessage(prompt);
-            string? userInput = View.ReadInput();
-            View.ShowMessage($"Welcome {userInput}");
-            return userInput;
+            string? playerName = View.ReadInput();
+
+            if (string.IsNullOrEmpty(playerName))
+            {
+                playerName = $"Player {playerNumber}";
+            }
+            View.ShowMessage($"Welcome {playerName}");
+            return playerName;
         }
 
-        public string? GetTeamName(string prompt, bool emptyAllowed)
+        public string? GetTeamName(string prompt, int teamNumber)
         {
             View.ShowMessage(prompt);
-            string? userInput = View.ReadInput();
-            View.ShowMessage($"Creating Team {userInput}");
-            return userInput;
+            string? teamName = View.ReadInput();
+
+            if (string.IsNullOrEmpty(teamName))
+            {
+                teamName = $"Team {teamNumber}";
+            }   
+            
+            View.ShowMessage($"Creating Team {teamName}");
+            return teamName;
         }
 
-        public string GetTournamentName(string prompt, bool emptyAllowed)
+        public string GetMandatoryName(string prompt)
         {
             View.ShowMessage(prompt);
 
-            string userInput = View.ReadInput();
+            string name = View.ReadInput();
 
 
-            while (string.IsNullOrEmpty(userInput) && !emptyAllowed)
+            while (string.IsNullOrEmpty(name))
             {
                 View.ShowMessage("Your input can not be empty.");
-                userInput = View.ReadInput();
+                name = View.ReadInput();
             }
-            View.ShowMessage($"Tournament {userInput} created.");
-            return userInput;
+            View.ShowMessage($"Tournament {name} created.");
+            return name;
         }
     }
 }

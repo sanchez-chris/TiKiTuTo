@@ -40,7 +40,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             NumberOfPreliminaryGamesPerTeam = InputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
             NumberOfTeamsInKORound = InputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
             Teams = CreateListOfTeams(NumberOfTeamsTotal);
-            string TournamentSettingsName = InputHandler.GetTournamentName("Name the Settings.",false);
+            string TournamentSettingsName = InputHandler.GetMandatoryName("Name the Settings.");
 
             TournamentSettings settings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams, TournamentSettingsName);
 

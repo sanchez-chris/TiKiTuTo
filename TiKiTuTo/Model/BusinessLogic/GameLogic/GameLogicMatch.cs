@@ -25,10 +25,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             
             //StartMatchTimer(match);
 
-            goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?");
+            goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
             match.goalsTeamA = goalsA;
 
-            goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
+            goalsB = InputHandler.GetValidGoalInput(match.teamB.TeamName);
             match.goalsTeamB = goalsB;
 
             InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");

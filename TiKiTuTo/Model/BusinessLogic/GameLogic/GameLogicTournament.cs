@@ -54,7 +54,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void CreateTournament(TournamentSettings tournamentSettings)
         {
             bool emptyNameAllowed = false;
-            string name = InputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
+            string name = InputHandler.GetMandatoryName("Please enter the name of this tournament!");
             TournamentModel.Tournament = new Tournament(name, tournamentSettings);
 
         }
