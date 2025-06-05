@@ -13,7 +13,7 @@ namespace TiKiTuTo.Model.DataObjects
         public List<Team> PreliminaryStandings { get; set; } = new List<Team>();
         public List<Team> KoStandings { get; set; } = new List<Team>();
         public List<Match> GamePlanPreliminaryRound { get; set; } = new List<Match>();
-        public List<Match> GamePlanKoRound { get; set; } = new List<Match>();
+        public List<List<Match>> GamePlanKoRound { get; set; } = new List<List<Match>>();
 
 
 
