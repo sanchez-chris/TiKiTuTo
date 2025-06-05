@@ -52,8 +52,8 @@ namespace TiKiTuTo.Controller
         //RunTournament TODO
         //ShowEditableTournamentSettings TODO
         //TournamentSettingsEditingDialogue TODO
-        //InGameMenu  TODO
-        //Exit  TODO
+        //InGameMenu  DONE
+        //Exit  DONE
 
         public int ExecuteCurrentState()
         {
@@ -99,8 +99,7 @@ namespace TiKiTuTo.Controller
                     _view.ShowMessage("InGameMenu (not implemented yet).");
                     break;
                 case AppState.ExitOptions:
-                    _view.ShowExitOptions();
-                    break;
+                    return _view.ExitOptionsSelection();
                 case AppState.Exit:
                     _view.ShowExitMessage();
                     Environment.Exit(0);

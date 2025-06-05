@@ -194,7 +194,7 @@ namespace TiKiTuTo.View
             }
         }
 
-        public int ShowExitOptions()
+        public int ExitOptionsSelection()
         {
             {
                 List<string> headerLines = new()
