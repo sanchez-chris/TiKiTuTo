@@ -168,6 +168,32 @@ namespace TiKiTuTo.View
             // TODO: Implement functionality for showing the next match
         }
 
+        public int ShowIngameMenu()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |     TiKiTuTo        |",
+                " -----------------------",
+                " ----Quick Settings-----",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Save current Tournament",
+            "Back to Main Menu",
+            "Exit and Save.",
+            };
+
+                int userChoice = PromptSelectionMulti(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
 
         public void ShowMessage(string message)
         {
