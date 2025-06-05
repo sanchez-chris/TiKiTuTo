@@ -53,11 +53,11 @@ namespace TiKiTuTo.Controller
             }
             catch (JsonException ex)
             {
-                Console.WriteLine($"Error during serialization: {ex.Message}");
+                View.ShowMessage($"Error during serialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                View.ShowMessage($"An unexpected error occurred: {ex.Message}");
             }
 
         }
@@ -85,25 +85,23 @@ namespace TiKiTuTo.Controller
 
                 if (loadedTournament != null)
                 {
-                    Console.WriteLine($"Turnier {loadedTournament.TournamentName} geladen");
+                    View.ShowMessage($"Turnier {loadedTournament.TournamentName} geladen");
                 }
-                else
-                {
-                    Console.WriteLine("Fehler beim Laden des Turniers: Das JSON konnte nicht deserialisiert werden.");
-                }
+                
             }
             catch (JsonException ex)
             {
-                Console.WriteLine($"Fehler bei der Deserialisierung: {ex.Message}");
+                View.ShowMessage($"Error during serialization: {ex.Message}");
             }
             catch (FileNotFoundException ex)
             {
-                Console.WriteLine($"Datei nicht gefunden: {ex.Message}");
+                View.ShowMessage($"File not Found");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ein unerwarteter Fehler ist aufgetreten: {ex.Message}");
+                View.ShowMessage($"An unexpected error occured {ex.Message}");
             }
+
         }
 
     }
