@@ -14,7 +14,9 @@ namespace TiKiTuTo.Controller
 {
     public class JSONService
     {
-        private string saveFolder = "SaveGame";
+        private string saveFolder = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "TikiTuto", "SaveGames");
         public TournamentModel TournamentModel { get; set; }
         IView View { get; set; }
 
