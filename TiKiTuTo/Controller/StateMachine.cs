@@ -216,8 +216,8 @@ namespace TiKiTuTo.Controller
             switch (choice)
             {
                 case 1:
-                    //TransitionTo(AppState.TournamentSettingsCreationDialogue);
-                    TransitionTo(AppState.RunTournament);
+                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
+                    //TransitionTo(AppState.RunTournament);
                     break;
                 case 2:
                     TransitionTo(AppState.ShowLoadableTournamentSettings);
