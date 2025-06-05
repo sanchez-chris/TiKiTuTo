@@ -372,7 +372,6 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.RunTournament);
                     break;
                 case 2:
-                    _jsonService.SaveGame();
                     TransitionTo(AppState.MainMenu);
                     break;
                 default:
