@@ -10,17 +10,19 @@ namespace TiKiTuTo.Controller
         private readonly IView _view;
         private GameLogicTournament _gameLogicTournament;
         private Model.TournamentModel _tournamentModel;
+        private JSONService _jsonService;
 
 
         /// <summary>
         /// StateMachine constructor. Starts from the main menu by default
         /// </summary>
-        public StateMachine(IView view, GameLogicTournament gameLogicTournament, Model.TournamentModel model)
+        public StateMachine(IView view, GameLogicTournament gameLogicTournament, Model.TournamentModel model, JSONService jsonService)
         {
             CurrentState = AppState.MainMenu;
             _view = view;
             _gameLogicTournament = gameLogicTournament;
             _tournamentModel = model;
+            _jsonService = jsonService;
         }
 
 
@@ -50,7 +52,7 @@ namespace TiKiTuTo.Controller
                     _view.ShowExitMessage();
                     break;
                 case AppState.ShowSavedTournaments:
-                    _view.ShowMessage("Saved tournaments (not implemented yet).");
+                    _jsonService.LoadGame();
                     break;
                 case AppState.ShowFinishedTournaments:
                     _view.ShowMessage("Finished tournaments (not implemented yet).");

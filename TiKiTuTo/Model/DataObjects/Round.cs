@@ -24,5 +24,7 @@ namespace TiKiTuTo.Model.DataObjects
             TypeOf = typeOf;
             Matches = matches;
         }
+
+        public Round() { }
     }
 }

@@ -19,11 +19,13 @@ namespace TiKiTuTo.Controller
         "TikiTuto", "SaveGames");
         public TournamentModel TournamentModel { get; set; }
         IView View { get; set; }
+        InputHandler InputHandler { get; set; }
 
-        public JSONService(TournamentModel model, IView view)
+        public JSONService(TournamentModel model, IView view, InputHandler inputHandler)
         {
             TournamentModel = model;
             View = view;
+            InputHandler = inputHandler;
         }
 
         public void SaveGame()
@@ -62,25 +64,24 @@ namespace TiKiTuTo.Controller
         public void LoadGame()
         {
 
-            // PART I: Auswahl des SaveGames
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string[] currentSaveGames = Directory.GetFiles($"{currentDirectory}\\{saveFolder}");
+            string[] currentSaveGames = Directory.GetFiles(saveFolder);
 
-            for (int i = 0; i < currentSaveGames.Length; i++)
-            {
-                string fileName = Path.GetFileName(currentSaveGames[i]);
-                Console.WriteLine($"{i}: {fileName}");
-            }
-            Console.WriteLine("Please enter the number corresponding to the game you wish to load.");
-            int number = Convert.ToInt32(Console.ReadLine());
+            View.DisplayFiles(currentSaveGames);
+            int chosenFileIndex = InputHandler.GetValidFileSelection();
+            string chosenFile = currentSaveGames[chosenFileIndex];
 
-            string filePath = currentSaveGames[number];
 
-            // PART II: JSON-Konvertierung
             try
             {
-                string tournamentJSON = File.ReadAllText(filePath);
-                Tournament loadedTournament = JsonSerializer.Deserialize<Tournament>(tournamentJSON);
+
+                string tournamentJSON = File.ReadAllText(chosenFile);
+
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true 
+                };
+                Tournament loadedTournament = JsonSerializer.Deserialize<Tournament>(tournamentJSON, options);
+             
 
                 if (loadedTournament != null)
                 {
@@ -91,9 +92,17 @@ namespace TiKiTuTo.Controller
                     Console.WriteLine("Fehler beim Laden des Turniers: Das JSON konnte nicht deserialisiert werden.");
                 }
             }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"Fehler bei der Deserialisierung: {ex.Message}");
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine($"Datei nicht gefunden: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"Fehler beim Lesen der Datei: {ex.Message}");
+                Console.WriteLine($"Ein unerwarteter Fehler ist aufgetreten: {ex.Message}");
             }
         }
 

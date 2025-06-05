@@ -122,6 +122,17 @@ namespace TiKiTuTo.View
         }
 
 
+        public void DisplayFiles(string[] currentFiles)
+        {
+            for (int i = 0; i < currentFiles.Length; i++)
+            {
+                string fileName = Path.GetFileName(currentFiles[i]);
+                ShowMessage($"{i}: {fileName}");
+            }
+        }
+
+
+
         /*reusable promptSelection function recieving an IEnumerable<string> (so it doesnt matter if the 
          * argument is type list<string>, string[] ...)
          * Please note, that PageSize only determines how many options are visible on the screen at one time.

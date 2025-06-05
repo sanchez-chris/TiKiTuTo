@@ -39,6 +39,8 @@ namespace TiKiTuTo.View
 
         public void SavingTournamentAnimation(string filePath);
 
+        public void DisplayFiles(string[] currentFiles);
+
 
 
     }
