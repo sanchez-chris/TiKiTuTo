@@ -46,10 +46,10 @@ namespace TiKiTuTo.Controller
         {
             while (_stateMachine.CurrentState != AppState.Exit)
             {
-                _stateMachine.RenderCurrentState();
-                int userChoice = InputHandler.GetValidMenuInput();
+                int userChoice = _stateMachine.ExecuteCurrentState();
                 _stateMachine.HandleInput(userChoice);
             }
+            Environment.Exit(0);
         }
 
 

@@ -82,5 +82,86 @@ namespace TiKiTuTo.Controller
             }
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///space for Dominiks JSON magic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Returns all files containing unfinished tournaments (ready to be continued)
+        /// </summary>
+        /// <returns> List<string> of file names for the tournament JSON files.</returns>
+        public List<string> GetUnfinishedTournamentFiles()
+        {
+            return new List<string>() 
+            { 
+                "testfile1",
+                "testfile2"
+            };
+        }
+
+        /// <summary>
+        /// Returns all files containing finished tournaments (ready to show results)
+        /// </summary>
+        /// <returns> List<string> of file names for the tournament JSON files.</returns>
+        public List<string> GetFinishedTournamentFiles()
+        {
+            return new List<string>();
+        }
+
     }
 }

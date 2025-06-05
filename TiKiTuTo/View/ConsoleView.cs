@@ -18,37 +18,115 @@ namespace TiKiTuTo.View
             Console.CursorVisible = false;
         }
 
+        /// <summary>
+        /// Shows Main Menu using standard console
+        /// </summary>
+        public void ShowMainMenu() { }
+        //{
+        //    Console.Clear();
+        //    Console.WriteLine(" -----------------------");
+        //    Console.WriteLine(" |     TiKiTuTo        | ");
+        //    Console.WriteLine(" -----------------------");
+        //    Console.WriteLine(" -------Main Menu-------");
+        //    Console.WriteLine(" -----------------------");
+        //    Console.WriteLine("1. Start New Tournament");
+        //    Console.WriteLine("2. Resume Earlier Tournament");
+        //    Console.WriteLine("3. Show Results Of Earlier Tournament");
+        //    Console.WriteLine("4. Manage Tournament Configurations");
+        //    Console.WriteLine("5. Exit Application");
 
-        public void ShowMainMenu()
+        //    WriteEmptyLine();
+        //}
+
+        public int MainMenuSelection()
         {
-            Console.Clear();
-            Console.WriteLine(" -----------------------");
-            Console.WriteLine(" |     TiKiTuTo        | ");
-            Console.WriteLine(" -----------------------");
-            Console.WriteLine(" -------Main Menu-------");
-            Console.WriteLine(" -----------------------");
-            Console.WriteLine("1. Start New Tournament");
-            Console.WriteLine("2. Resume Earlier Tournament");
-            Console.WriteLine("3. Show Results Of Earlier Tournament");
-            Console.WriteLine("4. Manage Tournament Configurations");
-            Console.WriteLine("5. Exit Application");
+            
+            List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |     TiKiTuTo        |",
+                " -----------------------",
+                " -------Main Menu-------",
+                " -----------------------"
+            }; 
 
-            WriteEmptyLine();
+            List<string> options = new()
+            {
+            "Start New Tournament",
+            "Resume Earlier Tournament",
+            "Show Results Of Earlier Tournament",
+            "Manage Tournament Configurations",
+            "Exit Application"
+            };
+
+            int userChoice = PromptSelectionMulti(headerLines, options);
+
+            return userChoice;
         }
 
-        public void ShowStartTournamentMenu()
+
+        public void ShowStartTournamentMenu() { }
+        //{
+        //    Console.Clear();
+        //    Console.WriteLine(" ----------------------");
+        //    Console.WriteLine(" |     TiKiTuTo        | ");
+        //    Console.WriteLine(" ----------------------");
+        //    Console.WriteLine(" ---Start Tournament---");
+        //    Console.WriteLine(" ----------------------");
+        //    Console.WriteLine("1. Start tournament from scratch");
+        //    Console.WriteLine("2. Start tournament based on existing tournament settings");
+        //    Console.WriteLine("3. Back to Main Menu");
+        //    WriteEmptyLine();
+        //}
+
+
+        public int StartTournamentMenuSelection()
         {
-            Console.Clear();
-            Console.WriteLine(" ----------------------");
-            Console.WriteLine(" |     TiKiTuTo        | ");
-            Console.WriteLine(" ----------------------");
-            Console.WriteLine(" ---Start Tournament---");
-            Console.WriteLine(" ----------------------");
-            Console.WriteLine("1. Start tournament from scratch");
-            Console.WriteLine("2. Start tournament based on existing tournament settings");
-            Console.WriteLine("3. Back to Main Menu");
-            WriteEmptyLine();
+            List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |     TiKiTuTo        |",
+                " -----------------------",
+                " ---Start Tournament----",
+                " -----------------------"
+            };
+
+            List<string> options = new()
+            {
+            "Start tournament from scratch",
+            "Start tournament based on existing tournament settings",
+            "Back to Main Menu",
+            };
+
+            int userChoice = PromptSelectionMulti(headerLines, options);
+
+            return userChoice;
+
         }
+
+        public int SavedTournamentsSelection(IEnumerable<string> loadableFiles)
+        {
+            List<string> headerLines = new()
+            {
+                "-----------------------",
+                "|     TiKiTuTo        |",
+                "-----------------------",
+                "---Saved Tournaments---",
+                "-----------------------"
+            };
+
+            List<string> options = loadableFiles.ToList();
+            options.Add("Back to Main Menu");
+
+
+            int userChoice = PromptSelectionMulti(headerLines, options);
+
+            return userChoice;
+
+        }
+
+
+
 
 
         public void ShowInvalidInputMessage()
@@ -88,6 +166,32 @@ namespace TiKiTuTo.View
         public void ShowNextMatches(List<Match> matches)
         {
             // TODO: Implement functionality for showing the next match
+        }
+
+        public int ShowIngameMenu()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |     TiKiTuTo        |",
+                " -----------------------",
+                " ----Quick Settings-----",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Save current Tournament",
+            "Back to Main Menu",
+            "Exit and Save.",
+            };
+
+                int userChoice = PromptSelectionMulti(headerLines, options);
+
+                return userChoice;
+
+            }
         }
 
 
@@ -137,6 +241,28 @@ namespace TiKiTuTo.View
             return userChoice;
         }
 
+
+
+
+        public int PromptSelectionMulti(IEnumerable<string> headerLines, IEnumerable<string> options)
+        {
+            AnsiConsole.Clear();
+            
+            foreach (string line in headerLines)
+            {
+                AnsiConsole.MarkupLine($"[yellow]{line}[/]");
+            }
+            var userChoice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[yellow]Please select an option:[/]")
+                    .PageSize(5)
+                    .AddChoices(options));
+            
+            return options.ToList().IndexOf(userChoice) + 1;
+        }
+
+
+
         //hardcoded ShowMenu functionality in case we do not use PromptSelection
         public string ShowSpectreMenu()
         {
@@ -152,8 +278,6 @@ namespace TiKiTuTo.View
                         "   5: Exit"));
             return userChoice;
         }
-
-        
 
 
     }
