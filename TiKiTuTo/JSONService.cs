@@ -17,20 +17,22 @@ namespace TiKiTuTo.Controller
         private string saveFolder = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "TikiTuto", "SaveGames");
-        public TournamentModel TournamentModel { get; set; }
-        IView View { get; set; }
-        InputHandler InputHandler { get; set; }
 
-        public JSONService(TournamentModel model, IView view, InputHandler inputHandler)
+        public TournamentModel _tournamentModel;
+        private IView _view;
+        private InputHandler _inputHandler;
+
+
+        public JSONService(TournamentModel tournamentModel, IView view, InputHandler inputHandler)
         {
-            TournamentModel = model;
-            View = view;
-            InputHandler = inputHandler;
+            _tournamentModel = tournamentModel;
+            _view = view;
+            _inputHandler = inputHandler;
         }
 
         public void SaveGame()
         {
-            var Tournament = TournamentModel.Tournament;
+            var Tournament = _tournamentModel.Tournament;
 
             try
             {
@@ -49,15 +51,15 @@ namespace TiKiTuTo.Controller
                 string jsonString = JsonSerializer.Serialize(Tournament, options);
                 File.WriteAllText(filePath, jsonString);
 
-                View.SavingTournamentAnimation(filePath);
+                _view.SavingTournamentAnimation(filePath);
             }
             catch (JsonException ex)
             {
-                View.ShowMessage($"Error during serialization: {ex.Message}");
+                _view.ShowMessage($"Error during serialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                View.ShowMessage($"An unexpected error occurred: {ex.Message}");
+                _view.ShowMessage($"An unexpected error occurred: {ex.Message}");
             }
 
         }
@@ -66,8 +68,8 @@ namespace TiKiTuTo.Controller
 
             string[] currentSaveGames = Directory.GetFiles(saveFolder);
 
-            View.DisplayFiles(currentSaveGames);
-            int chosenFileIndex = InputHandler.GetValidFileSelection();
+            _view.DisplayFiles(currentSaveGames);
+            int chosenFileIndex = _inputHandler.GetValidFileSelection();
             string chosenFile = currentSaveGames[chosenFileIndex];
 
 
@@ -85,21 +87,21 @@ namespace TiKiTuTo.Controller
 
                 if (loadedTournament != null)
                 {
-                    View.ShowMessage($"Turnier {loadedTournament.TournamentName} geladen");
+                    _view.ShowMessage($"Turnier {loadedTournament.TournamentName} geladen");
                 }
                 
             }
             catch (JsonException ex)
             {
-                View.ShowMessage($"Error during serialization: {ex.Message}");
+                _view.ShowMessage($"Error during serialization: {ex.Message}");
             }
             catch (FileNotFoundException ex)
             {
-                View.ShowMessage($"File not Found");
+                _view.ShowMessage($"File not Found");
             }
             catch (Exception ex)
             {
-                View.ShowMessage($"An unexpected error occured {ex.Message}");
+                _view.ShowMessage($"An unexpected error occured {ex.Message}");
             }
 
         }
