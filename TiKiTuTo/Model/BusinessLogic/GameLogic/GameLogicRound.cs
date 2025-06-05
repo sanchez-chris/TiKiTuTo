@@ -116,6 +116,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void InitKoRound(Tournament tournament)
         {
+            int currentRound = 0;
             if (!_inputValidator.IsValidTournamentSettings(tournament))
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
@@ -137,16 +138,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
             }
-
-            // Organize them for the knockout round
-            for (int i = 0; i < tournament.KoStandings.Count; i += 2)
-            {
-                if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
-                {
-                    var match = new Match(tournament.KoStandings[i], tournament.KoStandings[i + 1]);
-                    tournament.GamePlanKoRound[0].Add(match); // Add to the first round
-                }
-            }
+            organizeMatchesForNextRound(tournament, currentRound);
         }
 
         public void ShowKGamePlanKoRound(Tournament tournament, int currentRound)
@@ -213,17 +205,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
 
                 currentRound++;
-                // Prepare matches for the next round
                 if (currentRound < totalRounds)
                 {
-                    for (int i = 0; i < tournament.KoStandings.Count; i += 2)
-                    {
-                        if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
-                        {
-                            var match = new Match(tournament.KoStandings[i], tournament.KoStandings[i + 1]);
-                            tournament.GamePlanKoRound[currentRound].Add(match);
-                        }
-                    }
+                    organizeMatchesForNextRound(tournament, currentRound);
                 }
             }
 
@@ -249,8 +233,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     .ToList();
          }
 
-            public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
-            {
+         public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
+         {
             if (goalsA > goalsB)
             {
                 teamA.NumberGamesWon++;
@@ -263,7 +247,19 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             teamA.NumberGoals += goalsA;
             teamB.Goaldifference += goalsB - goalsA;
             teamB.NumberGoals += goalsB;
+         }
+
+        public void organizeMatchesForNextRound(Tournament tournament, int currentRound)
+        {
+            for (int i = 0; i < tournament.KoStandings.Count; i += 2)
+            {
+                if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
+                {
+                    var match = new Match(tournament.KoStandings[i], tournament.KoStandings[i + 1]);
+                    tournament.GamePlanKoRound[currentRound].Add(match);
+                }
             }
+        }
 
 
     }
