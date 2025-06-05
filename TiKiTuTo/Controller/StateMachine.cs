@@ -73,14 +73,16 @@ namespace TiKiTuTo.Controller
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
                     _gameLogicTournamentSettings.CreateTournamentSettings();
-//                    _jsonService.SaveTournamentSettings();
+//                    _jsonService.SaveTournamentSettings(); //TODO implement this
                     return _view.TournamentStartSelection();
+                case AppState.ShowLoadableTournamentSettings:
+                    //_view.LoadableTournamentSettingsSelection();
                 case AppState.RunTournament:
- //                   _gameLogicTournament.InitTournament();
+                    //_gameLogicTournament.InitTournament();
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings();
                     Thread.Sleep(5000);  //TEMP
-                    return _view.InGameMenuSelection();
+                    return _view.DuringTournamentMenuSelection();
                 case AppState.ExitOptions:
                     return _view.ExitOptionsSelection();
                 case AppState.Exit:
@@ -174,7 +176,7 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.ShowFinishedTournaments);
                     break;
                 case 4:
-                    TransitionTo(AppState.ManageSettingsMenu);
+                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
                     break;
                 case 5:
                     TransitionTo(AppState.ExitOptions);
