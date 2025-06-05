@@ -244,7 +244,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             return Teams
                     .OrderByDescending(t => t.NumberGamesWon)
-                    .ThenByDescending(t => t.Goaldifference)
+                    .ThenByDescending(t => t.NumberGoals)
                     .ToList();
          }
 
