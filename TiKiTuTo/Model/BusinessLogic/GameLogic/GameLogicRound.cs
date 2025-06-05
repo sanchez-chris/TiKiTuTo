@@ -46,7 +46,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             // Initialize GameLogicMatch after properties are set
             GameLogicMatch = new GameLogicMatch(InputHandler, JSONService);
-        }   
+        }
 
         private Random random = new Random();
 
@@ -122,7 +122,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 GameLogicMatch.RunMatch(match);
             }
-            
+
             tournament.PreliminaryStandings = GenerateRanking(tournament);
             InputHandler.View.ShowMessage("\n\nRankings:");
             foreach (var team in tournament.PreliminaryStandings)
@@ -157,7 +157,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.KoStandings = tournament.KoStandings.OrderBy(x => random.Next()).ToList();
 
             // Initialize the GamePlanKoRound with empty rounds
-            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count)) -1;
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count)) - 1;
             for (int i = 0; i < totalRounds; i++)
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
@@ -165,7 +165,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             organizeMatchesForNextRound(tournament, currentRound);
         }
 
-        public void ShowKGamePlanKoRound(Tournament tournament, int currentRound)
+        public void ShowKoGamePlanKoRound(Tournament tournament, int currentRound)
         {
             // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
@@ -186,7 +186,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 InputHandler.View.ShowMessage("Final:");
                 InputHandler.View.ShowMessage("Match:");
             }
-            else if (currentRound == totalRounds-1 && totalRounds > 2)
+            else if (currentRound == totalRounds - 1 && totalRounds > 2)
             {
                 InputHandler.View.ShowMessage("Semifinal:");
                 InputHandler.View.ShowMessage("Matches:");
@@ -217,7 +217,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (currentRound < totalRounds)
             {
-                ShowKGamePlanKoRound(tournament, currentRound);
+                ShowKoGamePlanKoRound(tournament, currentRound);
 
 
                 foreach (var match in tournament.GamePlanKoRound[currentRound])
@@ -256,7 +256,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round are {thirdPosition.TeamName}.");
                 }
 
-                
+
 
 
             }
@@ -271,7 +271,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     .ThenByDescending(t => t.Goaldifference)
                     .ThenByDescending(t => t.NumberGoals)
                     .ToList();
-         }
+        }
 
 
         public void organizeMatchesForNextRound(Tournament tournament, int currentRound)
@@ -314,7 +314,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     tournament.KoStandings.Remove(match.teamB);
                     hasWinner = true;
                 }
-                else if (match.goalsTeamA < match.goalsTeamB)
+                else
                 {
                     if (tournament.KoStandings.Count == 4 || tournament.KoStandings.Count == 3) // semifinal
                     {
@@ -326,10 +326,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     }
                     tournament.KoStandings.Remove(match.teamA);
                     hasWinner = true;
-                }
-                else
-                {
-                    InputHandler.View.ShowMessage($"\n\nThe match between {match.teamA.TeamName} and {match.teamB.TeamName} ended in a draw. Repeating the match...");
+
                 }
             }
         }
