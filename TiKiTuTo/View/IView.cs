@@ -27,6 +27,10 @@ namespace TiKiTuTo.View
 
         public void ShowExitMessage();
 
+        public int ExitOptionsSelection();
+
+        public int TournamentStartSelection();
+
         public void ShowGamePlan();
 
         public void ShowStandings();

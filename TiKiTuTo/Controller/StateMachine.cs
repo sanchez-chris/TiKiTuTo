@@ -47,13 +47,13 @@ namespace TiKiTuTo.Controller
         //ShowSavedTournaments WORK IN PROGRESS
         //ShowFinishedTournaments  WORK IN PROGRESS
         //ManageSettingsMenu DONE
-        //TournamentSettingsCreationDialogue TODO
+        //TournamentSettingsCreationDialogue DONE
         //ShowLoadableTournamentSettings TODO
         //RunTournament TODO
         //ShowEditableTournamentSettings TODO
         //TournamentSettingsEditingDialogue TODO
-        //InGameMenu  TODO
-        //Exit  TODO
+        //InGameMenu  DONE
+        //Exit  DONE
 
         public int ExecuteCurrentState()
         {
@@ -62,15 +62,12 @@ namespace TiKiTuTo.Controller
                 case AppState.MainMenu:
                     //_view.ShowMainMenu();
                     return _view.MainMenuSelection();
-                    break;
                 case AppState.StartTournamentMenu:
                     //_view.ShowStartTournamentMenu();
                     return _view.StartTournamentMenuSelection();
-                    break;
                 case AppState.ShowSavedTournaments:
                     string[] loadableFiles = _jsonService.GetUnfinishedTournamentFiles();
                     return _view.SavedTournamentsSelection(loadableFiles);
-                    break;
                 case AppState.ShowFinishedTournaments:
                     _view.ShowMessage("Finished tournaments (not implemented yet).");
                     break;
@@ -79,14 +76,14 @@ namespace TiKiTuTo.Controller
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
                     _gameLogicTournament.InitTournament();
-                    _gameLogicTournament.StartTournament();
-//Here we actually need to differentiate between initiation and starting. Between the two, the user should be able to decide whether to start immediately or whether to go back and start later.
-                    break;
+                    return _view.TournamentStartSelection();
                 case AppState.ShowLoadableTournamentSettings:
                     _view.ShowMessage("ShowLoadableTournamentSettings (not implemented yet).");
                     break;
                 case AppState.RunTournament:
-                    _gameLogicTournament.StartTournament();
+                    _gameLogicTournament.RunTournament();
+                    _view.ShowStandings();
+                    Thread.Sleep(5000);  //TEMP
                     break;
                 case AppState.ShowEditableTournamentSettings:
                     _view.ShowMessage("ShowEditableTournamentSettings (not implemented yet).");
@@ -97,8 +94,11 @@ namespace TiKiTuTo.Controller
                 case AppState.InGameMenu:
                     _view.ShowMessage("InGameMenu (not implemented yet).");
                     break;
+                case AppState.ExitOptions:
+                    return _view.ExitOptionsSelection();
                 case AppState.Exit:
                     _view.ShowExitMessage();
+                    Environment.Exit(0);
                     break;
                 default:
                     _view.ShowMessage("Not a valid state.");
@@ -116,7 +116,7 @@ namespace TiKiTuTo.Controller
         /// A wrapper to handle user input for different internal states.
         /// </summary>
         /// <param name="choice">User input</param>
-        public void HandleInput(int choice)
+        public void HandleInput(int choice)   //HandleChoice?
         {
             switch (CurrentState)
             {
@@ -136,12 +136,11 @@ namespace TiKiTuTo.Controller
                     HandleManageSettingsMenuChoice(choice);
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
-                    //HandleTournamentSettingsCreationDialogueChoice(choice);
+                    HandleTournamentStartChoice(choice);
                     break;
                 case AppState.ShowLoadableTournamentSettings:
                     //HandleShowLoadableTournamentSettingsChoice(choice);
-                    break;
-                
+                    break;                
                 case AppState.RunTournament:
                     HandleRunTournamentChoice(choice);
                     break;
@@ -154,8 +153,11 @@ namespace TiKiTuTo.Controller
                 case AppState.InGameMenu:
                     HandleInGameMenuChoice(choice);
                     break;
+                case AppState.ExitOptions:
+                    HandleExitChoice(choice);
+                    break;
                 case AppState.Exit:
-                    //HandleExitChoice(choice);
+                    HandleExitChoice(choice);
                     break;
             }
         }
@@ -167,13 +169,13 @@ namespace TiKiTuTo.Controller
         //ShowSavedTournaments WORK IN PROGRESS
         //ShowFinishedTournaments  WORK IN PROGRESS
         //ManageSettingsMenu DONE
-        //TournamentSettingsCreationDialogue TODO
+        //TournamentSettingsCreationDialogue DONE
         //ShowLoadableTournamentSettings TODO
         //RunTournament TODO
         //ShowEditableTournamentSettings TODO
         //TournamentSettingsEditingDialogue TODO
-        //InGameMenu  TODO
-        //Exit  TODO
+        //InGameMenu  DONE
+        //Exit  DONE
 
 
 
@@ -200,7 +202,7 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.ManageSettingsMenu);
                     break;
                 case 5:
-                    TransitionTo(AppState.Exit);
+                    TransitionTo(AppState.ExitOptions);
                     break;
                 default:
                     _view.ShowInvalidInputMessage();
@@ -346,6 +348,37 @@ namespace TiKiTuTo.Controller
         }
 
         //TODO: HandleShowAvailableTournamentSettingsChoice (variable number of valid options...)
+        private void HandleExitChoice(int choice)
+        {
+            switch (choice)
+            {
+                case 1:
+                    TransitionTo(AppState.Exit);
+                    break;
+                case 2:
+                    TransitionTo(AppState.MainMenu);
+                    break;
+                default:
+                    _view.ShowInvalidInputMessage();
+                    break;
+            }
+        }
+
+        private void HandleTournamentStartChoice(int choice)
+        {
+            switch (choice)
+            {
+                case 1:
+                    TransitionTo(AppState.RunTournament);
+                    break;
+                case 2:
+                    TransitionTo(AppState.MainMenu);
+                    break;
+                default:
+                    _view.ShowInvalidInputMessage();
+                    break;
+            }
+        }
 
     }
-    }
+}

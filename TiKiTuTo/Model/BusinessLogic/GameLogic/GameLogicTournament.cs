@@ -59,7 +59,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
 
 
-        public void StartTournament()
+        public void RunTournament()
         {
             GameLogicRound.RunPreliminaryRound();
             GameLogicRound.InitKoRound();

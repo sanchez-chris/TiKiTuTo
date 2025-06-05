@@ -194,6 +194,57 @@ namespace TiKiTuTo.View
             }
         }
 
+        public int ExitOptionsSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                " ----Exit to desktop?---",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Yes",
+            "No",
+            };
+
+                int userChoice = PromptSelectionMulti(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
+
+        public int TournamentStartSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                " --Start now or later?--",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Now",
+            "Later (Return to Menu)",
+            };
+
+                int userChoice = PromptSelectionMulti(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
 
         public void ShowMessage(string message)
         {
