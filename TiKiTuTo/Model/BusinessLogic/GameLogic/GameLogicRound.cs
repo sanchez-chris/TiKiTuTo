@@ -120,57 +120,58 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
+
             tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
             InputHandler.View.ShowMessage("KO Round contestants:");
 
-            // teams for ko round are selected (how many teams, in Tournament.TournamentSettings.NumberOfTeamsInKoRound) -> fill Tournament.TeamsInKoRound
+            // Select teams for KO round
             tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.Settings.NumberOfTeamsInKoRound).ToList();
-            // reorder randomly the list KoStantings
+
+            // Randomly reorder the list KoStandings
             Random random = new Random();
             tournament.KoStandings = tournament.KoStandings.OrderBy(x => random.Next()).ToList();
 
-            // organize them for the knockout round -> fill list of matches for KO round "tournament.GamePlanKoRound"
-            // shuffle the list
-            // create matches in pairs
+            // Initialize the GamePlanKoRound with empty rounds
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
+            for (int i = 0; i < totalRounds; i++)
+            {
+                tournament.GamePlanKoRound.Add(new List<Match>());
+            }
+
+            // Organize them for the knockout round
             for (int i = 0; i < tournament.KoStandings.Count; i += 2)
             {
                 if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
                 {
                     var match = new Match(tournament.KoStandings[i], tournament.KoStandings[i + 1]);
-                    tournament.GamePlanKoRound.Add(match);
+                    tournament.GamePlanKoRound[0].Add(match); // Add to the first round
                 }
             }
-            ShowKnockoutBracket(tournament, 1);
-
         }
 
-
-
-        public void ShowKnockoutBracket(Tournament tournament, int currentRound)
+        public void ShowKGamePlanKoRound(Tournament tournament, int currentRound)
         {
-            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count)); // Total de rondas
-            List<Team> teams = tournament.KoStandings;
+            // Calculate how many rounds there are in the tournament
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
 
             InputHandler.View.ShowMessage("\n🏆 Knockout Bracket 🏆\n");
 
-            // Validar que la ronda actual sea válida
-            if (currentRound < 1 || currentRound > totalRounds)
+            // Validate that the current round is valid
+            if (currentRound < 0 || currentRound >= totalRounds)
             {
                 InputHandler.View.ShowMessage($"Invalid round number: {currentRound}. There are {totalRounds} rounds in the tournament.");
                 return;
             }
 
-            // Mostrar solo la ronda actual
-            InputHandler.View.ShowMessage($"Current Round: {currentRound}");
+            // Show the current round
+            InputHandler.View.ShowMessage($"Current Round: {currentRound + 1}");
             InputHandler.View.ShowMessage(new string('-', 20));
 
-            int spacing = (int)Math.Pow(2, totalRounds - currentRound) * 2; // Espaciado dinámico para la ronda actual
-            for (int j = 0; j < teams.Count; j += (int)Math.Pow(2, currentRound))
-            {
-                string teamA = j < teams.Count ? teams[j].TeamName : " ";
-                string teamB = (j + 1) < teams.Count ? teams[j + 1].TeamName : " ";
+            int spacing = (int)Math.Pow(2, totalRounds - currentRound - 1) * 2; // Dynamic space for the current round
 
-                InputHandler.View.ShowMessage($"{teamA.PadRight(spacing)} vs {teamB.PadRight(spacing)}");
+            foreach (var match in tournament.GamePlanKoRound[currentRound])
+            {
+                InputHandler.View.ShowMessage($"{match.teamA.TeamName.PadRight(spacing)} vs {match.teamB.TeamName.PadRight(spacing)}");
             }
 
             InputHandler.View.ShowMessage("\n");
@@ -178,34 +179,52 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunKoRound(Tournament tournament)
         {
-            int currentRound = 1;
+            // Calculate how many rounds there are in the tournament
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
+            int currentRound = 0;
 
-            foreach (var match in tournament.GamePlanKoRound)
+            while (currentRound < totalRounds)
             {
-                ShowKnockoutBracket(tournament, currentRound);
+                ShowKGamePlanKoRound(tournament, currentRound);
 
-                bool hasWinner = false;
-
-                while (!hasWinner)
+                foreach (var match in tournament.GamePlanKoRound[currentRound])
                 {
-                    GameLogicMatch.RunMatch(match);
+                    bool hasWinner = false;
 
-                    if (match.goalsTeamA > match.goalsTeamB)
+                    while (!hasWinner)
                     {
-                        tournament.KoStandings.Remove(match.teamB);
-                        hasWinner = true;
-                    }
-                    else if (match.goalsTeamA < match.goalsTeamB)
-                    {
-                        tournament.KoStandings.Remove(match.teamA);
-                        hasWinner = true;
-                    }
-                    else
-                    {
-                        InputHandler.View.ShowMessage($"The match between {match.teamA.TeamName} and {match.teamB.TeamName} ended in a draw. Repeating the match...");
+                        GameLogicMatch.RunMatch(match);
+
+                        if (match.goalsTeamA > match.goalsTeamB)
+                        {
+                            tournament.KoStandings.Remove(match.teamB);
+                            hasWinner = true;
+                        }
+                        else if (match.goalsTeamA < match.goalsTeamB)
+                        {
+                            tournament.KoStandings.Remove(match.teamA);
+                            hasWinner = true;
+                        }
+                        else
+                        {
+                            InputHandler.View.ShowMessage($"The match between {match.teamA.TeamName} and {match.teamB.TeamName} ended in a draw. Repeating the match...");
+                        }
                     }
                 }
+
                 currentRound++;
+                // Prepare matches for the next round
+                if (currentRound < totalRounds)
+                {
+                    for (int i = 0; i < tournament.KoStandings.Count; i += 2)
+                    {
+                        if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
+                        {
+                            var match = new Match(tournament.KoStandings[i], tournament.KoStandings[i + 1]);
+                            tournament.GamePlanKoRound[currentRound].Add(match);
+                        }
+                    }
+                }
             }
 
             if (tournament.KoStandings.Count == 1)
@@ -218,7 +237,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 InputHandler.View.ShowMessage("No matches were played in the knockout round.");
             }
         }
-
 
         public List<Team> GenerateRanking(Tournament tournament)
         {
