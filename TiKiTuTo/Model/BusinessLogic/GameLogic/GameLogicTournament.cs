@@ -19,18 +19,20 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         GameLogicRound GameLogicRound { get; set; }
         GameLogicTournamentSettings GameLogicTournamentSettings { get; set; }
         InputHandler InputHandler { get; set; }
+        JSONService JSONService { get; set; }
         public TournamentModel TournamentModel { get; set; }
 
         /// <summary>
         /// Creates Tournament based on user input. First creates a TournamentSettings object, then initializes a Tournament based on these settings.
         /// </summary>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public GameLogicTournament(GameLogicRound glRound, GameLogicTournamentSettings glTournamentSettings, InputHandler inputHandler, TournamentModel model) 
+        public GameLogicTournament(GameLogicRound glRound, GameLogicTournamentSettings glTournamentSettings, InputHandler inputHandler, TournamentModel model, JSONService jsonService) 
         {
             GameLogicRound = glRound;
             GameLogicTournamentSettings = glTournamentSettings;
             InputHandler = inputHandler;
             TournamentModel = model;
+            JSONService = jsonService;
         }
 
 
@@ -38,8 +40,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             SetupTournament();
             GameLogicRound.InitPreliminaryRound();
-            
-            //JSONService.SaveGame();
+            JSONService.SaveTournament();
         }
 
         public void SetupTournament()
