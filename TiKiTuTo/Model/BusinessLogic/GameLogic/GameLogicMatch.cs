@@ -27,7 +27,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?");
             match.goalsTeamA = goalsA;
 
-            goalsB = InputHandler.GetNumber($"\nHow many goals has {match.teamB.TeamName}?");
+            goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
             match.goalsTeamB = goalsB;
 
             InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");

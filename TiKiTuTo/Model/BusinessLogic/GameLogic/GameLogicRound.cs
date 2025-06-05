@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
+using Match = TiKiTuTo.Model.DataObjects.Match;
 
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
@@ -16,6 +19,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
     /// </summary>
     public class GameLogicRound
     {
+        Team finalist = new Team("finalist");
+        Team thirdPosition = new Team("3.");
+        List<Team> semifinalists = new List<Team>();
+        bool isSemifinalPlayed = false;
 
         // Declare properties
         private InputValidator _inputValidator;
@@ -138,7 +145,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.KoStandings = tournament.KoStandings.OrderBy(x => random.Next()).ToList();
 
             // Initialize the GamePlanKoRound with empty rounds
-            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count)) -1;
             for (int i = 0; i < totalRounds; i++)
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
@@ -198,29 +205,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 ShowKGamePlanKoRound(tournament, currentRound);
 
+
                 foreach (var match in tournament.GamePlanKoRound[currentRound])
                 {
-                    bool hasWinner = false;
-
-                    while (!hasWinner)
-                    {
-                        GameLogicMatch.RunMatch(match);
-
-                        if (match.goalsTeamA > match.goalsTeamB)
-                        {
-                            tournament.KoStandings.Remove(match.teamB);
-                            hasWinner = true;
-                        }
-                        else if (match.goalsTeamA < match.goalsTeamB)
-                        {
-                            tournament.KoStandings.Remove(match.teamA);
-                            hasWinner = true;
-                        }
-                        else
-                        {
-                            InputHandler.View.ShowMessage($"\n\nThe match between {match.teamA.TeamName} and {match.teamB.TeamName} ended in a draw. Repeating the match...");
-                        }
-                    }
+                    updateStandings(tournament, match);
                 }
 
                 currentRound++;
@@ -232,12 +220,31 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             if (tournament.KoStandings.Count == 1)
             {
-                Team winner = tournament.KoStandings.First();
-                InputHandler.View.ShowMessage($"\n\nThe winner of the knockout round is {winner.TeamName}!");
-            }
-            else
-            {
-                InputHandler.View.ShowMessage("\n\nNo matches were played in the knockout round.");
+                Team winner = tournament.KoStandings[0];
+                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {winner.TeamName}!");
+                InputHandler.View.ShowMessage($"\n\nThe 2. Position of the KO round is {finalist.TeamName}!");
+
+                if (totalRounds >= 2 && !isSemifinalPlayed) // there is a semifinal
+                {
+                    isSemifinalPlayed = true;
+                    InputHandler.View.ShowMessage("\nLets decide the 3. Position!");
+                    Match semifinal = new Match(semifinalists[0], semifinalists[1]);
+                    GameLogicMatch.RunMatch(semifinal);
+                    if (semifinalists[0].NumberGoals > semifinalists[1].NumberGoals)
+                    {
+                        thirdPosition = semifinalists[0];
+                    }
+                    else
+                    {
+                        thirdPosition = semifinalists[1];
+
+                    }
+                    InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round are {thirdPosition.TeamName}.");
+                }
+
+                
+
+
             }
         }
 
@@ -252,21 +259,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     .ToList();
          }
 
-         public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
-         {
-            if (goalsA > goalsB)
-            {
-                teamA.NumberGamesWon++;
-            }
-            if (goalsB > goalsA)
-            {
-                teamB.NumberGamesWon++;
-            }
-            teamA.Goaldifference += goalsA - goalsB;
-            teamA.NumberGoals += goalsA;
-            teamB.Goaldifference += goalsB - goalsA;
-            teamB.NumberGoals += goalsB;
-         }
 
         public void organizeMatchesForNextRound(Tournament tournament, int currentRound)
         {
@@ -275,11 +267,57 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
                 {
                     var match = new Match(tournament.KoStandings[i], tournament.KoStandings[i + 1]);
+                    // ensure there is place for a new round
+                    while (tournament.GamePlanKoRound.Count <= currentRound)
+                    {
+                        tournament.GamePlanKoRound.Add(new List<Match>());
+                    }
                     tournament.GamePlanKoRound[currentRound].Add(match);
                 }
             }
         }
 
+        public void updateStandings(Tournament tournament, Match match)
+        {
 
+            bool hasWinner = false;
+
+            while (!hasWinner)
+            {
+                GameLogicMatch.RunMatch(match);
+                if (match.goalsTeamA > match.goalsTeamB)
+                {
+
+                    if (tournament.KoStandings.Count == 4 || tournament.KoStandings.Count == 3) // semifinal 
+                    {
+                        semifinalists.Add(match.teamB);
+                    }
+                    if (tournament.KoStandings.Count == 2) // final
+                    {
+                        finalist = match.teamB;
+                    }
+
+                    tournament.KoStandings.Remove(match.teamB);
+                    hasWinner = true;
+                }
+                else if (match.goalsTeamA < match.goalsTeamB)
+                {
+                    if (tournament.KoStandings.Count == 4 || tournament.KoStandings.Count == 3) // semifinal
+                    {
+                        semifinalists.Add(match.teamA);
+                    }
+                    if (tournament.KoStandings.Count == 2) // final
+                    {
+                        finalist = match.teamA;
+                    }
+                    tournament.KoStandings.Remove(match.teamA);
+                    hasWinner = true;
+                }
+                else
+                {
+                    InputHandler.View.ShowMessage($"\n\nThe match between {match.teamA.TeamName} and {match.teamB.TeamName} ended in a draw. Repeating the match...");
+                }
+            }
+        }
     }
     }
