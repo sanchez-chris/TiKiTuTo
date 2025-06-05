@@ -194,6 +194,31 @@ namespace TiKiTuTo.View
             }
         }
 
+        public int ShowExitOptions()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                " ----Exit to desktop?---",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Yes",
+            "No",
+            };
+
+                int userChoice = PromptSelectionMulti(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
 
         public void ShowMessage(string message)
         {

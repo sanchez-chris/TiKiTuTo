@@ -27,6 +27,8 @@ namespace TiKiTuTo.View
 
         public void ShowExitMessage();
 
+        public int ShowExitOptions();
+
         public void ShowGamePlan();
 
         public void ShowStandings();
@@ -46,6 +48,7 @@ namespace TiKiTuTo.View
         public string PromptSelection(string title, IEnumerable<string> options);
 
         public string ShowSpectreMenu();
+
         
     }
 }

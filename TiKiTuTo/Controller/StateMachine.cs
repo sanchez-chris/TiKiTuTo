@@ -96,8 +96,12 @@ namespace TiKiTuTo.Controller
                 case AppState.InGameMenu:
                     _view.ShowMessage("InGameMenu (not implemented yet).");
                     break;
+                case AppState.ExitOptions:
+                    _view.ShowExitOptions();
+                    break;
                 case AppState.Exit:
                     _view.ShowExitMessage();
+                    Environment.Exit(0);
                     break;
                 default:
                     _view.ShowMessage("Not a valid state.");
@@ -139,8 +143,7 @@ namespace TiKiTuTo.Controller
                     break;
                 case AppState.ShowLoadableTournamentSettings:
                     //HandleShowLoadableTournamentSettingsChoice(choice);
-                    break;
-                
+                    break;                
                 case AppState.RunTournament:
                     HandleRunTournamentChoice(choice);
                     break;
@@ -153,8 +156,11 @@ namespace TiKiTuTo.Controller
                 case AppState.InGameMenu:
                     HandleInGameMenuChoice(choice);
                     break;
+                case AppState.ExitOptions:
+                    HandleExitChoice(choice);
+                    break;
                 case AppState.Exit:
-                    //HandleExitChoice(choice);
+                    HandleExitChoice(choice);
                     break;
             }
         }
@@ -171,7 +177,7 @@ namespace TiKiTuTo.Controller
         //RunTournament TODO
         //ShowEditableTournamentSettings TODO
         //TournamentSettingsEditingDialogue TODO
-        //InGameMenu  TODO
+        //InGameMenu  DONE
         //Exit  TODO
 
 
@@ -199,7 +205,7 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.ManageSettingsMenu);
                     break;
                 case 5:
-                    TransitionTo(AppState.Exit);
+                    TransitionTo(AppState.ExitOptions);
                     break;
                 default:
                     _view.ShowInvalidInputMessage();
@@ -345,6 +351,21 @@ namespace TiKiTuTo.Controller
         }
 
         //TODO: HandleShowAvailableTournamentSettingsChoice (variable number of valid options...)
+        private void HandleExitChoice(int choice)
+        {
+            switch (choice)
+            {
+                case 1:
+                    TransitionTo(AppState.Exit);
+                    break;
+                case 2:
+                    TransitionTo(AppState.MainMenu);
+                    break;
+                default:
+                    _view.ShowInvalidInputMessage();
+                    break;
+            }
+        }
 
     }
-    }
+}

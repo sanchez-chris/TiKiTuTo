@@ -44,12 +44,11 @@ namespace TiKiTuTo.Controller
 
         public void Run()
         {
-            while (_stateMachine.CurrentState != AppState.Exit)
+            while (true)
             {
                 int userChoice = _stateMachine.ExecuteCurrentState();
                 _stateMachine.HandleInput(userChoice);
             }
-            Environment.Exit(0);
         }
 
 
