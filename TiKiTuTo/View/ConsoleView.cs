@@ -220,6 +220,32 @@ namespace TiKiTuTo.View
         }
 
 
+        public int TournamentStartSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                " --Start now or later?--",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Now",
+            "Later (Return to Menu)",
+            };
+
+                int userChoice = PromptSelectionMulti(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
+
         public void ShowMessage(string message)
         {
             Console.WriteLine(message);
