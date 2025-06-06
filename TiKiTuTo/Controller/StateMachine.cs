@@ -83,7 +83,6 @@ namespace TiKiTuTo.Controller
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings();
-                    Thread.Sleep(5000);  //TEMP
                     break;
                 case AppState.ShowEditableTournamentSettings:
                     _view.ShowMessage("ShowEditableTournamentSettings (not implemented yet).");
