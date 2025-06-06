@@ -98,10 +98,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     matchesCreated.Add((teamA, teamB));
                 }
             }
-            InputHandler.View.ShowMessage("\nGameplan not balanced:\n"); // temp
-
-            GameplanNotBalanced.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}")); // temp
-
             tournament.GamePlanPreliminaryRound = BalanceGamePlanPreliminaryRound(GameplanNotBalanced);
 
             InputHandler.View.ShowMessage("Good luck to all teams!");
@@ -293,91 +289,69 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void WaitForUserToStart()
         {
-            InputHandler.View.ShowMessage("Drucke eine beliebige Taste zu starten.");
+            InputHandler.View.ShowMessage("Press enter to start.");
             InputHandler.View.ReadInput();
         }
         public List<Match> BalanceGamePlanPreliminaryRound(List<Match> listOfMatches)
         {
-            // Dictionary to count how many times each team has played
             Dictionary<Team, int> teamGamesCount = new Dictionary<Team, int>();
+            List<Match> reorderedMatches = new List<Match>();
 
-            // Initialize the game counter for each team
+            // Initialize counts
             foreach (var match in listOfMatches)
             {
                 if (!teamGamesCount.ContainsKey(match.teamA))
-                {
                     teamGamesCount[match.teamA] = 0;
-                }
                 if (!teamGamesCount.ContainsKey(match.teamB))
-                {
                     teamGamesCount[match.teamB] = 0;
-                }
             }
 
-            // List to hold reordered matches
-            List<Match> reorderedMatches = new List<Match>();
-
-            foreach (var match in listOfMatches)
+            // Go through each match and reorder to balance team games
+            for (int i = 0; i < listOfMatches.Count; i++)
             {
-                // Increment the game counter for the teams participating in the current match
-                teamGamesCount[match.teamA]++;
-                teamGamesCount[match.teamB]++;
+                Match currentMatch = listOfMatches[i];
 
-                // Check if the difference in games played exceeds 2
-                int maxGamesPlayed = teamGamesCount.Values.Max();
-                int minGamesPlayed = teamGamesCount.Values.Min();
-                Match swappingTemp = new Match();
-                if (maxGamesPlayed - minGamesPlayed >= 2)
+                // Simulate counts if this match is added
+                int countA = teamGamesCount[currentMatch.teamA] + 1;
+                int countB = teamGamesCount[currentMatch.teamB] + 1;
+                int simulatedMax = Math.Max(countA, teamGamesCount.Values.Max());
+                int simulatedMin = Math.Min(countB, teamGamesCount.Values.Min());
+
+                if (simulatedMax - simulatedMin >= 2)
                 {
-                    // Reorganize the matches to fix the issue
+                    // Try to find a better match to swap later in the list
                     bool swapped = false;
-                    for (int i = 1; i < listOfMatches.Count; i++)
+
+                    for (int j = i + 1; j < listOfMatches.Count; j++)
                     {
-                        var matchToSwap = listOfMatches[i];
+                        Match candidate = listOfMatches[j];
 
-                        for (int j = i; j < listOfMatches.Count-1; j++)
+                        int canA = teamGamesCount[candidate.teamA];
+                        int canB = teamGamesCount[candidate.teamB];
+
+                        int candMax = Math.Max(canA + 1, teamGamesCount.Values.Max());
+                        int candMin = Math.Min(canB + 1, teamGamesCount.Values.Min());
+
+                        if (candMax - candMin < 2)
                         {
-                            // Check if swapping resolves the imbalance
-                            if (( // !(j + 1 > listOfMatches.Count) ||
-                                (listOfMatches[j + 1].teamA == listOfMatches[i - 1].teamA) ||
-                                (listOfMatches[j + 1].teamA == listOfMatches[i - 1].teamB) ||
-                                (listOfMatches[j + 1].teamB == listOfMatches[i - 1].teamA) ||
-                                (listOfMatches[j + 1].teamB == listOfMatches[i - 1].teamB)))
-                            {
-                                j++; // it doesn't resolve the imbalance, check the next match
-                            }
-                            else
-
-                            // Swap the matches
-                            swappingTemp = matchToSwap;
-                            // add in listOfMatches position i, the match in listOfMatches position j + 1
-                            listOfMatches[i] = listOfMatches[j+1];
-                            listOfMatches[j+1] = swappingTemp;
+                            // Swap matches
+                            listOfMatches[j] = currentMatch;
+                            currentMatch = candidate;
                             swapped = true;
                             break;
                         }
-
-
-
                     }
 
-                    if (!swapped)
-                    {
-                        // If no suitable swap was found, add the match as is
-                        reorderedMatches.Add(match);
-                    }
+                    // If no suitable swap, proceed anyway
                 }
-                else
-                {
-                    // If there is no issue, add the match directly
-                    reorderedMatches.Add(match);
-                }
+
+                // Accept match and update counts
+                reorderedMatches.Add(currentMatch);
+                teamGamesCount[currentMatch.teamA]++;
+                teamGamesCount[currentMatch.teamB]++;
             }
 
-            // Update the original list with the reordered matches
-            listOfMatches.Clear();
-            listOfMatches.AddRange(reorderedMatches);
-            return listOfMatches;
+            return reorderedMatches;
         }
 
         public void updateStandings(Tournament tournament, Match match)
