@@ -108,7 +108,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
             }
             InputHandler.View.ShowMessage("Good luck to all teams!");
-            Thread.Sleep(2000); // better readability, wait 2 seconds before starting the preliminary round
+            WaitForUserToStart();
+
+
+
         }
 
         public void RunPreliminaryRound()
@@ -292,6 +295,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     tournament.GamePlanKoRound[currentRound].Add(match);
                 }
             }
+        }
+
+        public void WaitForUserToStart()
+        {
+            InputHandler.View.ShowMessage("Drucke eine beliebige Taste zu starten.");
+            Console.ReadKey();
         }
 
         public void updateStandings(Tournament tournament, Match match)
