@@ -133,7 +133,7 @@ namespace TiKiTuTo.View
                 .OrderBy(fileName =>
                 {
                     string[] parts = fileName.Split('_');
-                    return parts[^1]; // Sortiere direkt nach dem hinteren Teil
+                    return parts[^1]; 
                 })
                 .ToList();
 
