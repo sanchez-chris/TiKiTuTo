@@ -14,7 +14,10 @@ namespace TiKiTuTo.View
 
         public int StartTournamentMenuSelection();
 
-        public int TournamentStartSelection(); 
+        public int TournamentStartSelection();
+
+        public int SettingsCreatedSelection();
+
         public int SavedTournamentsSelection(IEnumerable<string> loadableFiles);
 
         public int FinishedTournamentsSelection(IEnumerable<string> availableFiles);

@@ -94,6 +94,8 @@ namespace TiKiTuTo.View
             }
         }
 
+
+
         public int SavedTournamentsSelection(IEnumerable<string> loadableFiles)
         {
             List<string> headerLines = new()
@@ -134,6 +136,33 @@ namespace TiKiTuTo.View
 
             return userChoice;
 
+        }
+
+        public int SettingsCreatedSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                "----Settings created----",
+                "----Create another------",
+                "----or return to Menu?--",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Create another setting",
+            "Return to main menu",
+            };
+
+                int userChoice = PromptSelectionMultiLine(headerLines, options);
+
+                return userChoice;
+
+            }
         }
 
         public int LoadableTournamentsSelection(IEnumerable<string> availableFiles)
@@ -242,7 +271,7 @@ namespace TiKiTuTo.View
 
         public void ShowStandings() 
         {
-            // TODO: Implement functionality for showing the current standings
+            Console.ReadKey();
         }
         public void ShowNextMatches(List<Match> matches)
         {

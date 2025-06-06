@@ -74,11 +74,13 @@ namespace TiKiTuTo.Controller
                 case AppState.TournamentSettingsCreationDialogue:
                     _gameLogicTournamentSettings.CreateTournamentSettings();
 //                    _jsonService.SaveTournamentSettings(); //TODO implement this
+                    return _view.SettingsCreatedSelection();
+                case AppState.InitTournament:
+                    _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
                 case AppState.ShowLoadableTournamentSettings:
                     //_view.LoadableTournamentSettingsSelection();
                 case AppState.RunTournament:
-                    //_gameLogicTournament.InitTournament();
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings();
                     Thread.Sleep(5000);  //TEMP
@@ -88,9 +90,6 @@ namespace TiKiTuTo.Controller
                 case AppState.Exit:
                     _view.ShowExitMessage();
                     Environment.Exit(0);
-                    break;
-                default:
-                    _view.ShowMessage("Not a valid state.");
                     break;
             }
             //base case for states where the user decides to stay in the current context (no state transition)
@@ -122,10 +121,13 @@ namespace TiKiTuTo.Controller
                     HandleShowFinishedTournamentsChoice(choice);
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
-                    HandleTournamentStartChoice(choice);
+                    HandleSettingsCreationChoice(choice);
                     break;
                 case AppState.ShowLoadableTournamentSettings:
                     //HandleShowLoadableTournamentSettingsChoice(choice);
+                    break;
+                case AppState.InitTournament:
+                    HandleTournamentStartChoice(choice);
                     break;
                 case AppState.RunTournament:
                     HandleRunTournamentChoice(choice);
@@ -181,9 +183,6 @@ namespace TiKiTuTo.Controller
                 case 5:
                     TransitionTo(AppState.ExitOptions);
                     break;
-                default:
-                    _view.ShowInvalidInputMessage();
-                    break;
             }
         }
 
@@ -196,8 +195,7 @@ namespace TiKiTuTo.Controller
             switch (choice)
             {
                 case 1:
-                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
-                    //TransitionTo(AppState.RunTournament);
+                    TransitionTo(AppState.InitTournament);
                     break;
                 case 2:
                     TransitionTo(AppState.ShowLoadableTournamentSettings);
@@ -205,9 +203,7 @@ namespace TiKiTuTo.Controller
                 case 3:
                     TransitionTo(AppState.MainMenu);
                     break;
-                default:
-                    _view.ShowInvalidInputMessage();
-                    break;
+
             }
         }
 
@@ -262,7 +258,19 @@ namespace TiKiTuTo.Controller
             }
 
         }
-
+                
+        private void HandleSettingsCreationChoice(int choice)
+        {
+            switch (choice)
+            {
+                case 1:
+                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
+                    break;
+                case 2:
+                    TransitionTo(AppState.MainMenu);
+                    break;
+            }
+        }
         private void HandleRunTournamentChoice(int choice)
         {
             switch (choice)
@@ -275,9 +283,6 @@ namespace TiKiTuTo.Controller
                     break;
                 case 3:
                     TransitionTo(AppState.Exit);
-                    break;
-                default:
-                    _view.ShowInvalidInputMessage();
                     break;
             }
         }     
@@ -293,9 +298,6 @@ namespace TiKiTuTo.Controller
                 case 2:
                     TransitionTo(AppState.MainMenu);
                     break;
-                default:
-                    _view.ShowInvalidInputMessage();
-                    break;
             }
         }
 
@@ -308,9 +310,6 @@ namespace TiKiTuTo.Controller
                     break;
                 case 2:
                     TransitionTo(AppState.MainMenu);
-                    break;
-                default:
-                    _view.ShowInvalidInputMessage();
                     break;
             }
         }

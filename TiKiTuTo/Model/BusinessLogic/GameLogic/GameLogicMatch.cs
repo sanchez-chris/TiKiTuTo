@@ -22,18 +22,25 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             int goalsA = 0;
             int goalsB = 0;
-            
+
             //StartMatchTimer(match);
+            bool flag = true;
+            while (flag)
+            {
+                goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
+                match.goalsTeamA = goalsA;
 
-            goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
-            match.goalsTeamA = goalsA;
-
-            goalsB = InputHandler.GetValidGoalInput(match.teamB.TeamName);
-            match.goalsTeamB = goalsB;
-
-            InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
-
-            FinishMatch(match);
+                goalsB = InputHandler.GetValidGoalInput(match.teamB.TeamName);
+                match.goalsTeamB = goalsB;
+                if (goalsA==goalsB)
+                {
+                    InputHandler.View.ShowMessage("You can't have a draw.");
+                    break;
+                }
+                InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
+                flag = false;
+                FinishMatch(match);
+            }
         }
 
         private DateTime _endTime;
@@ -99,7 +106,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void FinishMatch(Match match)
         {
             match.finished = true;
-            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB); // it does not update the goals
+            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
             JSONService.SaveTournament();
         }
     }
