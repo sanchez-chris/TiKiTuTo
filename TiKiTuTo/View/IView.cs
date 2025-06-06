@@ -51,7 +51,7 @@ namespace TiKiTuTo.View
 
         public void ShowTeamsAndPlayer(List<Team> teams);
 
-        public void SavingTournamentAnimation(string filePath);
+        public void AnimateAndConfirmSave(string filePath);
 
         public void DisplayFiles(string[] currentFiles);
 

@@ -336,7 +336,7 @@ namespace TiKiTuTo.View
         }
 
 
-        public void SavingTournamentAnimation(string filePath)
+        public void AnimateAndConfirmSave(string filePath)
         {
             AnsiConsole.Progress()
             .Start(ctx =>

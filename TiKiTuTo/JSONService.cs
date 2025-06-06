@@ -8,20 +8,15 @@ namespace TiKiTuTo.Controller
 {
     public class JSONService
     {
-        private string saveFolder = Path.Combine(
+        private readonly string baseFolder = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "TikiTuto", "Saved_Tournaments");
+        "TikiTuto");
 
-        private string settingsFolder = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "TikiTuto", "Saved_Tournament_Settings");
-
-        private string finishedTournamentFolder = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "TikiTuto", "Finished_Tournaments");
-
-
-        public TournamentModel _tournamentModel;
+        private string saveFolder => Path.Combine(baseFolder, "Saved_Tournaments");
+        private string settingsFolder => Path.Combine(baseFolder, "Saved_Tournament_Settings");
+        private string finishedTournamentFolder => Path.Combine(baseFolder, "Finished_Tournaments");
+        
+        private TournamentModel _tournamentModel;
         private IView _view;
 
 
@@ -29,7 +24,6 @@ namespace TiKiTuTo.Controller
         {
             _tournamentModel = tournamentModel;
             _view = view;
-
 
             InitialCreationOfFolder(settingsFolder);
             InitialCreationOfFolder(saveFolder);
@@ -41,20 +35,20 @@ namespace TiKiTuTo.Controller
         {
             string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{_tournamentModel.Tournament.TournamentName}.json";
             SaveToFile(saveFolder, fileName, _tournamentModel.Tournament);
-            _view.SavingTournamentAnimation(Path.Combine(saveFolder, fileName));
+            _view.AnimateAndConfirmSave(Path.Combine(saveFolder, fileName));
         }
 
         public void SaveFinishedTournament()
         {
             string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{_tournamentModel.Tournament.TournamentName}.json";
             SaveToFile(finishedTournamentFolder, fileName, _tournamentModel.Tournament);
-            _view.SavingTournamentAnimation(Path.Combine(finishedTournamentFolder, fileName));
+            _view.AnimateAndConfirmSave(Path.Combine(finishedTournamentFolder, fileName));
         }
 
         public void SaveTournamentSettings()
         {
             var settingsName = _tournamentModel.Tournament.TournamentSettings.SettingsName;
-            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{settingsName}.json";
+            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json";
             SaveToFile(settingsFolder, fileName, _tournamentModel.Tournament.TournamentSettings);
         }
 
