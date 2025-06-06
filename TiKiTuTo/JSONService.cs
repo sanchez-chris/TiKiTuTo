@@ -24,7 +24,7 @@ namespace TiKiTuTo.Controller
         private IView _view;
 
 
-        public JSONService(TournamentModel tournamentModel, IView view, InputHandler inputHandler)
+        public JSONService(TournamentModel tournamentModel, IView view)
         {
             _tournamentModel = tournamentModel;
             _view = view;
