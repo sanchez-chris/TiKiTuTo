@@ -14,12 +14,12 @@ namespace TiKiTuTo.Model.DataObjects
         public List<Team> KoStandings { get; set; } = new List<Team>();
         public List<Match> GamePlanPreliminaryRound { get; set; } = new List<Match>();
         public List<List<Match>> GamePlanKoRound { get; set; } = new List<List<Match>>();
-        public Team winner = new Team();
-        public Team finalist = new Team();
-        public List<Team> semifinalists = new List<Team>();
-        public Team thirdPosition = new Team();
-        public bool isSemifinalPlayed = false;
-        public int currentRound = 0;
+        public Team Winner;
+        public Team Finalist;
+        public List<Team> Semifinalists;
+        public Team ThirdPosition;
+        public bool IsSemifinalPlayed = false;
+        public int CurrentRound = 0;
 
 
 
