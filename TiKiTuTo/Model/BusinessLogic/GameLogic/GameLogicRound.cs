@@ -294,7 +294,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void WaitForUserToStart()
         {
             InputHandler.View.ShowMessage("Drucke eine beliebige Taste zu starten.");
-            Console.ReadKey();
+            InputHandler.View.ReadInput();
         }
 
         public void updateStandings(Tournament tournament, Match match)
