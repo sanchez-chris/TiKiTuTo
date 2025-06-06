@@ -332,7 +332,7 @@ namespace TiKiTuTo.View
 
             if (!(options.Count() > 1))
             {
-                title = $"[red]No opions available[/]";   
+                title = $"[red]No options available[/]";   
             }
 
                 var userChoice = AnsiConsole.Prompt(
@@ -340,8 +340,6 @@ namespace TiKiTuTo.View
                     .Title(title)
                     .PageSize(5)
                     .AddChoices(options));
-
-            AnsiConsole.Write(options.First());
 
             return options.ToList().IndexOf(userChoice) + 1;
         }
