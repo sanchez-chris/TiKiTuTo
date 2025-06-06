@@ -132,8 +132,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void InitKoRound()
         {
             var tournament = TournamentModel.Tournament;
-            int currentRound = tournament.CurrentRound;
-
 
             if (!_inputValidator.HasValidTournamentSettings(tournament))
             {
@@ -161,7 +159,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
             }
-            organizeMatchesForNextRound(tournament, currentRound);
+            organizeMatchesForNextRound(tournament, 0);
         }
 
         public void ShowKoGamePlanKoRound(Tournament tournament, int currentRound)
@@ -212,22 +210,21 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
-            int currentRound = tournament.CurrentRound;
 
-            while (currentRound < totalRounds)
+            while (tournament.CurrentRound < totalRounds) 
             {
-                ShowKoGamePlanKoRound(tournament, currentRound);
+                ShowKoGamePlanKoRound(tournament, tournament.CurrentRound);
 
 
-                foreach (var match in tournament.GamePlanKoRound[currentRound])
+                foreach (var match in tournament.GamePlanKoRound[tournament.CurrentRound])
                 {
                     updateStandings(tournament, match);
                 }
 
-                currentRound++;
-                if (currentRound < totalRounds)
+                tournament.CurrentRound++;
+                if (tournament.CurrentRound < totalRounds)
                 {
-                    organizeMatchesForNextRound(tournament, currentRound);
+                    organizeMatchesForNextRound(tournament, tournament.CurrentRound);
                 }
                 if (totalRounds >= 2 && !tournament.IsSemifinalPlayed && tournament.KoStandings.Count == 2) // there is a semifinal
                 {
@@ -251,7 +248,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
 
 
-            if (tournament.KoStandings.Count == 1)
+            if (tournament.KoStandings.Count == 1) 
             {
                 tournament.Winner = tournament.KoStandings[0];
                 InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
@@ -293,7 +290,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void WaitForUserToStart()
         {
-            InputHandler.View.ShowMessage("Drucke eine beliebige Taste zu starten.");
+            InputHandler.View.ShowMessage("Press enter to continue.");
             InputHandler.View.ReadInput();
         }
 
@@ -307,7 +304,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 if(!match.finished)
                 {
                     GameLogicMatch.RunMatch(match);
-
                 }
                 if (match.goalsTeamA > match.goalsTeamB)
                 {

@@ -21,10 +21,6 @@ namespace TiKiTuTo.Model.DataObjects
         public bool IsSemifinalPlayed = false;
         public int CurrentRound = 0;
 
-
-
-
-
         public Tournament(string name, TournamentSettings settings)
         {
             TournamentName = name;
