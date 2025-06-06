@@ -22,7 +22,7 @@ namespace TiKiTuTo.View
 
         public int FinishedTournamentsSelection(IEnumerable<string> availableFiles);
 
-        public int LoadableTournamentsSelection(IEnumerable<string> availableFiles);
+        public int LoadableTournamentSettingsSelection(IEnumerable<string> availableFiles);
 
         public int DuringTournamentMenuSelection();
 

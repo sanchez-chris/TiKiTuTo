@@ -165,7 +165,7 @@ namespace TiKiTuTo.View
             }
         }
 
-        public int LoadableTournamentsSelection(IEnumerable<string> availableFiles)
+        public int LoadableTournamentSettingsSelection(IEnumerable<string> availableFiles)
         {
             List<string> headerLines = new()
             {

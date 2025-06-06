@@ -69,17 +69,19 @@ namespace TiKiTuTo.Controller
                     string[] loadableFiles = _jsonService.GetUnfinishedTournamentFiles();
                     return _view.SavedTournamentsSelection(loadableFiles);
                 case AppState.ShowFinishedTournaments:
-                    _view.ShowMessage("Finished tournaments (not implemented yet).");
+                    string[] loadableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
+                    _view.FinishedTournamentsSelection(loadableFinishedFiles);
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
                     _gameLogicTournamentSettings.CreateTournamentSettings();
-//                    _jsonService.SaveTournamentSettings(); //TODO implement this
+                    _jsonService.SaveTournamentSettings(); //TODO implement this
                     return _view.SettingsCreatedSelection();
                 case AppState.InitTournament:
                     _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
                 case AppState.ShowLoadableTournamentSettings:
-                    return _view.LoadableTournamentSettingsSelection();
+                    string[] availableFiles = _jsonService.GetTournamentSettingsFiles();
+                    return _view.LoadableTournamentSettingsSelection(availableFiles);
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings();
@@ -123,7 +125,7 @@ namespace TiKiTuTo.Controller
                     HandleSettingsCreationChoice(choice);
                     break;
                 case AppState.ShowLoadableTournamentSettings:
-                    //HandleShowLoadableTournamentSettingsChoice(choice);
+                    HandleShowLoadableTournamentSettingsChoice(choice);
                     break;
                 case AppState.InitTournament:
                     HandleTournamentStartChoice(choice);
@@ -270,6 +272,29 @@ namespace TiKiTuTo.Controller
                     break;
             }
         }
+
+        private void HandleShowLoadableTournamentSettingsChoice(int choice)
+        {
+            string[] tournamentSettingsFiles = _jsonService.GetTournamentSettingsFiles();
+            if (choice <= tournamentSettingsFiles.Length) //a valid tournament file
+            {
+                string chosenSetting = tournamentSettingsFiles[choice - 1];
+                _view.ShowMessage($"Opening {chosenSetting}");
+                _jsonService.LoadTournamentSettings(chosenSetting); //jsonService.LoadGame should take a filename or path, no?
+                _gameLogicTournament.CreateTournament(_tournamentModel.TournamentSettings);
+                TransitionTo(AppState.RunTournament);
+            }
+            else if (choice - 1 == tournamentSettingsFiles.Length) //back to main menu
+            {
+                TransitionTo(AppState.MainMenu);
+            }
+            else //not a valid input
+            {
+                _view.ShowInvalidInputMessage();
+            }
+        }        
+
+
         private void HandleRunTournamentChoice(int choice)
         {
             switch (choice)
