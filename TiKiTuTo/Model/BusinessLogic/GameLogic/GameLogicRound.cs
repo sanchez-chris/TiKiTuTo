@@ -48,8 +48,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             var Settings = TournamentModel.Tournament.Settings;
             var tournament = TournamentModel.Tournament;
-
-            List<Match> GamePlanPreliminaryRound = tournament.GamePlanPreliminaryRound;
+            List<Match> GameplanNotBalanced = new List<Match>();
 
             // fill the list of matches tournament.GamePlanPreliminaryRound
             if (Settings == null || Settings.TeamsInTournament == null || Settings.TeamsInTournament.Count < 2)
@@ -92,19 +91,21 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     // Create the match
                     Match match = new Match(teamA, teamB);
 
-                    GamePlanPreliminaryRound.Add(match);
-
+                    GameplanNotBalanced.Add(match);
                     // Update counts
                     teamMatchCount[teamA]++;
                     teamMatchCount[teamB]++;
                     matchesCreated.Add((teamA, teamB));
                 }
             }
+            InputHandler.View.ShowMessage("\nGameplan not balanced:\n"); // temp
+
+            GameplanNotBalanced.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}")); // temp
+
+            tournament.GamePlanPreliminaryRound = BalanceGamePlanPreliminaryRound(GameplanNotBalanced);
+
             InputHandler.View.ShowMessage("Good luck to all teams!");
             WaitForUserToStart();
-
-
-
         }
 
         public void RunPreliminaryRound()
@@ -255,7 +256,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 tournament.winner = tournament.KoStandings[0];
                 InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.winner.TeamName}!");
-
                 InputHandler.View.ShowMessage($"\n\n1. {tournament.winner.TeamName}");
                 InputHandler.View.ShowMessage($"\n\n2. {tournament.finalist.TeamName}");
                 InputHandler.View.ShowMessage($"\n\n3. {tournament.thirdPosition.TeamName}");
@@ -294,7 +294,90 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void WaitForUserToStart()
         {
             InputHandler.View.ShowMessage("Drucke eine beliebige Taste zu starten.");
-            Console.ReadKey();
+            InputHandler.View.ReadInput();
+        }
+        public List<Match> BalanceGamePlanPreliminaryRound(List<Match> listOfMatches)
+        {
+            // Dictionary to count how many times each team has played
+            Dictionary<Team, int> teamGamesCount = new Dictionary<Team, int>();
+
+            // Initialize the game counter for each team
+            foreach (var match in listOfMatches)
+            {
+                if (!teamGamesCount.ContainsKey(match.teamA))
+                {
+                    teamGamesCount[match.teamA] = 0;
+                }
+                if (!teamGamesCount.ContainsKey(match.teamB))
+                {
+                    teamGamesCount[match.teamB] = 0;
+                }
+            }
+
+            // List to hold reordered matches
+            List<Match> reorderedMatches = new List<Match>();
+
+            foreach (var match in listOfMatches)
+            {
+                // Increment the game counter for the teams participating in the current match
+                teamGamesCount[match.teamA]++;
+                teamGamesCount[match.teamB]++;
+
+                // Check if the difference in games played exceeds 2
+                int maxGamesPlayed = teamGamesCount.Values.Max();
+                int minGamesPlayed = teamGamesCount.Values.Min();
+                Match swappingTemp = new Match();
+                if (maxGamesPlayed - minGamesPlayed >= 2)
+                {
+                    // Reorganize the matches to fix the issue
+                    bool swapped = false;
+                    for (int i = 1; i < listOfMatches.Count; i++)
+                    {
+                        var matchToSwap = listOfMatches[i];
+
+                        for (int j = i; j < listOfMatches.Count-1; j++)
+                        {
+                            // Check if swapping resolves the imbalance
+                            if (( // !(j + 1 > listOfMatches.Count) ||
+                                (listOfMatches[j + 1].teamA == listOfMatches[i - 1].teamA) ||
+                                (listOfMatches[j + 1].teamA == listOfMatches[i - 1].teamB) ||
+                                (listOfMatches[j + 1].teamB == listOfMatches[i - 1].teamA) ||
+                                (listOfMatches[j + 1].teamB == listOfMatches[i - 1].teamB)))
+                            {
+                                j++; // it doesn't resolve the imbalance, check the next match
+                            }
+                            else
+
+                            // Swap the matches
+                            swappingTemp = matchToSwap;
+                            // add in listOfMatches position i, the match in listOfMatches position j + 1
+                            listOfMatches[i] = listOfMatches[j+1];
+                            listOfMatches[j+1] = swappingTemp;
+                            swapped = true;
+                            break;
+                        }
+
+
+
+                    }
+
+                    if (!swapped)
+                    {
+                        // If no suitable swap was found, add the match as is
+                        reorderedMatches.Add(match);
+                    }
+                }
+                else
+                {
+                    // If there is no issue, add the match directly
+                    reorderedMatches.Add(match);
+                }
+            }
+
+            // Update the original list with the reordered matches
+            listOfMatches.Clear();
+            listOfMatches.AddRange(reorderedMatches);
+            return listOfMatches;
         }
 
         public void updateStandings(Tournament tournament, Match match)
