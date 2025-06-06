@@ -79,11 +79,10 @@ namespace TiKiTuTo.Controller
                     _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
                 case AppState.ShowLoadableTournamentSettings:
-                    //_view.LoadableTournamentSettingsSelection();
+                    return _view.LoadableTournamentSettingsSelection();
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings();
-                    Thread.Sleep(5000);  //TEMP
                     return _view.DuringTournamentMenuSelection();
                 case AppState.ExitOptions:
                     return _view.ExitOptionsSelection();
@@ -218,12 +217,12 @@ namespace TiKiTuTo.Controller
             string[] unfinishedTournamentFiles = _jsonService.GetUnfinishedTournamentFiles();
             if (choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice];
+                string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 _jsonService.LoadTournament(chosenTournament); //jsonService.LoadGame should take a filename or path, no?
                 TransitionTo(AppState.RunTournament);
             }
-            else if (choice == unfinishedTournamentFiles.Length + 1) //back to main menu
+            else if (choice-1 == unfinishedTournamentFiles.Length) //back to main menu
             {
                 TransitionTo(AppState.MainMenu);
             }
@@ -242,13 +241,13 @@ namespace TiKiTuTo.Controller
         private void HandleShowFinishedTournamentsChoice(int choice)
         {
             string[] unfinishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
-            if (choice <= unfinishedTournamentFiles.Length) //a valid tournament file
+            if (choice-1 <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice];
+                string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 TransitionTo(AppState.RunTournament);
             }
-            else if (choice == unfinishedTournamentFiles.Length + 1) //back to main menu
+            else if (choice-1 == unfinishedTournamentFiles.Length) //back to main menu
             {
                 TransitionTo(AppState.MainMenu);
             }

@@ -35,7 +35,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 if (goalsA==goalsB)
                 {
                     InputHandler.View.ShowMessage("You can't have a draw.");
-                    break;
+                    continue;
                 }
                 InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
                 flag = false;

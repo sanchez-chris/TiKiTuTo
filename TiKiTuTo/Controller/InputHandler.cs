@@ -149,7 +149,7 @@ namespace TiKiTuTo.Controller
                 View.ShowMessage("Your input can not be empty.");
                 name = View.ReadInput();
             }
-            View.ShowMessage($"Tournament {name} created.");
+            View.ShowMessage($"{name} has been created.");
             return name;
         }
     }
