@@ -259,9 +259,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 Team winner = tournament.KoStandings[0];
                 InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {winner.TeamName}!");
 
-                InputHandler.View.ShowMessage($"\n\n1. {winner.TeamName}!");
-                InputHandler.View.ShowMessage($"\n\n2. {finalist.TeamName}!");
-                InputHandler.View.ShowMessage($"\n\n3. {thirdPosition.TeamName}!");
+                InputHandler.View.ShowMessage($"\n\n1. {winner.TeamName}");
+                InputHandler.View.ShowMessage($"\n\n2. {finalist.TeamName}");
+                InputHandler.View.ShowMessage($"\n\n3. {thirdPosition.TeamName}");
             }
         }
 
