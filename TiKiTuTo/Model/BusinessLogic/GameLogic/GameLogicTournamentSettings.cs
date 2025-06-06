@@ -59,6 +59,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 teams.Add(CreateTeam(i, maxTeamMembers));
             }
+            
             InputHandler.View.ShowMessage($"You have created {teams.Count} teams.\n\nPreliminary round contestant:");
             InputHandler.View.ShowTeamsAndPlayer(teams);
             return teams;

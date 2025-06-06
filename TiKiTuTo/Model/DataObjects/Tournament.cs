@@ -16,7 +16,7 @@ namespace TiKiTuTo.Model.DataObjects
         public List<List<Match>> GamePlanKoRound { get; set; } = new List<List<Match>>();
         public Team Winner;
         public Team Finalist;
-        public List<Team> Semifinalists;
+        public List<Team> Semifinalists { get; set; } = new List<Team>();
         public Team ThirdPosition;
         public bool IsSemifinalPlayed = false;
         public int CurrentRound = 0;

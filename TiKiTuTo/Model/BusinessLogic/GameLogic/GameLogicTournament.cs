@@ -63,15 +63,16 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunTournament()
         {
-            if(!TournamentModel.Tournament.GamePlanKoRound.Any())
-            {
+            // this if else condition leads to an bug
+            //if (!TournamentModel.Tournament.GamePlanKoRound.Any())
+            //{
                 GameLogicRound.RunPreliminaryRound();
                 GameLogicRound.InitKoRound();
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 GameLogicRound.RunKoRound();
-            }
+            //}
 
 
         }
