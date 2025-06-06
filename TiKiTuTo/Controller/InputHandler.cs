@@ -126,7 +126,6 @@ namespace TiKiTuTo.Controller
         {
             View.ShowMessage(prompt);
             string? userInput = View.ReadInput();
-            View.ShowMessage($"Welcome {userInput}");
             return userInput;
         }
 
@@ -150,7 +149,7 @@ namespace TiKiTuTo.Controller
                 View.ShowMessage("Your input can not be empty.");
                 userInput = View.ReadInput();
             }
-            View.ShowMessage($"Tournament {userInput} created.");
+            View.ShowMessage($"\n\nTournament {userInput} created.");
             return userInput;
         }
     }

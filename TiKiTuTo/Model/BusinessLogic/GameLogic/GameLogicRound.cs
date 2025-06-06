@@ -17,6 +17,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
     /// <summary>
     /// Handles business logic regarding Rounds objects. 
     /// </summary>
+
     public class GameLogicRound
     {
         Team finalist = new Team("finalist");
@@ -52,11 +53,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void InitPreliminaryRound()
         {
-            var Tournament = TournamentModel.Tournament;
-
             var Settings = TournamentModel.Tournament.Settings;
+            var tournament = TournamentModel.Tournament;
 
-            List<Match> GamePlanPreliminaryRound = Tournament.GamePlanPreliminaryRound;
+            List<Match> GamePlanPreliminaryRound = tournament.GamePlanPreliminaryRound;
 
             // fill the list of matches tournament.GamePlanPreliminaryRound
             if (Settings == null || Settings.TeamsInTournament == null || Settings.TeamsInTournament.Count < 2)
@@ -65,8 +65,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
             int gamesPerTeam = Settings.NumberOfPreliminaryGamesPerTeam;
             List<Team> teams = Settings.TeamsInTournament;
-
-            InputHandler.View.ShowMessage("\n\nTeams in Tournament:");
 
             // Verify if it's possible to generate the required number of matches
             int totalGamesNeeded = teams.Count * gamesPerTeam / 2;
@@ -109,14 +107,18 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     matchesCreated.Add((teamA, teamB));
                 }
             }
-            InputHandler.View.ShowMessage($"Preliminary round initialized with {GamePlanPreliminaryRound.Count} matches.");
-            GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
-            InputHandler.View.ShowMessage("\n\nGood luck to all teams!");
+            InputHandler.View.ShowMessage("Good luck to all teams!");
+            Thread.Sleep(2000); // better readability, wait 2 seconds before starting the preliminary round
         }
 
         public void RunPreliminaryRound()
         {
             var tournament = TournamentModel.Tournament;
+            InputHandler.View.ShowMessage($"Preliminary round initialized with {tournament.GamePlanPreliminaryRound.Count} matches.");
+            InputHandler.View.ShowMessage("\nGameplan preliminary round:\n");
+
+            tournament.GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
+
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
             foreach (var match in tournament.GamePlanPreliminaryRound)
             {
@@ -142,9 +144,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
 
             tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
+            tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.Settings.NumberOfTeamsInKoRound).ToList();
 
             // Select teams for KO round
-            tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.Settings.NumberOfTeamsInKoRound).ToList();
             InputHandler.View.ShowMessage("\n\nKO Round contestants:\n");
             foreach (var team in tournament.KoStandings)
             {
@@ -193,7 +195,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
             else
             {
-                InputHandler.View.ShowMessage("Matches:");
+                InputHandler.View.ShowMessage("Gameplan KO round:");
             }
 
             InputHandler.View.ShowMessage(new string('-', 20));
@@ -260,12 +262,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 InputHandler.View.ShowMessage($"\n\n1. {winner.TeamName}!");
                 InputHandler.View.ShowMessage($"\n\n2. {finalist.TeamName}!");
                 InputHandler.View.ShowMessage($"\n\n3. {thirdPosition.TeamName}!");
-
-
-
-
-
-
             }
         }
 
