@@ -42,7 +42,7 @@ namespace TiKiTuTo.Controller
             _view.SavingTournamentAnimation(Path.Combine(saveFolder, fileName));
         }
 
-        public void SaveFinishTournament()
+        public void SaveFinishedTournament()
         {
             string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{_tournamentModel.Tournament.TournamentName}.json";
             SaveToFile(finishedTournamentFolder, fileName, _tournamentModel.Tournament);
@@ -192,7 +192,7 @@ namespace TiKiTuTo.Controller
             //Array because of return tye of Directory.GetFiles()
             string[] tournamentSettings = Directory.GetFiles(settingsFolder);
 
-            return tournamentSettings;
+            return ournamentSettings;
         }
 
         public void InitialCreationOfFolder(string folderPath)
