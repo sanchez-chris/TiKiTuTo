@@ -190,9 +190,9 @@ namespace TiKiTuTo.Controller
         public string[] GetTournamentSettingFiles()
         {
             //Array because of return tye of Directory.GetFiles()
-            string[] currentSaveGames = Directory.GetFiles(settingsFolder);
+            string[] tournamentSettings = Directory.GetFiles(settingsFolder);
 
-            return currentSaveGames;
+            return tournamentSettings;
         }
 
         public void InitialCreationOfFolder(string folderPath)
