@@ -119,16 +119,16 @@ namespace TiKiTuTo.View
 
             
 
-            string[] niceLookingLoadableFiles = new string[loadableFiles.Length];
+            string[] formattedFileNames = new string[loadableFiles.Length];
 
             for (int i = 0; i < loadableFiles.Length; i++)
             {
                 string fileName = Path.GetFileName(loadableFiles[i]);
-                niceLookingLoadableFiles[i] = fileName;
+                formattedFileNames[i] = fileName;
             }
 
 
-            List<string> options = niceLookingLoadableFiles.ToList();
+            List<string> options = formattedFileNames.ToList();
             options.Add("Back to Main Menu");
 
 

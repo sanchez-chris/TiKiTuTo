@@ -125,7 +125,7 @@ namespace TiKiTuTo.Controller
             return finishedTournamentFiles;
         }
 
-        public void CreateSaveFolder()
+        public void InitialCreationOfSaveFolder()
         {
             Directory.CreateDirectory(saveFolder);
         }
