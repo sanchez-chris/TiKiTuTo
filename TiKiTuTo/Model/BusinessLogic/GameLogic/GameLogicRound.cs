@@ -230,19 +230,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 {
                     organizeMatchesForNextRound(tournament, currentRound);
                 }
-            }
-
-            if (tournament.KoStandings.Count == 1)
-            {
-                Team winner = tournament.KoStandings[0];
-                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {winner.TeamName}!");
-                InputHandler.View.ShowMessage($"\n\nThe 2. Position of the KO round is {finalist.TeamName}!");
-
-                if (totalRounds >= 2 && !isSemifinalPlayed) // there is a semifinal
+                if (totalRounds >= 2 && !isSemifinalPlayed && tournament.KoStandings.Count == 2) // there is a semifinal
                 {
                     isSemifinalPlayed = true;
                     InputHandler.View.ShowMessage("\nLets decide the 3. Position!");
                     Match semifinal = new Match(semifinalists[0], semifinalists[1]);
+
                     GameLogicMatch.RunMatch(semifinal);
                     if (semifinalists[0].NumberGoals > semifinalists[1].NumberGoals)
                     {
@@ -255,6 +248,20 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     }
                     InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round are {thirdPosition.TeamName}.");
                 }
+            }
+
+
+
+            if (tournament.KoStandings.Count == 1)
+            {
+                Team winner = tournament.KoStandings[0];
+                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {winner.TeamName}!");
+
+                InputHandler.View.ShowMessage($"\n\n1. {winner.TeamName}!");
+                InputHandler.View.ShowMessage($"\n\n2. {finalist.TeamName}!");
+                InputHandler.View.ShowMessage($"\n\n3. {thirdPosition.TeamName}!");
+
+
 
 
 
