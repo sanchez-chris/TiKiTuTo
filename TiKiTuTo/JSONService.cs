@@ -142,14 +142,13 @@ namespace TiKiTuTo.Controller
                 };
                 TournamentSettings loadedTournamentSettings = JsonSerializer.Deserialize<TournamentSettings>(tournamentJSON, options);
 
-                
 
                 if (loadedTournamentSettings != null)
                 {
                     _view.ShowMessage($"TournamentSettings geladen");
+                    return loadedTournamentSettings;
                 }
 
-                return loadedTournamentSettings;
 
             }
             catch (JsonException ex)
