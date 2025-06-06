@@ -73,7 +73,7 @@ namespace TiKiTuTo.Controller
                     _view.FinishedTournamentsSelection(loadableFinishedFiles);
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
-                    _gameLogicTournamentSettings.CreateTournamentSettings();
+                    _tournamentModel.Tournament.TournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
                     _jsonService.SaveTournamentSettings(); //TODO implement this
                     return _view.SettingsCreatedSelection();
                 case AppState.InitTournament:
@@ -280,8 +280,8 @@ namespace TiKiTuTo.Controller
             {
                 string chosenSetting = tournamentSettingsFiles[choice - 1];
                 _view.ShowMessage($"Opening {chosenSetting}");
-                _jsonService.LoadTournamentSettings(chosenSetting); //jsonService.LoadGame should take a filename or path, no?
-                _gameLogicTournament.CreateTournament(_tournamentModel.Tournament.TournamentSettings);
+                var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting); //jsonService.LoadGame should take a filename or path, no?
+                _gameLogicTournament.CreateTournament(tournamentSettings);
                 TransitionTo(AppState.RunTournament);
             }
             else if (choice - 1 == tournamentSettingsFiles.Length) //back to main menu

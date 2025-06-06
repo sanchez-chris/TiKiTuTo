@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using TiKiTuTo.Model;
+using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
 
@@ -28,6 +29,7 @@ namespace TiKiTuTo.Controller
         {
             _tournamentModel = tournamentModel;
             _view = view;
+
 
             InitialCreationOfFolder(settingsFolder);
             InitialCreationOfFolder(saveFolder);
@@ -127,7 +129,7 @@ namespace TiKiTuTo.Controller
             }
         }
 
-        public void LoadTournamentSettings(string chosenFile)
+        public TournamentSettings LoadTournamentSettings(string chosenFile)
         {
             try
             {
@@ -140,12 +142,14 @@ namespace TiKiTuTo.Controller
                 };
                 TournamentSettings loadedTournamentSettings = JsonSerializer.Deserialize<TournamentSettings>(tournamentJSON, options);
 
+                
 
                 if (loadedTournamentSettings != null)
                 {
                     _view.ShowMessage($"TournamentSettings geladen");
-                    _tournamentModel.Tournament.TournamentSettings = loadedTournamentSettings;
                 }
+
+                return loadedTournamentSettings;
 
             }
             catch (JsonException ex)
@@ -160,6 +164,8 @@ namespace TiKiTuTo.Controller
             {
                 _view.ShowMessage($"An unexpected error occured {ex.Message}");
             }
+
+            return null;
 
         }
 

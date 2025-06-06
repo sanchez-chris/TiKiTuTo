@@ -7,18 +7,23 @@ using TiKiTuTo.Controller;
 using TiKiTuTo.View;
 using TiKiTuTo.Model.BusinessLogic;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Model;
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding TournamentSettings objects. 
     /// </summary>
+    
+
     public class GameLogicTournamentSettings
     {
         InputHandler InputHandler;
+        public TournamentModel TournamentModel { get; set; }
 
-        public GameLogicTournamentSettings(InputHandler inputHandler) 
+        public GameLogicTournamentSettings(TournamentModel model, InputHandler inputHandler) 
         {
             InputHandler = inputHandler;
+            TournamentModel = model;
         }
 
 
@@ -42,9 +47,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             Teams = CreateListOfTeams(NumberOfTeamsTotal);
             string TournamentSettingsName = InputHandler.GetMandatoryName("Name the Settings.");
 
-            TournamentSettings settings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams, TournamentSettingsName);
-
-            return settings;
+            TournamentSettings tournamentSettings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams, TournamentSettingsName);
+            return tournamentSettings;
         }
 
         public List<Team> CreateListOfTeams(int NumberOfTeamsTotal)
