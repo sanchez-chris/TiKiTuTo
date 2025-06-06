@@ -45,7 +45,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void InitPreliminaryRound()
         {
-            var Settings = TournamentModel.Tournament.Settings;
+            var Settings = TournamentModel.Tournament.TournamentSettings;
             var tournament = TournamentModel.Tournament;
 
             List<Match> GamePlanPreliminaryRound = tournament.GamePlanPreliminaryRound;
@@ -138,7 +138,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
 
             tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
-            tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.Settings.NumberOfTeamsInKoRound).ToList();
+            tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.TournamentSettings.NumberOfTeamsInKoRound).ToList();
 
             // Select teams for KO round
             InputHandler.View.ShowMessage("\n\nKO Round contestants:\n");
@@ -260,7 +260,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public List<Team> GenerateRanking(Tournament tournament)
         {
-            List<Team> Teams = tournament.Settings.TeamsInTournament;
+            List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
 
             return Teams
                     .OrderByDescending(t => t.NumberGamesWon)

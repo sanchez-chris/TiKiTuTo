@@ -281,7 +281,7 @@ namespace TiKiTuTo.Controller
                 string chosenSetting = tournamentSettingsFiles[choice - 1];
                 _view.ShowMessage($"Opening {chosenSetting}");
                 _jsonService.LoadTournamentSettings(chosenSetting); //jsonService.LoadGame should take a filename or path, no?
-                _gameLogicTournament.CreateTournament(_tournamentModel.TournamentSettings);
+                _gameLogicTournament.CreateTournament(_tournamentModel.Tournament.TournamentSettings);
                 TransitionTo(AppState.RunTournament);
             }
             else if (choice - 1 == tournamentSettingsFiles.Length) //back to main menu

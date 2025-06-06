@@ -9,7 +9,7 @@ namespace TiKiTuTo.Model.DataObjects
     public class Tournament
     {
         public string TournamentName { get; set; }
-        public TournamentSettings Settings { get; set; }
+        public TournamentSettings TournamentSettings { get; set; }
         public List<Team> PreliminaryStandings { get; set; } = new List<Team>();
         public List<Team> KoStandings { get; set; } = new List<Team>();
         public List<Match> GamePlanPreliminaryRound { get; set; } = new List<Match>();
@@ -24,7 +24,7 @@ namespace TiKiTuTo.Model.DataObjects
         public Tournament(string name, TournamentSettings settings)
         {
             TournamentName = name;
-            Settings = settings;
+            TournamentSettings = settings;
         }
 
         public Tournament() { }

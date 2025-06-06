@@ -52,7 +52,7 @@ namespace TiKiTuTo.Controller
         public void SaveTournamentSettings()
         {
             string fileName = $"TournamentSetting_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json";
-            SaveToFile(settingsFolder, fileName, _tournamentModel.Tournament.Settings);
+            SaveToFile(settingsFolder, fileName, _tournamentModel.Tournament.TournamentSettings);
         }
 
 
@@ -144,7 +144,7 @@ namespace TiKiTuTo.Controller
                 if (loadedTournamentSettings != null)
                 {
                     _view.ShowMessage($"TournamentSettings geladen");
-                    _tournamentModel.Tournament.Settings = loadedTournamentSettings;
+                    _tournamentModel.Tournament.TournamentSettings = loadedTournamentSettings;
                 }
 
             }
@@ -187,12 +187,12 @@ namespace TiKiTuTo.Controller
             return finishedTournamentFiles;
         }
 
-        public string[] GetTournamentSettingFiles()
+        public string[] GetTournamentSettingsFiles()
         {
             //Array because of return tye of Directory.GetFiles()
             string[] tournamentSettings = Directory.GetFiles(settingsFolder);
 
-            return ournamentSettings;
+            return tournamentSettings;
         }
 
         public void InitialCreationOfFolder(string folderPath)

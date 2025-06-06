@@ -47,7 +47,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void SetupTournament()
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
+//            TournamentModel.Tournament.TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
+//            CreateTournament(TournamentModel.Tournament.TournamentSettings);
             CreateTournament(tournamentSettings);
+            JSONService.SaveTournamentSettings();
 
         }
 
