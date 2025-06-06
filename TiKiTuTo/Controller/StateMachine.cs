@@ -10,8 +10,10 @@ namespace TiKiTuTo.Controller
         public AppState CurrentState { get; private set; }
         private readonly IView _view;
         private GameLogicTournament _gameLogicTournament;
+        private GameLogicRound _gameLogicRound;
         private TournamentModel _tournamentModel;
         private JSONService _jsonService;
+        private GameLogicTournamentSettings _gameLogicTournamentSettings;
 
 
 
@@ -22,13 +24,15 @@ namespace TiKiTuTo.Controller
         /// <param name="gameLogicTournament">used to handle tournament logic</param>
         /// <param name="model">used to store the tournament</param>
         /// <param name="jsonService">used to save and load tournaments</param>
-        public StateMachine(IView view, GameLogicTournament gameLogicTournament, TournamentModel model, JSONService jsonService)
+        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, GameLogicTournamentSettings gameLogicTournamentSettings)
         {
             CurrentState = AppState.MainMenu;
             _view = view;
             _gameLogicTournament = gameLogicTournament;
+            _gameLogicRound = gameLogicRound;
             _tournamentModel = model;
             _jsonService = jsonService;
+            _gameLogicTournamentSettings = gameLogicTournamentSettings;
         }
 
 
@@ -36,7 +40,7 @@ namespace TiKiTuTo.Controller
         public void TransitionTo(AppState newState)
         {
             CurrentState = newState;
-            
+
         }
 
 
@@ -60,47 +64,35 @@ namespace TiKiTuTo.Controller
             switch (CurrentState)
             {
                 case AppState.MainMenu:
-                    //_view.ShowMainMenu();
                     return _view.MainMenuSelection();
                 case AppState.StartTournamentMenu:
-                    //_view.ShowStartTournamentMenu();
                     return _view.StartTournamentMenuSelection();
                 case AppState.ShowSavedTournaments:
                     string[] loadableFiles = _jsonService.GetUnfinishedTournamentFiles();
                     return _view.SavedTournamentsSelection(loadableFiles);
                 case AppState.ShowFinishedTournaments:
-                    _view.ShowMessage("Finished tournaments (not implemented yet).");
-                    break;
-                case AppState.ManageSettingsMenu:
-                    _view.ShowMessage("Settings menu (not implemented yet).");
+                    string[] loadableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
+                    _view.FinishedTournamentsSelection(loadableFinishedFiles);
                     break;
                 case AppState.TournamentSettingsCreationDialogue:
+                    _tournamentModel.Tournament.TournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
+                    _jsonService.SaveTournamentSettings(); //TODO implement this
+                    return _view.SettingsCreatedSelection();
+                case AppState.InitTournament:
                     _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
                 case AppState.ShowLoadableTournamentSettings:
-                    _view.ShowMessage("ShowLoadableTournamentSettings (not implemented yet).");
-                    break;
+                    string[] availableFiles = _jsonService.GetTournamentSettingsFiles();
+                    return _view.LoadableTournamentSettingsSelection(availableFiles);
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings();
-                    break;
-                case AppState.ShowEditableTournamentSettings:
-                    _view.ShowMessage("ShowEditableTournamentSettings (not implemented yet).");
-                    break; 
-                case AppState.TournamentSettingsEditingDialogue:
-                    _view.ShowMessage("TournamentSettingsEditingDialogue (not implemented yet).");
-                    break;
-                case AppState.InGameMenu:
-                    _view.ShowMessage("InGameMenu (not implemented yet).");
-                    break;
+                    return _view.DuringTournamentMenuSelection();
                 case AppState.ExitOptions:
                     return _view.ExitOptionsSelection();
                 case AppState.Exit:
                     _view.ShowExitMessage();
                     Environment.Exit(0);
-                    break;
-                default:
-                    _view.ShowMessage("Not a valid state.");
                     break;
             }
             //base case for states where the user decides to stay in the current context (no state transition)
@@ -115,7 +107,7 @@ namespace TiKiTuTo.Controller
         /// A wrapper to handle user input for different internal states.
         /// </summary>
         /// <param name="choice">User input</param>
-        public void HandleInput(int choice)   //HandleChoice?
+        public void HandleUserChoice(int choice)
         {
             switch (CurrentState)
             {
@@ -131,26 +123,17 @@ namespace TiKiTuTo.Controller
                 case AppState.ShowFinishedTournaments:
                     HandleShowFinishedTournamentsChoice(choice);
                     break;
-                case AppState.ManageSettingsMenu:
-                    HandleManageSettingsMenuChoice(choice);
-                    break;
                 case AppState.TournamentSettingsCreationDialogue:
-                    HandleTournamentStartChoice(choice);
+                    HandleSettingsCreationChoice(choice);
                     break;
                 case AppState.ShowLoadableTournamentSettings:
-                    //HandleShowLoadableTournamentSettingsChoice(choice);
-                    break;                
+                    HandleShowLoadableTournamentSettingsChoice(choice);
+                    break;
+                case AppState.InitTournament:
+                    HandleTournamentStartChoice(choice);
+                    break;
                 case AppState.RunTournament:
                     HandleRunTournamentChoice(choice);
-                    break;
-                case AppState.ShowEditableTournamentSettings:
-                    //HandleShowEditableTournamentSettingsChoice(choice);
-                    break;
-                case AppState.TournamentSettingsEditingDialogue:
-                    //HandleTournamentSettingsEditingDialogueChoice(choice);
-                    break;
-                case AppState.InGameMenu:
-                    HandleInGameMenuChoice(choice);
                     break;
                 case AppState.ExitOptions:
                     HandleExitChoice(choice);
@@ -198,13 +181,10 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.ShowFinishedTournaments);
                     break;
                 case 4:
-                    TransitionTo(AppState.ManageSettingsMenu);
+                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
                     break;
                 case 5:
                     TransitionTo(AppState.ExitOptions);
-                    break;
-                default:
-                    _view.ShowInvalidInputMessage();
                     break;
             }
         }
@@ -218,8 +198,7 @@ namespace TiKiTuTo.Controller
             switch (choice)
             {
                 case 1:
-                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
-                    //TransitionTo(AppState.RunTournament);
+                    TransitionTo(AppState.InitTournament);
                     break;
                 case 2:
                     TransitionTo(AppState.ShowLoadableTournamentSettings);
@@ -227,34 +206,10 @@ namespace TiKiTuTo.Controller
                 case 3:
                     TransitionTo(AppState.MainMenu);
                     break;
-                default:
-                    _view.ShowInvalidInputMessage();
-                    break;
+
             }
         }
 
-        /// <summary>
-        /// Handles transitions from the ManageSettings menu based on user input.
-        /// </summary>
-        /// <param name="choice">user input</param>
-        private void HandleManageSettingsMenuChoice(int choice)
-        {
-            switch (choice)
-            {
-                case 1:
-                    TransitionTo(AppState.TournamentSettingsCreationDialogue);
-                    break;
-                case 2:
-                    TransitionTo(AppState.ShowEditableTournamentSettings);
-                    break;
-                case 3:
-                    TransitionTo(AppState.MainMenu);
-                    break;
-                default:
-                    _view.ShowInvalidInputMessage();
-                    break;
-            }
-        }
 
         /// <summary>
         /// Handles transitions from the ShowSavedTournaments menu based on user input.
@@ -266,12 +221,12 @@ namespace TiKiTuTo.Controller
             string[] unfinishedTournamentFiles = _jsonService.GetUnfinishedTournamentFiles();
             if (choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice];
+                string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 _jsonService.LoadTournament(chosenTournament); //jsonService.LoadGame should take a filename or path, no?
                 TransitionTo(AppState.RunTournament);
             }
-            else if (choice == unfinishedTournamentFiles.Length + 1) //back to main menu
+            else if (choice-1 == unfinishedTournamentFiles.Length) //back to main menu
             {
                 TransitionTo(AppState.MainMenu);
             }
@@ -290,13 +245,13 @@ namespace TiKiTuTo.Controller
         private void HandleShowFinishedTournamentsChoice(int choice)
         {
             string[] unfinishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
-            if (choice <= unfinishedTournamentFiles.Length) //a valid tournament file
+            if (choice-1 <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice];
+                string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 TransitionTo(AppState.RunTournament);
             }
-            else if (choice == unfinishedTournamentFiles.Length + 1) //back to main menu
+            else if (choice-1 == unfinishedTournamentFiles.Length) //back to main menu
             {
                 TransitionTo(AppState.MainMenu);
             }
@@ -306,8 +261,8 @@ namespace TiKiTuTo.Controller
             }
 
         }
-
-        private void HandleRunTournamentChoice(int choice)
+                
+        private void HandleSettingsCreationChoice(int choice)
         {
             switch (choice)
             {
@@ -315,38 +270,51 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.TournamentSettingsCreationDialogue);
                     break;
                 case 2:
-                    TransitionTo(AppState.ShowEditableTournamentSettings);
-                    break;
-                case 3:
                     TransitionTo(AppState.MainMenu);
-                    break;
-                default:
-                    _view.ShowInvalidInputMessage();
                     break;
             }
         }
 
-        private void HandleInGameMenuChoice(int choice)
+        private void HandleShowLoadableTournamentSettingsChoice(int choice)
+        {
+            string[] tournamentSettingsFiles = _jsonService.GetTournamentSettingsFiles();
+            if (choice <= tournamentSettingsFiles.Length) //a valid tournament file
+            {
+                string chosenSetting = tournamentSettingsFiles[choice - 1];
+                _view.ShowMessage($"Opening {chosenSetting}");
+                var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting); //jsonService.LoadGame should take a filename or path, no?
+                _gameLogicTournament.CreateTournament(tournamentSettings);
+                _gameLogicRound.InitPreliminaryRound();
+                TransitionTo(AppState.RunTournament);
+            }
+            else if (choice - 1 == tournamentSettingsFiles.Length) //back to main menu
+            {
+                TransitionTo(AppState.MainMenu);
+            }
+            else //not a valid input
+            {
+                _view.ShowInvalidInputMessage();
+            }
+        }        
+
+
+        private void HandleRunTournamentChoice(int choice)
         {
             switch (choice)
             {
                 case 1:
-                    _jsonService.SaveTournament();
+                    TransitionTo(AppState.RunTournament);
                     break;
                 case 2:
                     TransitionTo(AppState.MainMenu);
                     break;
                 case 3:
-                    _jsonService.SaveTournament();
                     TransitionTo(AppState.Exit);
                     break;
-                default:
-                    _view.ShowInvalidInputMessage();
-                    break;
             }
-        }
+        }     
 
-        //TODO: HandleShowAvailableTournamentSettingsChoice (variable number of valid options...)
+
         private void HandleExitChoice(int choice)
         {
             switch (choice)
@@ -356,9 +324,6 @@ namespace TiKiTuTo.Controller
                     break;
                 case 2:
                     TransitionTo(AppState.MainMenu);
-                    break;
-                default:
-                    _view.ShowInvalidInputMessage();
                     break;
             }
         }
@@ -372,9 +337,6 @@ namespace TiKiTuTo.Controller
                     break;
                 case 2:
                     TransitionTo(AppState.MainMenu);
-                    break;
-                default:
-                    _view.ShowInvalidInputMessage();
                     break;
             }
         }

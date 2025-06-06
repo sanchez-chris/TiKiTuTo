@@ -8,6 +8,7 @@ using TiKiTuTo.View;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.Model;
+using Spectre.Console;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
@@ -46,14 +47,17 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void SetupTournament()
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
+//            TournamentModel.Tournament.TournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
+//            CreateTournament(TournamentModel.Tournament.TournamentSettings);
             CreateTournament(tournamentSettings);
+            JSONService.SaveTournamentSettings();
 
         }
 
         public void CreateTournament(TournamentSettings tournamentSettings)
         {
             bool emptyNameAllowed = false;
-            string name = InputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
+            string name = InputHandler.GetMandatoryName("Please enter the name of this tournament!");
             TournamentModel.Tournament = new Tournament(name, tournamentSettings);
 
         }
@@ -61,9 +65,17 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunTournament()
         {
-            GameLogicRound.RunPreliminaryRound();
-            GameLogicRound.InitKoRound();
-            GameLogicRound.RunKoRound();
+            if(!TournamentModel.Tournament.GamePlanKoRound.Any())
+            {
+                GameLogicRound.RunPreliminaryRound();
+                GameLogicRound.InitKoRound();
+            }
+            else
+            {
+                GameLogicRound.RunKoRound();
+            }
+
+
         }
 
 

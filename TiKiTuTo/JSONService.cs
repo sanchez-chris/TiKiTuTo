@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using TiKiTuTo.Model;
+using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
 
@@ -29,6 +30,7 @@ namespace TiKiTuTo.Controller
             _tournamentModel = tournamentModel;
             _view = view;
 
+
             InitialCreationOfFolder(settingsFolder);
             InitialCreationOfFolder(saveFolder);
             InitialCreationOfFolder(finishedTournamentFolder);
@@ -51,8 +53,9 @@ namespace TiKiTuTo.Controller
 
         public void SaveTournamentSettings()
         {
-            string fileName = $"TournamentSetting_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json";
-            SaveToFile(settingsFolder, fileName, _tournamentModel.Tournament.Settings);
+            var settingsName = _tournamentModel.Tournament.TournamentSettings.SettingsName;
+            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{settingsName}.json";
+            SaveToFile(settingsFolder, fileName, _tournamentModel.Tournament.TournamentSettings);
         }
 
 
@@ -127,7 +130,7 @@ namespace TiKiTuTo.Controller
             }
         }
 
-        public void LoadTournamentSettings(string chosenFile)
+        public TournamentSettings LoadTournamentSettings(string chosenFile)
         {
             try
             {
@@ -144,8 +147,9 @@ namespace TiKiTuTo.Controller
                 if (loadedTournamentSettings != null)
                 {
                     _view.ShowMessage($"TournamentSettings geladen");
-                    _tournamentModel.Tournament.Settings = loadedTournamentSettings;
+                    return loadedTournamentSettings;
                 }
+
 
             }
             catch (JsonException ex)
@@ -160,6 +164,8 @@ namespace TiKiTuTo.Controller
             {
                 _view.ShowMessage($"An unexpected error occured {ex.Message}");
             }
+
+            return null;
 
         }
 
@@ -187,12 +193,12 @@ namespace TiKiTuTo.Controller
             return finishedTournamentFiles;
         }
 
-        public string[] GetTournamentSettingFiles()
+        public string[] GetTournamentSettingsFiles()
         {
             //Array because of return tye of Directory.GetFiles()
             string[] tournamentSettings = Directory.GetFiles(settingsFolder);
 
-            return ournamentSettings;
+            return tournamentSettings;
         }
 
         public void InitialCreationOfFolder(string folderPath)
