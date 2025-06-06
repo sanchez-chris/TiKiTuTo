@@ -109,33 +109,39 @@ namespace TiKiTuTo.View
         public int SavedTournamentsSelection(string[] loadableFiles)
         {
             List<string> headerLines = new()
-            {
-                "-----------------------",
-                "|     TiKiTuTo        |",
-                "-----------------------",
-                "---Saved Tournaments---",
-                "-----------------------"
-            };
-
-            
+    {
+        "-----------------------",
+        "|     TiKiTuTo        |",
+        "-----------------------",
+        "---Saved Tournaments---",
+        "-----------------------"
+    };
 
             string[] formattedFileNames = new string[loadableFiles.Length];
-
             for (int i = 0; i < loadableFiles.Length; i++)
             {
                 string fileName = Path.GetFileName(loadableFiles[i]);
                 formattedFileNames[i] = fileName;
             }
 
+            var sortedFileNames = formattedFileNames
+                .Where(fileName =>
+                {
+                    string[] parts = fileName.Split('_');
+                    return parts.Length > 1 && parts[^1].EndsWith(".json");
+                })
+                .OrderBy(fileName =>
+                {
+                    string[] parts = fileName.Split('_');
+                    return parts[^1]; // Sortiere direkt nach dem hinteren Teil
+                })
+                .ToList();
 
-            List<string> options = formattedFileNames.ToList();
-            options.Add("Back to Main Menu");
+            sortedFileNames.Add("Back to Main Menu");
 
-
-            int userChoice = PromptSelectionMulti(headerLines, options);
+            int userChoice = PromptSelectionMulti(headerLines, sortedFileNames);
 
             return userChoice;
-
         }
 
 

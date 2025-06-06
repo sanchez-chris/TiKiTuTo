@@ -29,7 +29,7 @@ namespace TiKiTuTo.Controller
             _view = view;
             _inputHandler = inputHandler;
 
-            CreateSaveFolder();
+            InitialCreationOfSaveFolder();
         }
 
         public void SaveTournament()
@@ -45,7 +45,7 @@ namespace TiKiTuTo.Controller
 
                 DateTime now = DateTime.Now;
 
-                string filePath = $"{saveFolder}\\{tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
+                string filePath = $"{saveFolder}\\{tournament.TournamentName}_{now.ToString("yyyy-MM-dd-HH-mm-ss")}.json";
 
                 JsonSerializerOptions options = new JsonSerializerOptions();
                 options.WriteIndented = true;
