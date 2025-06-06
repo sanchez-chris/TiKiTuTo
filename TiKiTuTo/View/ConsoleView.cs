@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Spectre.Console;
@@ -104,7 +105,8 @@ namespace TiKiTuTo.View
 
         }
 
-        public int SavedTournamentsSelection(IEnumerable<string> loadableFiles)
+        // Changed IEnumarable to Array
+        public int SavedTournamentsSelection(string[] loadableFiles)
         {
             List<string> headerLines = new()
             {
@@ -115,7 +117,18 @@ namespace TiKiTuTo.View
                 "-----------------------"
             };
 
-            List<string> options = loadableFiles.ToList();
+            
+
+            string[] niceLookingLoadableFiles = new string[loadableFiles.Length];
+
+            for (int i = 0; i < loadableFiles.Length; i++)
+            {
+                string fileName = Path.GetFileName(loadableFiles[i]);
+                niceLookingLoadableFiles[i] = fileName;
+            }
+
+
+            List<string> options = niceLookingLoadableFiles.ToList();
             options.Add("Back to Main Menu");
 
 
@@ -314,12 +327,22 @@ namespace TiKiTuTo.View
             {
                 AnsiConsole.MarkupLine($"[yellow]{line}[/]");
             }
-            var userChoice = AnsiConsole.Prompt(
+
+            string title = $"[yellow]Please select an option:[/]";
+
+            if (!(options.Count() > 1))
+            {
+                title = $"[red]No opions available[/]";   
+            }
+
+                var userChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("[yellow]Please select an option:[/]")
+                    .Title(title)
                     .PageSize(5)
                     .AddChoices(options));
-            
+
+            AnsiConsole.Write(options.First());
+
             return options.ToList().IndexOf(userChoice) + 1;
         }
 

@@ -28,11 +28,13 @@ namespace TiKiTuTo.Controller
             _tournamentModel = tournamentModel;
             _view = view;
             _inputHandler = inputHandler;
+
+            CreateSaveFolder();
         }
 
         public void SaveTournament()
         {
-            var Tournament = _tournamentModel.Tournament;
+            var tournament = _tournamentModel.Tournament;
 
             try
             {
@@ -43,12 +45,12 @@ namespace TiKiTuTo.Controller
 
                 DateTime now = DateTime.Now;
 
-                string filePath = $"{saveFolder}\\{Tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
+                string filePath = $"{saveFolder}\\{tournament.TournamentName}_{now.ToString("yyyy-MM-dd_HH-mm-ss")}.json";
 
                 JsonSerializerOptions options = new JsonSerializerOptions();
                 options.WriteIndented = true;
 
-                string jsonString = JsonSerializer.Serialize(Tournament, options);
+                string jsonString = JsonSerializer.Serialize(tournament, options);
                 File.WriteAllText(filePath, jsonString);
 
                 _view.SavingTournamentAnimation(filePath);
@@ -65,15 +67,8 @@ namespace TiKiTuTo.Controller
         }
         public void LoadTournament(string chosenFile)
         {
-
-            //string[] currentSaveGames = Directory.GetFiles(saveFolder);
-
-            //_view.DisplayFiles(currentSaveGames);
-            //int chosenFileIndex = _inputHandler.GetValidFileSelection();
-
             try
             {
-
                 string tournamentJSON = File.ReadAllText(chosenFile);
 
                 JsonSerializerOptions options = new JsonSerializerOptions
@@ -88,8 +83,6 @@ namespace TiKiTuTo.Controller
                     _view.ShowMessage($"Turnier {loadedTournament.TournamentName} geladen");
                     _tournamentModel.Tournament = loadedTournament;
                 }
-                
-
             }
             catch (JsonException ex)
             {
@@ -130,6 +123,11 @@ namespace TiKiTuTo.Controller
             string[] finishedTournamentFiles = Directory.GetFiles(saveFolder);
 
             return finishedTournamentFiles;
+        }
+
+        public void CreateSaveFolder()
+        {
+            Directory.CreateDirectory(saveFolder);
         }
 
     }

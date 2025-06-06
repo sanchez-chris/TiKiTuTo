@@ -14,7 +14,7 @@ namespace TiKiTuTo.View
 
         public int StartTournamentMenuSelection();
 
-        public int SavedTournamentsSelection(IEnumerable<string> loadableFiles);
+        public int SavedTournamentsSelection(string[] loadableFiles);
 
         //Methods which simply show things
         public void ShowMainMenu();
