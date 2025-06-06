@@ -10,6 +10,7 @@ namespace TiKiTuTo.Controller
         public AppState CurrentState { get; private set; }
         private readonly IView _view;
         private GameLogicTournament _gameLogicTournament;
+        private GameLogicRound _gameLogicRound;
         private TournamentModel _tournamentModel;
         private JSONService _jsonService;
         private GameLogicTournamentSettings _gameLogicTournamentSettings;
@@ -23,11 +24,12 @@ namespace TiKiTuTo.Controller
         /// <param name="gameLogicTournament">used to handle tournament logic</param>
         /// <param name="model">used to store the tournament</param>
         /// <param name="jsonService">used to save and load tournaments</param>
-        public StateMachine(IView view, GameLogicTournament gameLogicTournament, TournamentModel model, JSONService jsonService, GameLogicTournamentSettings gameLogicTournamentSettings)
+        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, GameLogicTournamentSettings gameLogicTournamentSettings)
         {
             CurrentState = AppState.MainMenu;
             _view = view;
             _gameLogicTournament = gameLogicTournament;
+            _gameLogicRound = gameLogicRound;
             _tournamentModel = model;
             _jsonService = jsonService;
             _gameLogicTournamentSettings = gameLogicTournamentSettings;
@@ -282,6 +284,7 @@ namespace TiKiTuTo.Controller
                 _view.ShowMessage($"Opening {chosenSetting}");
                 var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting); //jsonService.LoadGame should take a filename or path, no?
                 _gameLogicTournament.CreateTournament(tournamentSettings);
+                _gameLogicRound.InitPreliminaryRound();
                 TransitionTo(AppState.RunTournament);
             }
             else if (choice - 1 == tournamentSettingsFiles.Length) //back to main menu

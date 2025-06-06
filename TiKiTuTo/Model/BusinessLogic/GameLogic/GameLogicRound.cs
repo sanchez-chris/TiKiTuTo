@@ -103,7 +103,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             WaitForUserToStart();
 
 
-
         }
 
         public void RunPreliminaryRound()
