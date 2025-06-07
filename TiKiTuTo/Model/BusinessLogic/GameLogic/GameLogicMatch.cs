@@ -105,7 +105,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void FinishMatch(Match match)
         {
-            match.finished = true;
+            match.isFinished = true;
             UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
             JSONService.SaveTournament();
         }
