@@ -16,27 +16,8 @@ namespace TiKiTuTo.View
         public ConsoleView() 
         {
             Console.CursorVisible = false;
+            AnsiConsole.Cursor.Hide();
         }
-
-        /// <summary>
-        /// Shows Main Menu using standard console
-        /// </summary>
-        public void ShowMainMenu() { }
-        //{
-        //    Console.Clear();
-        //    Console.WriteLine(" -----------------------");
-        //    Console.WriteLine(" |     TiKiTuTo        | ");
-        //    Console.WriteLine(" -----------------------");
-        //    Console.WriteLine(" -------Main Menu-------");
-        //    Console.WriteLine(" -----------------------");
-        //    Console.WriteLine("1. Start New Tournament");
-        //    Console.WriteLine("2. Resume Earlier Tournament");
-        //    Console.WriteLine("3. Show Results Of Earlier Tournament");
-        //    Console.WriteLine("4. Manage Tournament Configurations");
-        //    Console.WriteLine("5. Exit Application");
-
-        //    WriteEmptyLine();
-        //}
 
         public int MainMenuSelection()
         {
@@ -59,26 +40,10 @@ namespace TiKiTuTo.View
             "Exit Application"
             };
 
-            int userChoice = PromptSelectionMulti(headerLines, options);
+            int userChoice = PromptSelectionMultiLine(headerLines, options);
 
             return userChoice;
         }
-
-
-        public void ShowStartTournamentMenu() { }
-        //{
-        //    Console.Clear();
-        //    Console.WriteLine(" ----------------------");
-        //    Console.WriteLine(" |     TiKiTuTo        | ");
-        //    Console.WriteLine(" ----------------------");
-        //    Console.WriteLine(" ---Start Tournament---");
-        //    Console.WriteLine(" ----------------------");
-        //    Console.WriteLine("1. Start tournament from scratch");
-        //    Console.WriteLine("2. Start tournament based on existing tournament settings");
-        //    Console.WriteLine("3. Back to Main Menu");
-        //    WriteEmptyLine();
-        //}
-
 
         public int StartTournamentMenuSelection()
         {
@@ -98,11 +63,38 @@ namespace TiKiTuTo.View
             "Back to Main Menu",
             };
 
-            int userChoice = PromptSelectionMulti(headerLines, options);
+            int userChoice = PromptSelectionMultiLine(headerLines, options);
 
             return userChoice;
 
         }
+
+        public int TournamentStartSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                " --Start now or later?--",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Now",
+            "Later (Return to Menu)",
+            };
+
+                int userChoice = PromptSelectionMultiLine(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
+
 
         public int SavedTournamentsSelection(IEnumerable<string> loadableFiles)
         {
@@ -119,13 +111,131 @@ namespace TiKiTuTo.View
             options.Add("Back to Main Menu");
 
 
-            int userChoice = PromptSelectionMulti(headerLines, options);
+            int userChoice = PromptSelectionMultiLine(headerLines, options);
 
             return userChoice;
 
         }
 
+        public int FinishedTournamentsSelection(IEnumerable<string> availableFiles)
+        {
+            List<string> headerLines = new()
+            {
+                "-----------------------",
+                "|     TiKiTuTo        |",
+                "-----------------------",
+                "--Finished Tournaments-",
+                "-----------------------"
+            };
 
+            List<string> options = availableFiles.ToList();
+            options.Add("Back to Main Menu");
+
+
+            int userChoice = PromptSelectionMultiLine(headerLines, options);
+
+            return userChoice;
+
+        }
+
+        public int SettingsCreatedSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                "----Settings created----",
+                "----Create another------",
+                "----or return to Menu?--",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Create another setting",
+            "Return to main menu",
+            };
+
+                int userChoice = PromptSelectionMultiLine(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
+        public int LoadableTournamentSettingsSelection(IEnumerable<string> availableFiles)
+        {
+            List<string> headerLines = new()
+            {
+                "-----------------------",
+                "|     TiKiTuTo        |",
+                "-----------------------",
+                "--Tournament Settings--",
+                "-----------------------"
+            };
+
+            List<string> options = availableFiles.ToList();
+            options.Add("Back to Main Menu");
+
+
+            int userChoice = PromptSelectionMultiLine(headerLines, options);
+
+            return userChoice;
+
+        }
+
+        public int DuringTournamentMenuSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |     TiKiTuTo        |",
+                " -----------------------",
+                " ----Quick Settings-----",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Continue Tournament",
+            "Back to Main Menu",
+            "Exit",
+            };
+
+                int userChoice = PromptSelectionMultiLine(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
+
+        public int ExitOptionsSelection()
+        {
+            {
+                List<string> headerLines = new()
+            {
+                " -----------------------",
+                " |      TiKiTuTo       |",
+                " -----------------------",
+                " ----Exit to desktop?---",
+                " -----------------------"
+            };
+
+                List<string> options = new()
+            {
+            "Yes",
+            "No",
+            };
+
+                int userChoice = PromptSelectionMultiLine(headerLines, options);
+
+                return userChoice;
+
+            }
+        }
 
 
 
@@ -159,99 +269,43 @@ namespace TiKiTuTo.View
             // TODO: Implement functionality for showing a game plan
         }
 
-        public void ShowStandings() 
+        public void ShowStandings(Tournament tournament) 
         {
-            // TODO: Implement functionality for showing the current standings
+            List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
+
+            List<Team> sortedTeams = Teams
+
+                     .OrderByDescending(t => t.NumberGamesWon)
+
+                     .ThenByDescending(t => t.Goaldifference)
+
+                     .ThenByDescending(t => t.NumberGoals)
+
+                     .ToList();
+
+            foreach (var team in sortedTeams)
+
+            {
+
+                ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
+
+            }
+
+            Console.ReadKey();
         }
+
+
+
         public void ShowNextMatches(List<Match> matches)
         {
             // TODO: Implement functionality for showing the next match
         }
 
-        public int ShowIngameMenu()
-        {
-            {
-                List<string> headerLines = new()
-            {
-                " -----------------------",
-                " |     TiKiTuTo        |",
-                " -----------------------",
-                " ----Quick Settings-----",
-                " -----------------------"
-            };
-
-                List<string> options = new()
-            {
-            "Save current Tournament",
-            "Back to Main Menu",
-            "Exit and Save.",
-            };
-
-                int userChoice = PromptSelectionMulti(headerLines, options);
-
-                return userChoice;
-
-            }
-        }
-
-        public int ExitOptionsSelection()
-        {
-            {
-                List<string> headerLines = new()
-            {
-                " -----------------------",
-                " |      TiKiTuTo       |",
-                " -----------------------",
-                " ----Exit to desktop?---",
-                " -----------------------"
-            };
-
-                List<string> options = new()
-            {
-            "Yes",
-            "No",
-            };
-
-                int userChoice = PromptSelectionMulti(headerLines, options);
-
-                return userChoice;
-
-            }
-        }
-
-
-        public int TournamentStartSelection()
-        {
-            {
-                List<string> headerLines = new()
-            {
-                " -----------------------",
-                " |      TiKiTuTo       |",
-                " -----------------------",
-                " --Start now or later?--",
-                " -----------------------"
-            };
-
-                List<string> options = new()
-            {
-            "Now",
-            "Later (Return to Menu)",
-            };
-
-                int userChoice = PromptSelectionMulti(headerLines, options);
-
-                return userChoice;
-
-            }
-        }
-
 
         public void ShowMessage(string message)
         {
-            Console.WriteLine(message);
-            /*Alternatives
-             * AnsiConsole.WriteLine(message) 
-             * AnsiConsole.Markup($"[bold]{message}[/]");*/
+            //AnsiConsole.Markup($"[bold]{message}[/]");
+            AnsiConsole.WriteLine(message);
         }
 
         public void WriteEmptyLine()
@@ -287,26 +341,7 @@ namespace TiKiTuTo.View
         }
 
 
-
-        /*reusable promptSelection function recieving an IEnumerable<string> (so it doesnt matter if the 
-         * argument is type list<string>, string[] ...)
-         * Please note, that PageSize only determines how many options are visible on the screen at one time.
-         * Additional options may be available through scrolling.*/
-        public string PromptSelection(string headline, IEnumerable<string> options)
-        {
-            var userChoice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title($"[yellow]{headline}[/]")
-                    .PageSize(5)
-                    .AddChoices(options));
-
-            return userChoice;
-        }
-
-
-
-
-        public int PromptSelectionMulti(IEnumerable<string> headerLines, IEnumerable<string> options)
+        public int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options)
         {
             AnsiConsole.Clear();
             
@@ -324,24 +359,7 @@ namespace TiKiTuTo.View
         }
 
 
-
-        //hardcoded ShowMenu functionality in case we do not use PromptSelection
-        public string ShowSpectreMenu()
-        {
-            var userChoice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("[yellow]Bitte wähle eine Option aus:[/]")
-                    .PageSize(4)
-                    .AddChoices(
-                        "   1: New Tournament",
-                        "   2: Show old results",
-                        "   3: Load Settings",
-                        "   4: Continue game",
-                        "   5: Exit"));
-            return userChoice;
-        }
-
-        public void SavingTournamentAnimation(string filePath)
+        public void AnimateAndConfirmSave(string filePath)
         {
             AnsiConsole.Progress()
             .Start(ctx =>

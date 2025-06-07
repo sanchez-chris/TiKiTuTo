@@ -7,18 +7,23 @@ using TiKiTuTo.Controller;
 using TiKiTuTo.View;
 using TiKiTuTo.Model.BusinessLogic;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Model;
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding TournamentSettings objects. 
     /// </summary>
+    
+
     public class GameLogicTournamentSettings
     {
         InputHandler InputHandler;
+        public TournamentModel TournamentModel { get; set; }
 
-        public GameLogicTournamentSettings(InputHandler inputHandler) 
+        public GameLogicTournamentSettings(TournamentModel model, InputHandler inputHandler) 
         {
             InputHandler = inputHandler;
+            TournamentModel = model;
         }
 
 
@@ -40,10 +45,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             NumberOfPreliminaryGamesPerTeam = InputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
             NumberOfTeamsInKORound = InputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
             Teams = CreateListOfTeams(NumberOfTeamsTotal);
+            string TournamentSettingsName = InputHandler.GetMandatoryName("Name the Settings.");
 
-            TournamentSettings settings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams);
-
-            return settings;
+            TournamentSettings tournamentSettings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams, TournamentSettingsName);
+            return tournamentSettings;
         }
 
         public List<Team> CreateListOfTeams(int NumberOfTeamsTotal)
@@ -54,6 +59,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 teams.Add(CreateTeam(i, maxTeamMembers));
             }
+            
             InputHandler.View.ShowMessage($"You have created {teams.Count} teams.\n\nPreliminary round contestant:");
             InputHandler.View.ShowTeamsAndPlayer(teams);
             return teams;
@@ -63,7 +69,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public Team CreateTeam(int i, int maxTeamMembers)
         {
             bool emptyNameAllowed = true;
-            string? teamName = InputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", emptyNameAllowed);
+            string? teamName = InputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", i);
 
             if (string.IsNullOrEmpty(teamName))
             {
@@ -75,7 +81,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 //           maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
             for (int p = 1; p <= maxTeamMembers; p++)
             {
-                string? playerName = InputHandler.GetPlayerName($"Please enter the name of the next team member. Default name when empty: Player {p}.", emptyNameAllowed);
+                string? playerName = InputHandler.GetPlayerName($"Please enter the name of the next team member. Default name when empty: Player {p}.", p);
 
                 if (string.IsNullOrEmpty(playerName))
                 {

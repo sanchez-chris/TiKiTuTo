@@ -8,13 +8,10 @@ namespace TiKiTuTo.Controller
         StartTournamentMenu,
         ShowSavedTournaments,
         ShowFinishedTournaments,
-        ManageSettingsMenu,
         TournamentSettingsCreationDialogue,
         ShowLoadableTournamentSettings,
+        InitTournament,
         RunTournament,
-        ShowEditableTournamentSettings,
-        TournamentSettingsEditingDialogue,
-        InGameMenu,
         ExitOptions,
         Exit
     } 

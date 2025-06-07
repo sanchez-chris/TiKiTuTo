@@ -8,6 +8,7 @@ using TiKiTuTo.View;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.Model;
+using Spectre.Console;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
@@ -26,7 +27,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         /// Creates Tournament based on user input. First creates a TournamentSettings object, then initializes a Tournament based on these settings.
         /// </summary>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public GameLogicTournament(GameLogicRound glRound, GameLogicTournamentSettings glTournamentSettings, InputHandler inputHandler, TournamentModel model, JSONService jsonService) 
+        public GameLogicTournament(GameLogicRound glRound, GameLogicTournamentSettings glTournamentSettings, InputHandler inputHandler, TournamentModel model, JSONService jsonService)
         {
             GameLogicRound = glRound;
             GameLogicTournamentSettings = glTournamentSettings;
@@ -47,13 +48,13 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
             CreateTournament(tournamentSettings);
+            JSONService.SaveTournamentSettings();
 
         }
 
         public void CreateTournament(TournamentSettings tournamentSettings)
         {
-            bool emptyNameAllowed = false;
-            string name = InputHandler.GetTournamentName("Please enter the name of this tournament!", emptyNameAllowed);
+            string name = InputHandler.GetMandatoryName("Please enter the name of this tournament!");
             TournamentModel.Tournament = new Tournament(name, tournamentSettings);
 
         }
@@ -61,11 +62,15 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunTournament()
         {
-            GameLogicRound.RunPreliminaryRound();
-            GameLogicRound.InitKoRound();
-            GameLogicRound.RunKoRound();
+            if (TournamentModel.Tournament.GamePlanKoRound.Count == 0)
+            {
+                GameLogicRound.RunPreliminaryRound();
+                GameLogicRound.InitKoRound();
+            }
+            else if (TournamentModel.Tournament.CurrentKoRound == 0)
+            {
+                GameLogicRound.RunKoRound();
+            }
         }
-
-
     }
 }

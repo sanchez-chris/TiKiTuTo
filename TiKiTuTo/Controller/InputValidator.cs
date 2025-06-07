@@ -22,7 +22,7 @@ namespace TiKiTuTo.Controller
 
         public bool IsValidNumberOfTeamsInKORound(int numberInKO, int numberTeamsTotal)
         {
-            return IsPowerOfTwo(numberInKO) && numberInKO <= numberTeamsTotal;
+            return numberInKO >= 2 && IsPowerOfTwo(numberInKO) && numberInKO <= numberTeamsTotal;
         }
 
 
@@ -46,7 +46,7 @@ namespace TiKiTuTo.Controller
         public bool HasValidTournamentSettings(Tournament tournament)
         {
 
-            if (tournament.Settings == null || tournament.Settings.TeamsInTournament == null || tournament.Settings.TeamsInTournament.Count < 2)
+            if (tournament.TournamentSettings == null || tournament.TournamentSettings.TeamsInTournament == null || tournament.TournamentSettings.TeamsInTournament.Count < 2)
             {
                 return false;
             }
