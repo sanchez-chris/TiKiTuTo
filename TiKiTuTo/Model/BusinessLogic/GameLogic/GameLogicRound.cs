@@ -52,7 +52,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             WaitForUserToStart();
             InputHandler.View.ShowMessage("Good luck to all teams!");
         }
-
+        
         
 
         public void RunPreliminaryRound()
@@ -69,12 +69,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 GameLogicMatch.RunMatch(match);
             }
 
-            tournament.PreliminaryStandings = GenerateRanking(tournament);
-            InputHandler.View.ShowMessage("\n\nRankings:");
-            foreach (var team in tournament.PreliminaryStandings)
-            {
-                InputHandler.View.ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
-            }
+            InputHandler.View.ShowStandings(tournament);
+
         }
 
         public void InitKoRound()
@@ -98,7 +94,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
                 foreach (var match in tournament.GamePlanKoRound[tournament.CurrentRound])
                 {
-                    updateStandings(tournament, match);
+                    updateStandings(match);
                 }
 
                 tournament.CurrentRound++;
