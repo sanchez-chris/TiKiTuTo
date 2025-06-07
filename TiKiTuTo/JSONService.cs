@@ -46,11 +46,11 @@ namespace TiKiTuTo.Controller
             _view.AnimateAndConfirmSave(Path.Combine(finishedTournamentFolder, fileName));
         }
 
-        public void SaveTournamentSettings()
+        public void SaveTournamentSettings(TournamentSettings tournamentSettings)
         {
-            var settingsName = _tournamentModel.Tournament.TournamentSettings.SettingsName;
+            var settingsName = tournamentSettings.SettingsName;
             string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json";
-            SaveToFile(settingsFolder, fileName, _tournamentModel.Tournament.TournamentSettings);
+            SaveToFile(settingsFolder, fileName, tournamentSettings);
         }
 
 
