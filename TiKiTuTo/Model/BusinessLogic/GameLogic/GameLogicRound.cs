@@ -122,7 +122,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                         tournament.ThirdPosition = tournament.Semifinalists[1];
 
                     }
-                    InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round are {tournament.ThirdPosition.TeamName}.");
+                    InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round is {tournament.ThirdPosition.TeamName}.");
                 }
             }
 
@@ -169,9 +169,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 // Determine the current minimum number of matches played by any team
                 int currentMinMatches = teamMatchCount.Values.Min();
                 // Select two random teams that have played fewer matches than the current minimum
-                var eligibleTeams = teams.Where(t => teamMatchCount[t] <= currentMinMatches).ToList();
-
-
 
                 // Select two random teams
                 var availableTeams = teams.Where(t => teamMatchCount[t] < gamesPerTeam && teamMatchCount[t] <= currentMinMatches).ToList();
