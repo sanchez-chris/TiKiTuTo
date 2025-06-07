@@ -54,7 +54,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void CreateTournament(TournamentSettings tournamentSettings)
         {
-            bool emptyNameAllowed = false;
             string name = InputHandler.GetMandatoryName("Please enter the name of this tournament!");
             TournamentModel.Tournament = new Tournament(name, tournamentSettings);
 
@@ -72,10 +71,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 GameLogicRound.RunKoRound();
             }
-
-
         }
-
-
     }
 }

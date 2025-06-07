@@ -120,11 +120,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
 
             tournament.PreliminaryStandings = GenerateRanking(tournament);
-            InputHandler.View.ShowMessage("\n\nRankings:");
-            foreach (var team in tournament.PreliminaryStandings)
-            {
-                InputHandler.View.ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
-            }
+//            InputHandler.View.ShowStandings(tournament);
         }
 
         public void InitKoRound()

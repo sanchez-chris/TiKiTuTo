@@ -269,10 +269,26 @@ namespace TiKiTuTo.View
             // TODO: Implement functionality for showing a game plan
         }
 
-        public void ShowStandings() 
+        public void ShowStandings(Tournament tournament) 
         {
+
+            List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
+
+            Teams
+                    .OrderByDescending(t => t.NumberGamesWon)
+                    .ThenByDescending(t => t.Goaldifference)
+                    .ThenByDescending(t => t.NumberGoals)
+                    .ToList();
+
+            foreach (var team in Teams)
+            {
+                ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
+            }
+
             Console.ReadKey();
         }
+
+
         public void ShowNextMatches(List<Match> matches)
         {
             // TODO: Implement functionality for showing the next match
