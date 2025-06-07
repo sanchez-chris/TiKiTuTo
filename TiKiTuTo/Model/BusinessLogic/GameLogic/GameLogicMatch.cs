@@ -38,8 +38,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     continue;
                 }
                 InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
-                flag = false;
                 FinishMatch(match);
+                flag = false;
             }
         }
 

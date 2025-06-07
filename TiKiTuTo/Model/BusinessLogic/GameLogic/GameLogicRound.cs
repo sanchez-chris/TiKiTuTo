@@ -146,7 +146,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 throw new ArgumentException("Tournament settings or teams are not properly configured.");
             }
 
-            tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
+            //tournament.GamePlanKoRound.Clear(); // Why do we need to clear GamePlanKORound here?
             tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.TournamentSettings.NumberOfTeamsInKoRound).ToList();
 
             // Select teams for KO round
