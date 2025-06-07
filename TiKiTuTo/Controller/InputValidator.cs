@@ -22,7 +22,7 @@ namespace TiKiTuTo.Controller
 
         public bool IsValidNumberOfTeamsInKORound(int numberInKO, int numberTeamsTotal)
         {
-            return IsPowerOfTwo(numberInKO) && numberInKO <= numberTeamsTotal;
+            return numberInKO >= 2 && IsPowerOfTwo(numberInKO) && numberInKO <= numberTeamsTotal;
         }
 
 

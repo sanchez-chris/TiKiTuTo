@@ -271,7 +271,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
                 InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
                 InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
+                if (tournament.ThirdPosition != null)
+                {
+                    InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
+                }
             }
         }
 
