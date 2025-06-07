@@ -1,6 +1,7 @@
 ﻿using TiKiTuTo.View;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
+using TiKiTuTo.Model.DataObjects;
 
 
 namespace TiKiTuTo.Controller
@@ -86,7 +87,7 @@ namespace TiKiTuTo.Controller
                     return _view.LoadableTournamentSettingsSelection(availableFiles);
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
-                    _view.ShowStandings();
+                    _view.ShowStandings(_tournamentModel.Tournament);
                     return _view.DuringTournamentMenuSelection();
                 case AppState.ExitOptions:
                     return _view.ExitOptionsSelection();

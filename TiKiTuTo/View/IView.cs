@@ -37,7 +37,7 @@ namespace TiKiTuTo.View
 
         public void ShowGamePlan();
 
-        public void ShowStandings();
+        public void ShowStandings(Tournament tournament);
 
         public void ShowNextMatches(List<Match> matches);
 

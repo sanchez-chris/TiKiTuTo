@@ -27,7 +27,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         /// Creates Tournament based on user input. First creates a TournamentSettings object, then initializes a Tournament based on these settings.
         /// </summary>
         /// <returns>returns a newly initialized Tournament instance.</returns>
-        public GameLogicTournament(GameLogicRound glRound, GameLogicTournamentSettings glTournamentSettings, InputHandler inputHandler, TournamentModel model, JSONService jsonService) 
+        public GameLogicTournament(GameLogicRound glRound, GameLogicTournamentSettings glTournamentSettings, InputHandler inputHandler, TournamentModel model, JSONService jsonService)
         {
             GameLogicRound = glRound;
             GameLogicTournamentSettings = glTournamentSettings;
@@ -54,7 +54,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void CreateTournament(TournamentSettings tournamentSettings)
         {
-            bool emptyNameAllowed = false;
             string name = InputHandler.GetMandatoryName("Please enter the name of this tournament!");
             TournamentModel.Tournament = new Tournament(name, tournamentSettings);
 
@@ -63,20 +62,15 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunTournament()
         {
-            // this if else condition leads to an bug
-            //if (!TournamentModel.Tournament.GamePlanKoRound.Any())
-            //{
+            if (TournamentModel.Tournament.GamePlanKoRound.Count == 0)
+            {
                 GameLogicRound.RunPreliminaryRound();
                 GameLogicRound.InitKoRound();
-            //}
-            //else
-            //{
+            }
+            else if (TournamentModel.Tournament.CurrentRound == 0)
+            {
                 GameLogicRound.RunKoRound();
-            //}
-
-
+            }
         }
-
-
     }
 }
