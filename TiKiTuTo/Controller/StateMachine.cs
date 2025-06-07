@@ -73,8 +73,7 @@ namespace TiKiTuTo.Controller
                     return _view.SavedTournamentsSelection(loadableFiles);
                 case AppState.ShowFinishedTournaments:
                     string[] loadableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
-                    _view.FinishedTournamentsSelection(loadableFinishedFiles);
-                    break;
+                    return _view.FinishedTournamentsSelection(loadableFinishedFiles);
                 case AppState.TournamentSettingsCreationDialogue:
                     _tournamentModel.Tournament.TournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
                     _jsonService.SaveTournamentSettings(); //TODO implement this
@@ -87,6 +86,7 @@ namespace TiKiTuTo.Controller
                     return _view.LoadableTournamentSettingsSelection(availableFiles);
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
+                    _view.ShowStandings(_tournamentModel.Tournament);
                     return _view.DuringTournamentMenuSelection();
                 case AppState.ExitOptions:
                     return _view.ExitOptionsSelection();
@@ -249,6 +249,7 @@ namespace TiKiTuTo.Controller
             {
                 string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {chosenTournament}");
+                _jsonService.LoadTournament(chosenTournament);
                 TransitionTo(AppState.RunTournament);
             }
             else if (choice-1 == unfinishedTournamentFiles.Length) //back to main menu
