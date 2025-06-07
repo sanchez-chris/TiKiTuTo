@@ -19,7 +19,8 @@ namespace TiKiTuTo.Model.DataObjects
         public List<Team> Semifinalists { get; set; } = new List<Team>();
         public Team ThirdPosition { get; set; }
         public bool IsSemifinalPlayed { get; set; } = false;
-        public int CurrentRound { get; set; } = 0;
+        public int CurrentKoRound { get; set; } = 0;
+        
 
         public Tournament(string name, TournamentSettings settings)
         {
