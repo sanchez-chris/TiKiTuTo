@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
@@ -66,6 +67,7 @@ namespace TiKiTuTo.Controller
 
                 JsonSerializerOptions options = new JsonSerializerOptions
                 {
+                    ReferenceHandler = ReferenceHandler.Preserve,
                     WriteIndented = true
                 };
 
@@ -98,6 +100,7 @@ namespace TiKiTuTo.Controller
 
                 JsonSerializerOptions options = new JsonSerializerOptions
                 {
+                    ReferenceHandler = ReferenceHandler.Preserve,
                     PropertyNameCaseInsensitive = true 
                 };
                 Tournament loadedTournament = JsonSerializer.Deserialize<Tournament>(tournamentJSON, options);
@@ -133,6 +136,7 @@ namespace TiKiTuTo.Controller
 
                 JsonSerializerOptions options = new JsonSerializerOptions
                 {
+                    ReferenceHandler = ReferenceHandler.Preserve,
                     PropertyNameCaseInsensitive = true
                 };
                 TournamentSettings loadedTournamentSettings = JsonSerializer.Deserialize<TournamentSettings>(tournamentJSON, options);

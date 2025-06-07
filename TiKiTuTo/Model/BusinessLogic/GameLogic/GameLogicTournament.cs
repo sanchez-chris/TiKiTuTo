@@ -67,7 +67,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 GameLogicRound.RunPreliminaryRound();
                 GameLogicRound.InitKoRound();
             }
-            else
+            else if (TournamentModel.Tournament.CurrentRound == 0)
             {
                 GameLogicRound.RunKoRound();
             }
