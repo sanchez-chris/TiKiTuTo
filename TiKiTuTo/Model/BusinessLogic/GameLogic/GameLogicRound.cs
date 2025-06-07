@@ -1,341 +1,373 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
 
-
-
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
-    /// Handles business logic regarding Rounds objects. 
+    /// Handles business logic related to rounds in a tournament.
+    /// This includes initializing, running, and managing preliminary and KO rounds.
     /// </summary>
-
     public class GameLogicRound
     {
-        // Declare properties
-        private InputValidator _inputValidator;
+        // Dependencies injected via the constructor
+        private readonly InputValidator _inputValidator;
+        private readonly InputHandler _inputHandler;
+        private readonly JSONService _jsonService;
+        private readonly TournamentModel _tournamentModel;
 
-        InputHandler InputHandler { get; set; }
-        JSONService JSONService { get; set; }
-        TournamentModel TournamentModel { get; set; }
+        // GameLogicMatch instance for handling individual matches
+        private readonly GameLogicMatch _gameLogicMatch;
 
-        // Declare GameLogicMatch without initializing it here
-        GameLogicMatch GameLogicMatch;
+        // Random instance for generating random values
+        private readonly Random _random = new Random();
 
-        // Constructor
-        public GameLogicRound(InputHandler inputHandler, JSONService json, InputValidator inputValidator, TournamentModel tournamentModel)
+        /// <summary>
+        /// Constructor for GameLogicRound.
+        /// Initializes dependencies and sets up the GameLogicMatch instance.
+        /// </summary>
+        /// 
+        public GameLogicRound(InputHandler inputHandler, JSONService jsonService, InputValidator inputValidator, TournamentModel tournamentModel)
         {
-            // Set properties
             _inputValidator = inputValidator;
-            InputHandler = inputHandler;
-            JSONService = json;
-            TournamentModel = tournamentModel;
-            // Initialize GameLogicMatch after properties are set
-            GameLogicMatch = new GameLogicMatch(InputHandler, JSONService);
+            _inputHandler = inputHandler;
+            _jsonService = jsonService;
+            _tournamentModel = tournamentModel;
+
+            // Initialize GameLogicMatch after dependencies are set
+            _gameLogicMatch = new GameLogicMatch(inputHandler, jsonService);
         }
 
-        private Random random = new Random();
-
+        /// <summary>
+        /// Initializes the preliminary round by generating matches based on tournament settings.
+        /// </summary>
+        /// 
         public void InitPreliminaryRound()
         {
-            var Settings = TournamentModel.Tournament.TournamentSettings;
-            var tournament = TournamentModel.Tournament;
+            ValidateTournamentSettings();
 
-            List<Match> GamePlanPreliminaryRound = tournament.GamePlanPreliminaryRound;
+            var tournament = _tournamentModel.Tournament;
+            var teams = tournament.TournamentSettings.TeamsInTournament;
+            var gamePlan = tournament.GamePlanPreliminaryRound;
 
-            // fill the list of matches tournament.GamePlanPreliminaryRound
-            if (Settings == null || Settings.TeamsInTournament == null || Settings.TeamsInTournament.Count < 2)
-            {
-                throw new ArgumentException("Tournament settings or teams are not properly configured.");
-            }
-            int gamesPerTeam = Settings.NumberOfPreliminaryGamesPerTeam;
-            List<Team> teams = Settings.TeamsInTournament;
+            var teamMatchCount = InitializeMatchCount(teams);
 
-            // Verify if it's possible to generate the required number of matches
-            int totalGamesNeeded = teams.Count * gamesPerTeam / 2;
-            int totalPossibleMatches = teams.Count * (teams.Count - 1) / 2;
-            if (totalGamesNeeded > totalPossibleMatches)
-            {
-                throw new InvalidOperationException("Not enough teams to generate the required number of matches.");
-            }
+            GenerateRandomMatches(teams, gamePlan, teamMatchCount);
 
-            // Initialize the preliminary round matches
+            _inputHandler.View.ShowMessage("Good luck to all teams!");
+            WaitForUserToStart();
+        }
+
+        private Dictionary<Team, int> InitializeMatchCount(List<Team> teams)
+        {
             var teamMatchCount = new Dictionary<Team, int>();
-            var matchesCreated = new HashSet<(Team, Team)>();
-
-            // Initialize match count for each team
             foreach (var team in teams)
             {
                 teamMatchCount[team] = 0;
             }
+            return teamMatchCount;
+        }
 
-            // Generate matches randomly
+        private void GenerateRandomMatches(List<Team> teams, List<Match> gamePlan, Dictionary<Team, int> teamMatchCount)
+        {
+            int gamesPerTeam = _tournamentModel.Tournament.TournamentSettings.NumberOfPreliminaryGamesPerTeam;
+            var matchesCreated = new HashSet<(Team, Team)>();
+
             while (teamMatchCount.Values.Any(count => count < gamesPerTeam))
             {
-                // Select two random teams
                 var availableTeams = teams.Where(t => teamMatchCount[t] < gamesPerTeam).ToList();
 
-                Team teamA = availableTeams[random.Next(availableTeams.Count)];
-                Team teamB = availableTeams[random.Next(availableTeams.Count)];
+                Team teamA = availableTeams[_random.Next(availableTeams.Count)];
+                Team teamB = availableTeams[_random.Next(availableTeams.Count)];
 
-                // Ensure the teams are not the same and have not already played against each other
                 if (teamA != teamB && !matchesCreated.Contains((teamA, teamB)) && !matchesCreated.Contains((teamB, teamA)))
                 {
-                    // Create the match
-                    Match match = new Match(teamA, teamB);
+                    var match = new Match(teamA, teamB);
+                    gamePlan.Add(match);
 
-                    GamePlanPreliminaryRound.Add(match);
-
-                    // Update counts
                     teamMatchCount[teamA]++;
                     teamMatchCount[teamB]++;
                     matchesCreated.Add((teamA, teamB));
                 }
             }
-            InputHandler.View.ShowMessage("Good luck to all teams!");
-            WaitForUserToStart();
-
-
         }
 
+
+        /// <summary>
+        /// Runs the preliminary round by executing each match and updating team standings.
+        /// </summary>
         public void RunPreliminaryRound()
         {
-            var tournament = TournamentModel.Tournament;
-            InputHandler.View.ShowMessage($"Preliminary round initialized with {tournament.GamePlanPreliminaryRound.Count} matches.");
-            InputHandler.View.ShowMessage("\nGameplan preliminary round:\n");
+            var tournament = _tournamentModel.Tournament;
 
-            tournament.GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
+            _inputHandler.View.ShowMessage($"Preliminary round initialized with {tournament.GamePlanPreliminaryRound.Count} matches.");
+            _inputHandler.View.ShowMessage("\nGameplan preliminary round:\n");
 
-            // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
+            // Display all matches in the preliminary round
+            tournament.GamePlanPreliminaryRound.ForEach(match =>
+                _inputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
+
+            // Execute each match and update team attributes
             foreach (var match in tournament.GamePlanPreliminaryRound)
             {
-                GameLogicMatch.RunMatch(match);
+                _gameLogicMatch.RunMatch(match);
             }
 
+            // Generate rankings based on match results
             tournament.PreliminaryStandings = GenerateRanking(tournament);
-            InputHandler.View.ShowMessage("\n\nRankings:");
+
+            // Display the rankings
+            _inputHandler.View.ShowMessage("\nRankings: ");
             foreach (var team in tournament.PreliminaryStandings)
             {
-                InputHandler.View.ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
+                _inputHandler.View.ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
             }
         }
 
+        /// <summary>
+        /// Initializes the knockout (KO) round by selecting teams and organizing matches.
+        /// </summary>
         public void InitKoRound()
         {
-            var tournament = TournamentModel.Tournament;
+            var tournament = _tournamentModel.Tournament;
 
-            if (!_inputValidator.HasValidTournamentSettings(tournament))
-            {
-                throw new ArgumentException("Tournament settings or teams are not properly configured.");
-            }
+            ValidateTournamentSettings();
 
-            tournament.GamePlanKoRound.Clear(); // Clear previous matches if any
-            tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.TournamentSettings.NumberOfTeamsInKoRound).ToList();
+            tournament.GamePlanKoRound.Clear(); // Clear previous KO round matches
+            tournament.KoStandings = tournament.PreliminaryStandings
+                .Take(tournament.TournamentSettings.NumberOfTeamsInKoRound)
+                .ToList();
 
-            // Select teams for KO round
-            InputHandler.View.ShowMessage("\n\nKO Round contestants:\n");
+            // Display KO round contestants
+            _inputHandler.View.ShowMessage("\nKO Round contestants:\n");
             foreach (var team in tournament.KoStandings)
             {
-                InputHandler.View.ShowMessage($"{team.TeamName}");
+                _inputHandler.View.ShowMessage($"{team.TeamName}");
             }
 
+            // Randomly shuffle teams for the KO round
+            tournament.KoStandings = tournament.KoStandings.OrderBy(x => _random.Next()).ToList();
 
-            // Randomly reorder the list KoStandings
-            Random random = new Random();
-            tournament.KoStandings = tournament.KoStandings.OrderBy(x => random.Next()).ToList();
-
-            // Initialize the GamePlanKoRound with empty rounds
+            // Initialize KO round matches
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count)) - 1;
             for (int i = 0; i < totalRounds; i++)
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
             }
-            organizeMatchesForNextRound(tournament, 0);
+
+            OrganizeMatchesForNextRound(tournament, 0);
         }
 
+        /// <summary>
+        /// Displays the game plan for the current KO round.
+        /// </summary>
         public void ShowKoGamePlanKoRound(Tournament tournament, int currentRound)
         {
-            // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
 
-            // Validate that the current round is valid
+            // Validate round number
             if (currentRound < 0 || currentRound > totalRounds)
             {
-                InputHandler.View.ShowMessage($"Invalid round number: {currentRound}. There are {totalRounds} rounds in the tournament.");
+                _inputHandler.View.ShowMessage($"Invalid round number: {currentRound}. There are {totalRounds} rounds in the tournament.");
                 return;
             }
 
-            // Show the current round
-            //InputHandler.View.ShowMessage($"Current Round: {CurrentRound + 1}");
-            InputHandler.View.ShowMessage("\n");
+            // Display the current round
+            _inputHandler.View.ShowMessage("\n");
 
             if (currentRound == totalRounds)
             {
-                InputHandler.View.ShowMessage("Final:");
-                InputHandler.View.ShowMessage("Match:");
+                _inputHandler.View.ShowMessage("Final:");
             }
             else if (currentRound == totalRounds - 1 && totalRounds > 2)
             {
-                InputHandler.View.ShowMessage("Semifinal:");
-                InputHandler.View.ShowMessage("Matches:");
+                _inputHandler.View.ShowMessage("Semifinal:");
             }
             else
             {
-                InputHandler.View.ShowMessage("Gameplan KO round:");
+                _inputHandler.View.ShowMessage("Gameplan KO round:");
             }
 
-            InputHandler.View.ShowMessage(new string('-', 20));
+            _inputHandler.View.ShowMessage(new string('-', 20));
 
-            int spacing = (int)Math.Pow(2, totalRounds - currentRound - 1) * 2; // Dynamic space for the current round
-
+            // Display matches with dynamic spacing
+            int spacing = (int)Math.Pow(2, totalRounds - currentRound - 1) * 2;
             foreach (var match in tournament.GamePlanKoRound[currentRound])
             {
-                InputHandler.View.ShowMessage($"{match.teamA.TeamName.PadRight(spacing)} vs {match.teamB.TeamName.PadRight(spacing)}");
+                _inputHandler.View.ShowMessage($"{match.teamA.TeamName.PadRight(spacing)} vs {match.teamB.TeamName.PadRight(spacing)}");
             }
-
         }
 
+        /// <summary>
+        /// Runs the knockout (KO) round by executing matches and updating standings.
+        /// </summary>
         public void RunKoRound()
         {
-            var tournament = TournamentModel.Tournament;
-
-            // Calculate how many rounds there are in the tournament
+            var tournament = _tournamentModel.Tournament;
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.KoStandings.Count));
 
-            while (tournament.CurrentRound < totalRounds) 
+            while (tournament.CurrentRound < totalRounds)
             {
                 ShowKoGamePlanKoRound(tournament, tournament.CurrentRound);
 
-
                 foreach (var match in tournament.GamePlanKoRound[tournament.CurrentRound])
                 {
-                    updateStandings(tournament, match);
+                    UpdateStandings(tournament, match);
                 }
 
                 tournament.CurrentRound++;
                 if (tournament.CurrentRound < totalRounds)
                 {
-                    organizeMatchesForNextRound(tournament, tournament.CurrentRound);
+                    OrganizeMatchesForNextRound(tournament, tournament.CurrentRound);
                 }
-                if (totalRounds >= 2 && !tournament.IsSemifinalPlayed && tournament.KoStandings.Count == 2) // there is a semifinal
-                {
-                    tournament.IsSemifinalPlayed = true;
-                    InputHandler.View.ShowMessage("\nLets decide the 3. Position!");
-                    Match semifinal = new Match(tournament.Semifinalists[0], tournament.Semifinalists[1]);
 
-                    GameLogicMatch.RunMatch(semifinal);
-                    if (tournament.Semifinalists[0].NumberGoals > tournament.Semifinalists[1].NumberGoals)
-                    {
-                        tournament.ThirdPosition = tournament.Semifinalists[0];
-                    }
-                    else
-                    {
-                        tournament.ThirdPosition = tournament.Semifinalists[1];
-
-                    }
-                    InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round are {tournament.ThirdPosition.TeamName}.");
-                }
+                HandleSemifinal(tournament);
             }
 
-
-
-            if (tournament.KoStandings.Count == 1) 
-            {
-                tournament.Winner = tournament.KoStandings[0];
-                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
-
-                InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
-                if (tournament.ThirdPosition != null)
-                {
-                    InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
-                }
-            }
+            DeclareWinner(tournament);
         }
 
+        /// <summary>
+        /// Generates rankings based on team performance in the preliminary round.
+        /// </summary>
         public List<Team> GenerateRanking(Tournament tournament)
         {
-            List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
-
-            return Teams
-                    .OrderByDescending(t => t.NumberGamesWon)
-                    .ThenByDescending(t => t.Goaldifference)
-                    .ThenByDescending(t => t.NumberGoals)
-                    .ToList();
+            return tournament.TournamentSettings.TeamsInTournament
+                .OrderByDescending(t => t.NumberGamesWon)
+                .ThenByDescending(t => t.Goaldifference)
+                .ThenByDescending(t => t.NumberGoals)
+                .ToList();
         }
 
-
-        public void organizeMatchesForNextRound(Tournament tournament, int currentRound)
+        /// <summary>
+        /// Organizes matches for the next KO round.
+        /// </summary>
+        public void OrganizeMatchesForNextRound(Tournament tournament, int currentRound)
         {
             for (int i = 0; i < tournament.KoStandings.Count; i += 2)
             {
-                if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
+                if (i + 1 < tournament.KoStandings.Count)
                 {
                     var match = new Match(tournament.KoStandings[i], tournament.KoStandings[i + 1]);
-                    // ensure there is place for a new round
+
                     while (tournament.GamePlanKoRound.Count <= currentRound)
                     {
                         tournament.GamePlanKoRound.Add(new List<Match>());
                     }
+
                     tournament.GamePlanKoRound[currentRound].Add(match);
                 }
             }
         }
 
+        /// <summary>
+        /// Waits for user input to proceed.
+        /// </summary>
         public void WaitForUserToStart()
         {
-            InputHandler.View.ShowMessage("Press enter to continue.");
-            InputHandler.View.ReadInput();
+            _inputHandler.View.ShowMessage("Press enter to continue.");
+            _inputHandler.View.ReadInput();
         }
 
-        public void updateStandings(Tournament tournament, Match match)
+        /// <summary>
+        /// Updates standings after a match has been completed.
+        /// </summary>
+        public void UpdateStandings(Tournament tournament, Match match)
         {
-
             bool hasWinner = false;
 
             while (!hasWinner)
             {
-                if(!match.finished)
+                if (!match.finished)
                 {
-                    GameLogicMatch.RunMatch(match);
+                    _gameLogicMatch.RunMatch(match);
                 }
+
                 if (match.goalsTeamA > match.goalsTeamB)
                 {
-
-                    if (tournament.KoStandings.Count == 4 || tournament.KoStandings.Count == 3) // semifinal 
-                    {
-                        tournament.Semifinalists.Add(match.teamB);
-                    }
-                    if (tournament.KoStandings.Count == 2) // final
-                    {
-                        tournament.Finalist = match.teamB;
-                    }
-
-                    tournament.KoStandings.Remove(match.teamB);
+                    HandleMatchWinner(tournament, match.teamA, match.teamB);
                     hasWinner = true;
                 }
                 else
                 {
-                    if (tournament.KoStandings.Count == 4 || tournament.KoStandings.Count == 3) // semifinal
-                    {
-                        tournament.Semifinalists.Add(match.teamA);
-                    }
-                    if (tournament.KoStandings.Count == 2) // final
-                    {
-                        tournament.Finalist = match.teamA;
-                    }
-                    tournament.KoStandings.Remove(match.teamA);
+                    HandleMatchWinner(tournament, match.teamB, match.teamA);
                     hasWinner = true;
+                }
+            }
+        }
 
+        /// <summary>
+        /// Validates tournament settings to ensure proper configuration.
+        /// </summary>
+        private void ValidateTournamentSettings()
+        {
+            var settings = _tournamentModel.Tournament.TournamentSettings;
+            if (settings == null || settings.TeamsInTournament == null || settings.TeamsInTournament.Count < 2)
+            {
+                throw new ArgumentException("Tournament settings or teams are not properly configured.");
+            }
+        }
+
+        /// <summary>
+        /// Handles the winner of a match in the KO round.
+        /// </summary>
+        private void HandleMatchWinner(Tournament tournament, Team winner, Team loser)
+        {
+            if (tournament.KoStandings.Count <= 4) // Semifinal logic
+            {
+                tournament.Semifinalists.Add(loser);
+            }
+
+            if (tournament.KoStandings.Count == 2) // Final logic
+            {
+                tournament.Finalist = loser;
+            }
+
+            tournament.KoStandings.Remove(loser);
+        }
+
+        /// <summary>
+        /// Handles logic for the semifinal round.
+        /// </summary>
+        private void HandleSemifinal(Tournament tournament)
+        {
+            if (tournament.KoStandings.Count == 2 && !tournament.IsSemifinalPlayed)
+            {
+                tournament.IsSemifinalPlayed = true;
+                _inputHandler.View.ShowMessage("\nLet's decide the 3rd position!");
+
+                var semifinal = new Match(tournament.Semifinalists[0], tournament.Semifinalists[1]);
+                _gameLogicMatch.RunMatch(semifinal);
+
+                tournament.ThirdPosition = semifinal.goalsTeamA > semifinal.goalsTeamB
+                    ? tournament.Semifinalists[0]
+                    : tournament.Semifinalists[1];
+
+                _inputHandler.View.ShowMessage($"\nThe 3rd position goes to { tournament.ThirdPosition.TeamName}.");
+            }
+        }
+
+        /// <summary>
+        /// Declares the winner of the tournament.
+        /// </summary>
+        private void DeclareWinner(Tournament tournament)
+        {
+            if (tournament.KoStandings.Count == 1)
+            {
+                tournament.Winner = tournament.KoStandings[0];
+                _inputHandler.View.ShowMessage($"\nThe winner is { tournament.Winner.TeamName }!");
+
+                _inputHandler.View.ShowMessage($"\n1. { tournament.Winner.TeamName}");
+                _inputHandler.View.ShowMessage($"\n2. { tournament.Finalist.TeamName}");
+
+                if (tournament.ThirdPosition != null)
+                {
+                    _inputHandler.View.ShowMessage($"\n3. { tournament.ThirdPosition.TeamName}");
                 }
             }
         }
     }
-    }
+}
