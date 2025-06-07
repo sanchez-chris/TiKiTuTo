@@ -230,12 +230,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void ShowKoGamePlanKoRound(Tournament tournament, int currentRound)
         {
             // Calculate how many rounds there are in the tournament
-            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound));
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound)) - 1;
 
             // Validate that the current round is valid
             if (currentRound < 0 || currentRound > totalRounds)
             {
-                InputHandler.View.ShowMessage($"Invalid round number: {currentRound}. There are {totalRounds} rounds in the tournament.");
+                InputHandler.View.ShowMessage($"Invalid round number: {currentRound}. There are {totalRounds + 1} rounds in the tournament.");
                 return;
             }
 
@@ -248,14 +248,14 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 InputHandler.View.ShowMessage("Final:");
                 InputHandler.View.ShowMessage("Match:");
             }
-            else if (currentRound == totalRounds - 1 && totalRounds > 2)
+            else if (currentRound == totalRounds - 1 && totalRounds > 1)
             {
                 InputHandler.View.ShowMessage("Semifinal:");
                 InputHandler.View.ShowMessage("Matches:");
             }
             else
             {
-                InputHandler.View.ShowMessage($"Gameplan {currentRound + 1}. round:");
+                InputHandler.View.ShowMessage($"Gameplan {currentRound + 1}. KO round:");
             }
 
             InputHandler.View.ShowMessage(new string('-', 20));
