@@ -10,7 +10,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         //GameLogicRound GameLogicRound { get; set; }
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
-
+        bool isTimerFinished;
         public GameLogicMatch(InputHandler inputHandler, JSONService json)
         {
             //GameLogicRound = new GameLogicRound(inputHandler, json);
@@ -18,20 +18,27 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             JSONService = json;
         }
 
-        public void RunMatch(Match match)
+        public async void RunMatch(Match match)
         {
             int goalsA = 0;
             int goalsB = 0;
-            //StartMatchTimer(match);
+            StartMatchTimer(match);
+            bool goalsAsked = false;
+            isTimerFinished = false;
 
-            goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?");
-            match.goalsTeamA = goalsA;
+            while (!goalsAsked)
+            {
+                if(isTimerFinished)
+                {
+                    goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?\n\n");
+                    match.goalsTeamA = goalsA;
 
-            goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
-            match.goalsTeamB = goalsB;
-
+                    goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
+                    match.goalsTeamB = goalsB;
+                    goalsAsked = true;
+                }
+            }
             InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
-
             FinishMatch(match);
         }
 
@@ -57,7 +64,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 {
                     InputHandler.View.ShowMessage("Time's up!");
                     SystemSounds.Asterisk.Play();
-                    FinishMatch(match);
+                    isTimerFinished = true;
                     timer.Stop();
                 }
                 else
@@ -72,6 +79,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             InputHandler.View.WriteEmptyLine();
             timer.Start();
         }
+
 
         public void UpdateTeamScores(Team teamA, int goalsA, Team teamB, int goalsB)
         {
@@ -98,7 +106,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void FinishMatch(Match match)
         {
             match.finished = true;
-            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB); // it does not update the goals
+            UpdateTeamScores(match.teamA, match.goalsTeamA, match.teamB, match.goalsTeamB);
             JSONService.SaveTournament();
         }
     }

@@ -192,7 +192,7 @@ namespace TiKiTuTo.Controller
             //Array because of return tye of Directory.GetFiles()
             string[] tournamentSettings = Directory.GetFiles(settingsFolder);
 
-            return ournamentSettings;
+            return tournamentSettings;
         }
 
         public void InitialCreationOfFolder(string folderPath)
