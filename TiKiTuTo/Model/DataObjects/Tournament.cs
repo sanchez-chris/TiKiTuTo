@@ -20,6 +20,7 @@ namespace TiKiTuTo.Model.DataObjects
         public Team ThirdPosition { get; set; }
         public bool IsSemifinalPlayed { get; set; } = false;
         public int CurrentKoRound { get; set; } = 0;
+        public bool IsFinished { get; set; } = false;
         
 
         public Tournament(string name, TournamentSettings settings)

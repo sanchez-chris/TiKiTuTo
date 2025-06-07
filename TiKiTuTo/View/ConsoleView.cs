@@ -28,15 +28,16 @@ namespace TiKiTuTo.View
                 " |     TiKiTuTo        |",
                 " -----------------------",
                 " -------Main Menu-------",
-                " -----------------------"
-            }; 
+                " -----------------------",
+                
+            };
 
             List<string> options = new()
             {
             "Start New Tournament",
             "Resume Earlier Tournament",
             "Show Results Of Earlier Tournament",
-            "Manage Tournament Configurations",
+            "Create Tournament Configurations",
             "Exit Application"
             };
 
@@ -194,7 +195,7 @@ namespace TiKiTuTo.View
                 " -----------------------",
                 " |     TiKiTuTo        |",
                 " -----------------------",
-                " ----Quick Settings-----",
+                " ------Mini Menu--------",
                 " -----------------------"
             };
 

@@ -136,7 +136,13 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
                 InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
                 InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
+                if (tournament.ThirdPosition != null)
+                {
+                    InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
+                }
+                tournament.IsFinished = true;
+                JSONService.SaveFinishedTournament();
+                JSONService.SaveTournament();
             }
         }
 
@@ -305,9 +311,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             var tournament = TournamentModel.Tournament;
 
-            bool hasWinner = false; // winner of the tournament!!!!
-
-            while (!hasWinner)
+            while (!tournament.IsFinished)
             {
                 if(!match.isFinished)
                 {
@@ -325,7 +329,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                         }
 
                         tournament.KoStandings.Remove(match.teamB);
-                        hasWinner = true;
+                        tournament.IsFinished = true;
                     }
                     else
                     {
@@ -338,7 +342,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                             tournament.Finalist = match.teamA;
                         }
                         tournament.KoStandings.Remove(match.teamA);
-                        hasWinner = true;
+                        tournament.IsFinished = true;
                     }
                 }
                 else
