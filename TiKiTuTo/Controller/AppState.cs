@@ -10,6 +10,7 @@ namespace TiKiTuTo.Controller
         ShowFinishedTournaments,
         TournamentSettingsCreationDialogue,
         ShowLoadableTournamentSettings,
+        ImportTournamentSettingsFromExcelFile,
         InitTournament,
         RunTournament,
         ExitOptions,

@@ -5,20 +5,35 @@ using System.Text;
 using System.Threading.Tasks;
 using TiKiTuTo.Model.DataObjects;
 using ClosedXML.Excel;
+using TiKiTuTo.Model;
 
 namespace TiKiTuTo
 {
     public class EXCELService
     {
+        private readonly string ProjectDirectory; 
+        private readonly string ExcelImportFolder;
+
+        TournamentModel TournamentModel { get; set; }
+
+
+        public EXCELService(TournamentModel tournamentModel)
+        {
+            TournamentModel = tournamentModel;
+            ProjectDirectory = GetProjectDirectoryPath();
+            ExcelImportFolder = GetExcelImportFolderPath();
+
+            InitialCreationOfFolder();
+            CopyTemplateIfNotExists();
+        }
+
+
         public TournamentSettings ImportExcelFile()
         {
-            string filePath = "Import_Tournament_Settings\\Teams.xlsx";
-
-            var tournamentSettings = new TournamentSettings();
-
+            var tournamentSettings = TournamentModel.Tournament.TournamentSettings;
             tournamentSettings.TeamsInTournament = new List<Team>();
 
-            using (var workbook = new XLWorkbook(filePath))
+            using (var workbook = new XLWorkbook($"{ExcelImportFolder}\\Import_Tournament_Settings.xlsx"))
             {
                 var tournamentSheet = workbook.Worksheet(1);
 
@@ -26,6 +41,8 @@ namespace TiKiTuTo
                 tournamentSettings.NumberOfTeamsInKoRound = tournamentSheet.Cell("B2").GetValue<int>();
                 tournamentSettings.NumberOfPreliminaryGamesPerTeam = tournamentSheet.Cell("B3").GetValue<int>();
                 tournamentSettings.MatchDuration = tournamentSheet.Cell("B4").GetValue<int>();
+                tournamentSettings.SettingsName = tournamentSheet.Cell("B5").GetValue<string>();
+
 
                 var teamsSheet = workbook.Worksheet(2);
                 var lastRow = teamsSheet.LastRowUsed().RowNumber();
@@ -51,5 +68,35 @@ namespace TiKiTuTo
             }
             return tournamentSettings;
         }
+
+
+        private void CopyTemplateIfNotExists()
+        {
+            var destinationFile = Path.Combine(ExcelImportFolder, "Import_Tournament_Settings.xlsx");
+            string templatePath = Path.Combine(ProjectDirectory, "Templates", "Import_Tournament_Settings.xlsx");
+
+            if (!File.Exists(destinationFile))
+            {
+                File.Copy(templatePath, destinationFile);
+            }
+        }
+        public void InitialCreationOfFolder()
+        {
+            Directory.CreateDirectory(ExcelImportFolder);
+        }
+
+
+        public string GetProjectDirectoryPath()
+        {
+            return Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
+        }
+
+        public string GetExcelImportFolderPath()
+        {
+            return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TikiTuto\\ImportFolder");
+        }
+
+
     }
 }

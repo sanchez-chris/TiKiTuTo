@@ -10,8 +10,15 @@ namespace TiKiTuTo.Model
     public class TournamentModel
     {
         public Tournament Tournament { get; set; }
-        public TournamentSettings TournamentSettingsModel { get; set; }
-        public TournamentModel() { }
+       
+        public TournamentModel()
+        {
+            // Initialisiere Tournament und dessen Settings
+            Tournament = new Tournament
+            {
+                TournamentSettings = new TournamentSettings()
+            };
+        }
     }
 
 }

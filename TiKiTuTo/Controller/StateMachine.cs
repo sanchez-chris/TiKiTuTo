@@ -14,6 +14,7 @@ namespace TiKiTuTo.Controller
         private GameLogicRound _gameLogicRound;
         private TournamentModel _tournamentModel;
         private JSONService _jsonService;
+        private EXCELService _excelService;
         private GameLogicTournamentSettings _gameLogicTournamentSettings;
 
 
@@ -25,7 +26,7 @@ namespace TiKiTuTo.Controller
         /// <param name="gameLogicTournament">used to handle tournament logic</param>
         /// <param name="model">used to store the tournament</param>
         /// <param name="jsonService">used to save and load tournaments</param>
-        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, GameLogicTournamentSettings gameLogicTournamentSettings)
+        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, EXCELService excel, GameLogicTournamentSettings gameLogicTournamentSettings)
         {
             CurrentState = AppState.MainMenu;
             _view = view;
@@ -33,6 +34,7 @@ namespace TiKiTuTo.Controller
             _gameLogicRound = gameLogicRound;
             _tournamentModel = model;
             _jsonService = jsonService;
+            _excelService = excel;
             _gameLogicTournamentSettings = gameLogicTournamentSettings;
         }
 
@@ -77,6 +79,9 @@ namespace TiKiTuTo.Controller
                 case AppState.TournamentSettingsCreationDialogue:
                     _tournamentModel.Tournament.TournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
                     _jsonService.SaveTournamentSettings(); //TODO implement this
+                    return _view.SettingsCreatedSelection();
+                case AppState.ImportTournamentSettingsFromExcelFile:
+                    _tournamentModel.Tournament.TournamentSettings = _excelService.ImportExcelFile();
                     return _view.SettingsCreatedSelection();
                 case AppState.InitTournament:
                     _gameLogicTournament.InitTournament();
@@ -204,6 +209,9 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.ShowLoadableTournamentSettings);
                     break;
                 case 3:
+                    TransitionTo(AppState.ImportTournamentSettingsFromExcelFile);
+                    break;
+                case 4:
                     TransitionTo(AppState.MainMenu);
                     break;
 
