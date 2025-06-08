@@ -19,5 +19,8 @@ namespace TiKiTuTo.Model.BusinessLogic
                            Math.Log(2));
             return (int)Math.Pow(2, p);
         }
+
+
+        
     }
 }

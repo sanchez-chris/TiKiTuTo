@@ -20,7 +20,7 @@ namespace TiKiTuTo.View
 
         public int SettingsCreatedSelection();
 
-        public int AvailableTournamentSelection(string[] loadableFiles);
+        public int AvailableTournamentSelection(string[] loadableFiles, Enum SelectLoadingType);
 
         public int DuringTournamentMenuSelection();
 

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using Spectre.Console;
@@ -119,7 +122,7 @@ namespace TiKiTuTo.View
 
 
 
-        public int AvailableTournamentSelection(string[] availableFiles)
+        public int AvailableTournamentSelection(string[] availableFiles, Enum SelectLoadingType)
         {
             List<string> headerLines = new()
             {
@@ -142,7 +145,7 @@ namespace TiKiTuTo.View
 
             options.Add("Back to Main Menu");
 
-            int userChoice = PromptSelectionMultiLine(headerLines, options);
+            int userChoice = PromptSelectionMultiLine(headerLines, options, SelectLoadingType);
 
             return userChoice;
         }
@@ -267,7 +270,7 @@ namespace TiKiTuTo.View
                      .ThenByDescending(t => t.Goaldifference)
                      .ThenByDescending(t => t.NumberGoals)
                      .ToList();
-            
+
             foreach (var team in sortedTeams)
             {
                 ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
@@ -329,7 +332,7 @@ namespace TiKiTuTo.View
         /// <param name="headerLines"> The lines making up the header</param>
         /// <param name="options"> selectable options</param>
         /// <returns>The index of the chosen option.</returns>
-        public int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options)
+        public int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options, Enum? SelectedLoadingType = null)
         {
             AnsiConsole.Clear();
 
@@ -338,18 +341,34 @@ namespace TiKiTuTo.View
                 AnsiConsole.MarkupLine($"[yellow]{line}[/]");
             }
 
-            string title = $"[yellow]Please select an option:[/]";
+            string title;
+            switch (SelectedLoadingType)
+            {
+                case SelectLoadingType.UnfinishedTournament:
+                    title = "[yellow]Saved Tournaments[/]";
+                    break;
+                case SelectLoadingType.FinishedTournament:
+                    title = "[yellow]Finished Tournaments[/]";
+                    break;
+                case SelectLoadingType.TournamentSettings:
+                    title = "[yellow]Tournament Settings[/]";
+                    break;
+                default:
+                    title = $"[yellow]Please select an option[/]";
+                    break;
+            }
 
             if (!(options.Count() > 1))
             {
-                title = $"[red]No options available[/]";
+                title += $": [red]No options available[/]";
             }
 
             var userChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title(title)
-                .PageSize(10)
-                .AddChoices(options));
+            .Title(title)
+            .PageSize(10)
+            .MoreChoicesText($"[grey](Use arrow keys to navigate and press Enter to select)[/]")
+            .AddChoices(options));
 
             return options.ToList().IndexOf(userChoice) + 1;
         }
@@ -369,7 +388,7 @@ namespace TiKiTuTo.View
                 }
             });
 
-            ShowMessage($"Tournament has been saved: {filePath}");
+            ShowMessage($"Tournament has been saved: {Path.GetFileName(filePath)}");
             WriteEmptyLine();
         }
 
@@ -378,8 +397,8 @@ namespace TiKiTuTo.View
             ShowMessage("Press any key to continue.");
             Console.ReadKey();
         }
-        
-        
+
+
 
 
     }
