@@ -38,16 +38,35 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             int NumberOfTeamsTotal;                 //how many teams attend the tournament?
             int NumberOfPreliminaryGamesPerTeam;    //how many games will be played per team in the preliminaries?
             int NumberOfTeamsInKORound;             //how many teams will progress into knockout rounds?
+            bool useTimer;                          //should a timer be used?
+            int matchDuration = 0;                  //how long should one match take?
             List<Team> Teams;                       //the actual teams
 
             //ask for the necessary inputs
             NumberOfTeamsTotal = InputHandler.GetValidNumberOfTotalTeams();
             NumberOfPreliminaryGamesPerTeam = InputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
             NumberOfTeamsInKORound = InputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
+            useTimer = InputHandler.GetApproval();
+            
+            if (useTimer)
+            {
+                matchDuration = InputHandler.GetValidMatchDuration();
+            }
             Teams = CreateListOfTeams(NumberOfTeamsTotal);
+            
             string TournamentSettingsName = InputHandler.GetMandatoryName("Name the Settings.");
 
-            TournamentSettings tournamentSettings = new TournamentSettings(NumberOfTeamsTotal, NumberOfPreliminaryGamesPerTeam, NumberOfTeamsInKORound, Teams, TournamentSettingsName);
+            TournamentSettings tournamentSettings = new TournamentSettings
+                (
+                NumberOfTeamsTotal, 
+                NumberOfPreliminaryGamesPerTeam, 
+                NumberOfTeamsInKORound, 
+                Teams, 
+                useTimer, 
+                matchDuration, 
+                TournamentSettingsName
+                );
+
             return tournamentSettings;
         }
 

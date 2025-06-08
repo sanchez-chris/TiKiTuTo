@@ -81,6 +81,38 @@ namespace TiKiTuTo.Controller
             return NumberOfTeamsInKO;
         }
 
+
+
+        public int GetValidMatchDuration()
+        {
+            int minAllowed = 1;
+            int maxAllowed = 30;
+            string prompt = $"How many minutes should each match run for? Minimum: {minAllowed}. Maximum: {maxAllowed}.";
+            int matchDuration = GetNumber(prompt);
+            while (!(matchDuration > minAllowed && matchDuration <= maxAllowed))
+            {
+                matchDuration = GetNumber($"Try again! Minimum: {minAllowed}. Maximum: {maxAllowed}.");
+            }
+            return matchDuration;
+        }
+        
+        public bool GetApproval()
+        {
+            List<string> validInputs = new() { "y", "Y", "YES", "yes" };
+            bool result = false;
+
+            string prompt = $"Should a timer be used for the matches? \nAny of the following inputs activates timer usage: [{string.Join(", ", validInputs)}]";
+            View.ShowMessage(prompt);
+            string? userInput = View.ReadInput();
+
+            if (validInputs.Contains(userInput))
+            {
+                result = true;
+            }
+            return result;
+        }
+
+
         /// <summary>
         /// Asks the user to enter a number, using the prompt argument. Repeats until a valid number is added.
         /// </summary>
