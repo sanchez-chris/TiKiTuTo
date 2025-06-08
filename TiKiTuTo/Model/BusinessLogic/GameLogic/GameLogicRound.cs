@@ -77,7 +77,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
             tournament.PreliminaryStandings = GenerateRanking(tournament);
             
-            InputHandler.View.ShowStandings(tournament);
+            //InputHandler.View.ShowStandings(tournament);
 
         }
 
