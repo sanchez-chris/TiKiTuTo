@@ -57,11 +57,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 if (isTimerFinished)
                 {
-                    goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?");
+                    goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
                     match.goalsTeamA = goalsA;
+                    goalsB = InputHandler.GetValidGoalInput(match.teamB.TeamName);
+                    match.goalsTeamB = goalsB; 
 
-                    goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
-                    match.goalsTeamB = goalsB;
                     if (goalsA == goalsB)
                     {
                         InputHandler.View.ShowMessage("You can't have a draw.");
@@ -70,12 +70,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     goalsAsked = true;
                 }
             }
-            InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
+            InputHandler.View.ShowMessage($"Match finished! \nResult: {match.teamA.TeamName}   {goalsA}:{goalsB}   {match.teamB.TeamName}");
             FinishMatch(match);
         }
 
         private DateTime _endTime;
-        public void StartMatchTimer(Match match, double? duration = 0.05) //duration has to be 10 for production
+        public void StartMatchTimer(Match match, double? duration = 0.1) //duration has to be 10 for production
         {
             // Set the end time for the specified length in minutes
             while (duration == 0)
@@ -95,7 +95,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 if (timeRemaining.TotalSeconds <= 0)
                 {
                     InputHandler.View.ShowMessage("Time's up!");
-                    SystemSounds.Asterisk.Play();
+                    //SystemSounds.Asterisk.Play();
                     isTimerFinished = true;
                     //FinishMatch(match);
                     timer.Stop();
