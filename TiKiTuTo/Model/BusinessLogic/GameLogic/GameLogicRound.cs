@@ -49,7 +49,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             var tournament = TournamentModel.Tournament;
 
             CreateGamePlanPreRound(tournament);
-            WaitForUserToStart();
+            InputHandler.View.WaitForAnyKeyToProceed();
             InputHandler.View.ShowMessage("Good luck to all teams!");
         }
         
@@ -63,6 +63,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             tournament.GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
 
+            int matchIndex = 1;
+
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
             foreach (var match in tournament.GamePlanPreliminaryRound)
             {
@@ -73,10 +75,16 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 else
                 {
                     GameLogicMatch.RunMatch(match);
+                    if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
+                    {
+                        InputHandler.View.ShowStandings(tournament);
+                    }
                 }
+                matchIndex++;
             }
             tournament.PreliminaryStandings = GenerateRanking(tournament);
-            InputHandler.View.ShowStandings(tournament);
+            
+            //InputHandler.View.ShowStandings(tournament);
 
         }
 
@@ -89,6 +97,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void RunKoRound()
         {
             var tournament = TournamentModel.Tournament;
+
+            if (tournament.IsFinished) return;
 
             // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound));
@@ -225,7 +235,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.KoStandings = tournament.KoStandings.OrderBy(x => random.Next()).ToList();
 
             // Initialize the GamePlanKoRound with empty rounds
-            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound)) - 1;
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound));
             for (int i = 0; i < totalRounds; i++)
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
@@ -292,11 +302,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
-        public void WaitForUserToStart()
-        {
-            InputHandler.View.ShowMessage("Press enter to start.");
-            InputHandler.View.ReadInput();
-        }
         public List<Team> GenerateRanking(Tournament tournament)
         {
             List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
@@ -329,7 +334,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                         }
 
                         tournament.KoStandings.Remove(match.teamB);
-                        tournament.IsFinished = true;
                     }
                     else
                     {
@@ -342,12 +346,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                             tournament.Finalist = match.teamA;
                         }
                         tournament.KoStandings.Remove(match.teamA);
-                        tournament.IsFinished = true;
                     }
                 }
                 else
                 {
                     InputHandler.View.ShowMessage($"\n\n{match.teamA.TeamName} vs {match.teamB.TeamName} is finished.");
+                    break;
                 }
             }
         }

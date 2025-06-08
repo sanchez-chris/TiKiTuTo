@@ -48,7 +48,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
             CreateTournament(tournamentSettings);
-            JSONService.SaveTournamentSettings();
+            JSONService.SaveTournamentSettings(tournamentSettings);
 
         }
 
@@ -67,7 +67,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 GameLogicRound.RunPreliminaryRound();
                 GameLogicRound.InitKoRound();
             }
-            else if (TournamentModel.Tournament.CurrentKoRound == 0)
+            else // if (TournamentModel.Tournament.CurrentKoRound == 0)
             {
                 GameLogicRound.RunKoRound();
             }
