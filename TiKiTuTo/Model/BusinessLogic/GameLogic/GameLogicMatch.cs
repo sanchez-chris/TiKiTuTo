@@ -108,6 +108,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             };
 
             // Start the timer
+            InputHandler.View.WaitForAnyKeyToProceed();
             InputHandler.View.ShowMessage($"Timer started for {duration} minutes.");
             InputHandler.View.WriteEmptyLine();
             timer.Start();

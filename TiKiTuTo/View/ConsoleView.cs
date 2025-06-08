@@ -273,26 +273,18 @@ namespace TiKiTuTo.View
         public void ShowStandings(Tournament tournament) 
         {
             List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
-
             List<Team> sortedTeams = Teams
-
                      .OrderByDescending(t => t.NumberGamesWon)
-
                      .ThenByDescending(t => t.Goaldifference)
-
                      .ThenByDescending(t => t.NumberGoals)
-
                      .ToList();
-
+            
             foreach (var team in sortedTeams)
-
             {
-
                 ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
-
             }
-
-            Console.ReadKey();
+            WriteEmptyLine();
+            WaitForAnyKeyToProceed();
         }
 
 
@@ -378,6 +370,12 @@ namespace TiKiTuTo.View
             WriteEmptyLine();
         }
 
+        public void WaitForAnyKeyToProceed()
+        {
+            ShowMessage("Press any key to continue.");
+            Console.ReadKey();
+        }
+        
         
 
 

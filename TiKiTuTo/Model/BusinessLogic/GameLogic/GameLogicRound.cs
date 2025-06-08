@@ -49,7 +49,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             var tournament = TournamentModel.Tournament;
 
             CreateGamePlanPreRound(tournament);
-            WaitForUserToStart();
+            InputHandler.View.WaitForAnyKeyToProceed();
             InputHandler.View.ShowMessage("Good luck to all teams!");
         }
         
@@ -295,11 +295,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
-        public void WaitForUserToStart()
-        {
-            InputHandler.View.ShowMessage("Press enter to start.");
-            InputHandler.View.ReadInput();
-        }
         public List<Team> GenerateRanking(Tournament tournament)
         {
             List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
