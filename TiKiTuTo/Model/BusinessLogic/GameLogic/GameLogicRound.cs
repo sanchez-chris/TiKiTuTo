@@ -76,6 +76,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
             }
             tournament.PreliminaryStandings = GenerateRanking(tournament);
+            
             InputHandler.View.ShowStandings(tournament);
 
         }
@@ -225,7 +226,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.KoStandings = tournament.KoStandings.OrderBy(x => random.Next()).ToList();
 
             // Initialize the GamePlanKoRound with empty rounds
-            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound)) - 1;
+            int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound));
             for (int i = 0; i < totalRounds; i++)
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
