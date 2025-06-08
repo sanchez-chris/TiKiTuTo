@@ -38,19 +38,20 @@ namespace TiKiTuTo.Controller
         }
 
 
-        public bool IsValidMenuInput(int userInput, int maxMenuOption)
-        {
-            return userInput > 0 && userInput <= maxMenuOption;
-        }
-
         public bool HasValidTournamentSettings(Tournament tournament)
         {
-
-            if (tournament.TournamentSettings == null || tournament.TournamentSettings.TeamsInTournament == null || tournament.TournamentSettings.TeamsInTournament.Count < 2)
+            TournamentSettings settings = tournament.TournamentSettings;
+            if (settings == null ||
+                !IsValidNumberOfTotalTeams(settings.NumberOfTeamsTotal) ||
+                !IsValidNumberOfTeamsInKORound(settings.NumberOfTeamsInKoRound, settings.NumberOfTeamsTotal) ||
+                !IsValidNumberOfPreliminaryGamesPerTeam(settings.NumberOfPreliminaryGamesPerTeam, settings.NumberOfTeamsTotal))
             {
                 return false;
             }
-            return true;
+            else
+            {
+                return true;
+            }
         }
     }
 }

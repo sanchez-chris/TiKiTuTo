@@ -10,6 +10,8 @@ namespace TiKiTuTo.View
     public interface IView
     {
         //Methods which directly return user input 
+        public void ShowTikiTutoHeader();
+
         public int MainMenuSelection();
 
         public int StartTournamentMenuSelection();
@@ -18,11 +20,7 @@ namespace TiKiTuTo.View
 
         public int SettingsCreatedSelection();
 
-        public int SavedTournamentsSelection(IEnumerable<string> loadableFiles);
-
-        public int FinishedTournamentsSelection(IEnumerable<string> availableFiles);
-
-        public int LoadableTournamentSettingsSelection(IEnumerable<string> availableFiles);
+        public int AvailableTournamentSelection(string[] loadableFiles, Enum SelectLoadingType);
 
         public int DuringTournamentMenuSelection();
 
@@ -55,7 +53,7 @@ namespace TiKiTuTo.View
 
         public void DisplayFiles(string[] currentFiles);
 
-
+        public void WaitForAnyKeyToProceed();
 
     }
 }
