@@ -48,7 +48,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             
             int goalsA = 0;
             int goalsB = 0;
-            InputHandler.View.ShowMessage($"\n\nMatch: {match.teamA.TeamName} vs {match.teamB.TeamName}:");
+            InputHandler.View.ShowMessage($"\n\nMatch: {match.teamA.TeamName} vs {match.teamB.TeamName}");
             StartMatchTimer(match);
             bool goalsAsked = false;
             isTimerFinished = false;
