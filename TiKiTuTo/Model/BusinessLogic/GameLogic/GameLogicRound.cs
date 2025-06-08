@@ -254,8 +254,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
 
                 InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
+                InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist?.TeamName}");
+                if(tournament.IsSemifinalPlayed)
+                {
+                    InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition?.TeamName}");
+
+                }
             }
         }
 

@@ -18,10 +18,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             JSONService = json;
         }
 
-        public async void RunMatch(Match match)
+        public void RunMatch(Match match)
         {
             int goalsA = 0;
             int goalsB = 0;
+            InputHandler.View.ShowMessage($"\n\nMatch: {match.teamA.TeamName} vs {match.teamB.TeamName}:");
             StartMatchTimer(match);
             bool goalsAsked = false;
             isTimerFinished = false;
@@ -30,7 +31,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 if(isTimerFinished)
                 {
-                    goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?\n\n");
+                    goalsA = InputHandler.GetNumber($"\nHow many goals has {match.teamA.TeamName}?");
                     match.goalsTeamA = goalsA;
 
                     goalsB = InputHandler.GetNumber($"How many goals has {match.teamB.TeamName}?");
@@ -43,7 +44,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
 
         private DateTime _endTime;
-        public void StartMatchTimer(Match match, double? duration = 1) //duration has to be 10 for production
+        public void StartMatchTimer(Match match, double? duration = 0.1) //duration has to be 10 for production
         {
             // Set the end time for the specified length in minutes
             while (duration == 0)
