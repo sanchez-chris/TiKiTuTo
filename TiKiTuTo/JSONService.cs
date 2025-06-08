@@ -191,6 +191,10 @@ namespace TiKiTuTo.Controller
             return finishedTournamentFiles;
         }
 
+        /// <summary>
+        /// Returns all files containing earlier saved tournament settings
+        /// </summary>
+        /// <returns> List<string> of file names for the tournament settings JSON files.</returns>
         public string[] GetTournamentSettingsFiles()
         {
             //Array because of return tye of Directory.GetFiles()

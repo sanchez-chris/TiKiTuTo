@@ -268,6 +268,11 @@ namespace TiKiTuTo.Controller
             }
         }
 
+        /// <summary>
+        /// Handles transitions from the ShowLoadableTournamentSettings menu based on user input.
+        /// The number of valid options depends on the number of available tournament settings files found in the finished games folder.
+        /// </summary>
+        /// <param name="choice">user input</param>
         private void HandleShowLoadableTournamentSettingsChoice(int choice)
         {
             string[] tournamentSettingsFiles = _jsonService.GetTournamentSettingsFiles();
