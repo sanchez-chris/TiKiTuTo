@@ -264,7 +264,7 @@ namespace TiKiTuTo.View
             }
         }
 
-
+        //currently unused
         public void ShowGamePlan()
         {
             // TODO: Implement functionality for showing a game plan
@@ -288,7 +288,7 @@ namespace TiKiTuTo.View
         }
 
 
-
+        //currently unused
         public void ShowNextMatches(List<Match> matches)
         {
             // TODO: Implement functionality for showing the next match
@@ -297,13 +297,12 @@ namespace TiKiTuTo.View
 
         public void ShowMessage(string message)
         {
-            //AnsiConsole.Markup($"[bold]{message}[/]");
             AnsiConsole.WriteLine(message);
         }
 
         public void WriteEmptyLine()
         {
-            Console.WriteLine("");
+            AnsiConsole.WriteLine("");
         }
 
         public string ReadInput()
@@ -324,6 +323,7 @@ namespace TiKiTuTo.View
         }
 
 
+        //currently unused
         public void DisplayFiles(string[] currentFiles)
         {
             for (int i = 0; i < currentFiles.Length; i++)
@@ -333,7 +333,13 @@ namespace TiKiTuTo.View
             }
         }
 
-
+        /// <summary>
+        /// This wrapper for AnsiConsole.Prompt presents a multiline header followed by a SelectionPrompt. 
+        /// Choosing one of the selectable options returns the natural index [1-based] of the chosen option.
+        /// </summary>
+        /// <param name="headerLines"> The lines making up the header</param>
+        /// <param name="options"> selectable options</param>
+        /// <returns>The index of the chosen option.</returns>
         public int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options)
         {
             AnsiConsole.Clear();
@@ -345,7 +351,7 @@ namespace TiKiTuTo.View
             var userChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("[yellow]Please select an option:[/]")
-                    .PageSize(5)
+                    .PageSize(10)
                     .AddChoices(options));
             
             return options.ToList().IndexOf(userChoice) + 1;

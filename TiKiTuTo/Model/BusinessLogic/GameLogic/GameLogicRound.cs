@@ -63,6 +63,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             tournament.GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
 
+            int matchIndex = 1;
+
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
             foreach (var match in tournament.GamePlanPreliminaryRound)
             {
@@ -73,7 +75,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 else
                 {
                     GameLogicMatch.RunMatch(match);
+                    if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
+                    {
+                        InputHandler.View.ShowStandings(tournament);
+                    }
                 }
+                matchIndex++;
             }
             tournament.PreliminaryStandings = GenerateRanking(tournament);
             
