@@ -49,7 +49,7 @@ namespace TiKiTuTo.Controller
         public void SaveTournamentSettings()
         {
             var settingsName = _tournamentModel.Tournament.TournamentSettings.SettingsName;
-            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json";
+            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{settingsName}.json";
             SaveToFile(settingsFolder, fileName, _tournamentModel.Tournament.TournamentSettings);
         }
 

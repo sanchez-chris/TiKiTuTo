@@ -219,16 +219,19 @@ namespace TiKiTuTo.Controller
         private void HandleShowSavedTournamentsChoice(int choice)
         {
             string[] unfinishedTournamentFiles = _jsonService.GetUnfinishedTournamentFiles();
-            if (choice <= unfinishedTournamentFiles.Length) //a valid tournament file
-            {
-                string chosenTournament = unfinishedTournamentFiles[choice-1];
-                _view.ShowMessage($"Opening {chosenTournament}");
-                _jsonService.LoadTournament(chosenTournament); //jsonService.LoadGame should take a filename or path, no?
-                TransitionTo(AppState.RunTournament);
-            }
-            else if (choice-1 == unfinishedTournamentFiles.Length) //back to main menu
+
+            Array.Reverse(unfinishedTournamentFiles);
+
+            if (choice == unfinishedTournamentFiles.Length + 1) 
             {
                 TransitionTo(AppState.MainMenu);
+            }
+            else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
+            {
+                string chosenTournament = unfinishedTournamentFiles[choice - 1]; 
+                _view.ShowMessage($"Opening {chosenTournament}");
+                _jsonService.LoadTournament(chosenTournament); 
+                TransitionTo(AppState.RunTournament);
             }
             else //not a valid input
             {
@@ -245,16 +248,19 @@ namespace TiKiTuTo.Controller
         private void HandleShowFinishedTournamentsChoice(int choice)
         {
             string[] unfinishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
-            if (choice-1 <= unfinishedTournamentFiles.Length) //a valid tournament file
+
+            Array.Reverse(unfinishedTournamentFiles);
+
+            if (choice == unfinishedTournamentFiles.Length + 1) 
+            {
+                TransitionTo(AppState.MainMenu);
+            }
+            else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 _jsonService.LoadTournament(chosenTournament);
                 TransitionTo(AppState.RunTournament);
-            }
-            else if (choice-1 == unfinishedTournamentFiles.Length) //back to main menu
-            {
-                TransitionTo(AppState.MainMenu);
             }
             else //not a valid input
             {

@@ -14,15 +14,36 @@ namespace TiKiTuTo.View
     {
 
 
-        public ConsoleView() 
+        public ConsoleView()
         {
             Console.CursorVisible = false;
             AnsiConsole.Cursor.Hide();
         }
 
+        public void ShowTikiTutoHeader()
+        {
+            AnsiConsole.Clear();
+
+
+            AnsiConsole.Write(
+                new Panel(
+                    Align.Center(
+                        new FigletText("TikiTuto")
+                            .Color(new Color(201, 245, 5))))
+                .Border(BoxBorder.Double)
+                .BorderColor(new Color(0, 150, 199))
+                .Padding(1, 1)
+                .Header("[rgb(0,150,199)]Tournament Manager[/]")
+                .HeaderAlignment(Justify.Center));
+
+            AnsiConsole.WriteLine();
+        }
+
+
+
         public int MainMenuSelection()
         {
-            
+
             List<string> headerLines = new()
             {
                 " -----------------------",
@@ -30,7 +51,7 @@ namespace TiKiTuTo.View
                 " -----------------------",
                 " -------Main Menu-------",
                 " -----------------------",
-                
+
             };
 
             List<string> options = new()
@@ -98,38 +119,28 @@ namespace TiKiTuTo.View
 
 
 
-        public int SavedTournamentsSelection(IEnumerable<string> loadableFiles)
+        public int SavedTournamentsSelection(string[] loadableFiles)
         {
             List<string> headerLines = new()
-    {
-        "-----------------------",
-        "|     TiKiTuTo        |",
-        "-----------------------",
-        "---Saved Tournaments---",
-        "-----------------------"
-    };
+            {
+                "-----------------------",
+                "|     TiKiTuTo        |",
+                "-----------------------",
+                "---Saved Tournaments---",
+                "-----------------------"
+            };
 
-            string[] formattedFileNames = new string[loadableFiles.Length];
+            Array.Reverse(loadableFiles);
+
+            List<string> options = new List<string>();
+
             for (int i = 0; i < loadableFiles.Length; i++)
             {
                 string fileName = Path.GetFileName(loadableFiles[i]);
-                formattedFileNames[i] = fileName;
+                options.Add(fileName);
             }
 
-            var sortedFileNames = formattedFileNames
-                .Where(fileName =>
-                {
-                    string[] parts = fileName.Split('_');
-                    return parts.Length > 1 && parts[^1].EndsWith(".json");
-                })
-                .OrderBy(fileName =>
-                {
-                    string[] parts = fileName.Split('_');
-                    return parts[^1]; 
-                })
-                .ToList();
-
-            sortedFileNames.Add("Back to Main Menu");
+            options.Add("Back to Main Menu");
 
             int userChoice = PromptSelectionMultiLine(headerLines, options);
 
@@ -288,7 +299,7 @@ namespace TiKiTuTo.View
             // TODO: Implement functionality for showing a game plan
         }
 
-        public void ShowStandings(Tournament tournament) 
+        public void ShowStandings(Tournament tournament)
         {
             List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
 
@@ -363,7 +374,7 @@ namespace TiKiTuTo.View
         public int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options)
         {
             AnsiConsole.Clear();
-            
+
             foreach (string line in headerLines)
             {
                 AnsiConsole.MarkupLine($"[yellow]{line}[/]");
@@ -373,14 +384,14 @@ namespace TiKiTuTo.View
 
             if (!(options.Count() > 1))
             {
-                title = $"[red]No options available[/]";   
+                title = $"[red]No options available[/]";
             }
 
-                var userChoice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title(title)
-                    .PageSize(5)
-                    .AddChoices(options));
+            var userChoice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title(title)
+                .PageSize(5)
+                .AddChoices(options));
 
             return options.ToList().IndexOf(userChoice) + 1;
         }
@@ -404,7 +415,7 @@ namespace TiKiTuTo.View
             WriteEmptyLine();
         }
 
-        
+
 
 
     }
