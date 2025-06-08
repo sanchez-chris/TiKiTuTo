@@ -75,8 +75,8 @@ namespace TiKiTuTo.Controller
                     string[] loadableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
                     return _view.FinishedTournamentsSelection(loadableFinishedFiles);
                 case AppState.TournamentSettingsCreationDialogue:
-                    _tournamentModel.Tournament.TournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
-                    _jsonService.SaveTournamentSettings(); //TODO implement this
+                    TournamentSettings tournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
+                    _jsonService.SaveTournamentSettings(tournamentSettings); 
                     return _view.SettingsCreatedSelection();
                 case AppState.InitTournament:
                     _gameLogicTournament.InitTournament();
@@ -213,7 +213,7 @@ namespace TiKiTuTo.Controller
 
         /// <summary>
         /// Handles transitions from the ShowSavedTournaments menu based on user input.
-        /// The number of valid options depends on the number of unfinished tournaments found in the savegame folder.
+        /// The number of valid options depends on the number of unfinished tournaments found in the saved games folder.
         /// </summary>
         /// <param name="choice">user input</param>
         private void HandleShowSavedTournamentsChoice(int choice)
@@ -233,16 +233,16 @@ namespace TiKiTuTo.Controller
                 _jsonService.LoadTournament(chosenTournament); 
                 TransitionTo(AppState.RunTournament);
             }
-            else //not a valid input
+            else //choosing last option
             {
-                _view.ShowInvalidInputMessage();
+                TransitionTo(AppState.MainMenu);
             }
         }
 
 
         /// <summary>
         /// Handles transitions from the ShowFinishedTournaments menu based on user input.
-        /// The number of valid options depends on the number of unfinished tournaments found in the savegame folder.
+        /// The number of valid options depends on the number of finished tournaments found in the finished games folder.
         /// </summary>
         /// <param name="choice">user input</param>
         private void HandleShowFinishedTournamentsChoice(int choice)
@@ -257,16 +257,15 @@ namespace TiKiTuTo.Controller
             }
             else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice-1];
+                string chosenTournament = finishedTournamentFiles[choice - 1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 _jsonService.LoadTournament(chosenTournament);
                 TransitionTo(AppState.RunTournament);
             }
-            else //not a valid input
+            else //choosing last option
             {
-                _view.ShowInvalidInputMessage();
+                TransitionTo(AppState.MainMenu);
             }
-
         }
                 
         private void HandleSettingsCreationChoice(int choice)
@@ -282,25 +281,26 @@ namespace TiKiTuTo.Controller
             }
         }
 
+        /// <summary>
+        /// Handles transitions from the ShowLoadableTournamentSettings menu based on user input.
+        /// The number of valid options depends on the number of available tournament settings files found in the finished games folder.
+        /// </summary>
+        /// <param name="choice">user input</param>
         private void HandleShowLoadableTournamentSettingsChoice(int choice)
         {
             string[] tournamentSettingsFiles = _jsonService.GetTournamentSettingsFiles();
-            if (choice <= tournamentSettingsFiles.Length) //a valid tournament file
+            if (tournamentSettingsFiles.Length > 0 && choice - 1 < tournamentSettingsFiles.Length) //a valid tournament file
             {
                 string chosenSetting = tournamentSettingsFiles[choice - 1];
                 _view.ShowMessage($"Opening {chosenSetting}");
-                var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting); //jsonService.LoadGame should take a filename or path, no?
+                var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting); 
                 _gameLogicTournament.CreateTournament(tournamentSettings);
                 _gameLogicRound.InitPreliminaryRound();
                 TransitionTo(AppState.RunTournament);
             }
-            else if (choice - 1 == tournamentSettingsFiles.Length) //back to main menu
+            else //choosing last option
             {
                 TransitionTo(AppState.MainMenu);
-            }
-            else //not a valid input
-            {
-                _view.ShowInvalidInputMessage();
             }
         }        
 

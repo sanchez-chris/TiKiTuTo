@@ -57,7 +57,7 @@ namespace TiKiTuTo.View
 
         public void DisplayFiles(string[] currentFiles);
 
-
+        public void WaitForAnyKeyToProceed();
 
     }
 }
