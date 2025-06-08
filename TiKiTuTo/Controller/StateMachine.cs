@@ -81,7 +81,8 @@ namespace TiKiTuTo.Controller
                     _jsonService.SaveTournamentSettings(tournamentSettings); 
                     return _view.SettingsCreatedSelection();
                 case AppState.ImportTournamentSettingsFromExcelFile:
-                    _tournamentModel.Tournament.TournamentSettings = _excelService.ImportExcelFile();
+                    TournamentSettings importedTournamentSettings = _excelService.ImportExcelFile();
+                    _jsonService.SaveTournamentSettings(importedTournamentSettings);
                     return _view.SettingsCreatedSelection();
                 case AppState.InitTournament:
                     _gameLogicTournament.InitTournament();
