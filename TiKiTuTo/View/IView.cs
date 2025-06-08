@@ -14,26 +14,30 @@ namespace TiKiTuTo.View
 
         public int StartTournamentMenuSelection();
 
-        public int SavedTournamentsSelection(string[] loadableFiles);
+        public int TournamentStartSelection();
+
+        public int SettingsCreatedSelection();
+
+        public int SavedTournamentsSelection(IEnumerable<string> loadableFiles);
+
+        public int FinishedTournamentsSelection(IEnumerable<string> availableFiles);
+
+        public int LoadableTournamentSettingsSelection(IEnumerable<string> availableFiles);
+
+        public int DuringTournamentMenuSelection();
+
+        public int ExitOptionsSelection();
+
 
         //Methods which simply show things
-        public void ShowMainMenu();
-
-        public void ShowStartTournamentMenu();
-
-        public int ShowIngameMenu();
 
         public void ShowInvalidInputMessage();
 
         public void ShowExitMessage();
 
-        public int ExitOptionsSelection();
-
-        public int TournamentStartSelection();
-
         public void ShowGamePlan();
 
-        public void ShowStandings();
+        public void ShowStandings(Tournament tournament);
 
         public void ShowNextMatches(List<Match> matches);
 
@@ -47,11 +51,7 @@ namespace TiKiTuTo.View
 
         public void ShowTeamsAndPlayer(List<Team> teams);
 
-        public string PromptSelection(string title, IEnumerable<string> options);
-
-        public string ShowSpectreMenu();
-
-        public void SavingTournamentAnimation(string filePath);
+        public void AnimateAndConfirmSave(string filePath);
 
         public void DisplayFiles(string[] currentFiles);
 

@@ -47,7 +47,7 @@ namespace TiKiTuTo.Controller
             while (true)
             {
                 int userChoice = _stateMachine.ExecuteCurrentState();
-                _stateMachine.HandleInput(userChoice);
+                _stateMachine.HandleUserChoice(userChoice);
             }
         }
 

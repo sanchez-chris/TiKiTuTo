@@ -9,20 +9,24 @@ namespace TiKiTuTo.Model.DataObjects
     public class Tournament
     {
         public string TournamentName { get; set; }
-        public TournamentSettings Settings { get; set; }
+        public TournamentSettings TournamentSettings { get; set; }
         public List<Team> PreliminaryStandings { get; set; } = new List<Team>();
         public List<Team> KoStandings { get; set; } = new List<Team>();
         public List<Match> GamePlanPreliminaryRound { get; set; } = new List<Match>();
         public List<List<Match>> GamePlanKoRound { get; set; } = new List<List<Match>>();
-
-
-
-
+        public Team Winner { get; set; }
+        public Team Finalist { get; set; }
+        public List<Team> Semifinalists { get; set; } = new List<Team>();
+        public Team ThirdPosition { get; set; }
+        public bool IsSemifinalPlayed { get; set; } = false;
+        public int CurrentKoRound { get; set; } = 0;
+        public bool IsFinished { get; set; } = false;
+        
 
         public Tournament(string name, TournamentSettings settings)
         {
             TournamentName = name;
-            Settings = settings;
+            TournamentSettings = settings;
         }
 
         public Tournament() { }
