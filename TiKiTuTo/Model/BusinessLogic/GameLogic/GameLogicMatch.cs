@@ -45,6 +45,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public void RunMatch(Match match)
         {
+            
             int goalsA = 0;
             int goalsB = 0;
             InputHandler.View.ShowMessage($"\n\nMatch: {match.teamA.TeamName} vs {match.teamB.TeamName}:");
@@ -74,7 +75,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
 
         private DateTime _endTime;
-        public void StartMatchTimer(Match match, double? duration = 0.1) //duration has to be 10 for production
+        public void StartMatchTimer(Match match, double? duration = 0.05) //duration has to be 10 for production
         {
             // Set the end time for the specified length in minutes
             while (duration == 0)

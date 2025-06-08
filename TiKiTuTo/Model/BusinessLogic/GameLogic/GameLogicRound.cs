@@ -91,6 +91,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             var tournament = TournamentModel.Tournament;
 
+            if (tournament.IsFinished) return;
+
             // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound));
 
@@ -330,7 +332,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                         }
 
                         tournament.KoStandings.Remove(match.teamB);
-                        tournament.IsFinished = true;
                     }
                     else
                     {
@@ -343,12 +344,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                             tournament.Finalist = match.teamA;
                         }
                         tournament.KoStandings.Remove(match.teamA);
-                        tournament.IsFinished = true;
                     }
                 }
                 else
                 {
                     InputHandler.View.ShowMessage($"\n\n{match.teamA.TeamName} vs {match.teamB.TeamName} is finished.");
+                    break;
                 }
             }
         }
