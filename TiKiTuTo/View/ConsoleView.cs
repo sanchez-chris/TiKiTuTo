@@ -388,7 +388,7 @@ namespace TiKiTuTo.View
             var userChoice = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title(title)
-                .PageSize(5)
+                .PageSize(10)
                 .AddChoices(options));
 
             return options.ToList().IndexOf(userChoice) + 1;

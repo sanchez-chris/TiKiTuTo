@@ -247,15 +247,15 @@ namespace TiKiTuTo.Controller
         /// <param name="choice">user input</param>
         private void HandleShowFinishedTournamentsChoice(int choice)
         {
-            string[] unfinishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
+            string[] finishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
 
-            Array.Reverse(unfinishedTournamentFiles);
+            Array.Reverse(finishedTournamentFiles);
 
-            if (choice == unfinishedTournamentFiles.Length + 1) 
+            if (choice == finishedTournamentFiles.Length + 1) 
             {
                 TransitionTo(AppState.MainMenu);
             }
-            else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
+            else if (choice >= 1 && choice <= finishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = finishedTournamentFiles[choice - 1];
                 _view.ShowMessage($"Opening {chosenTournament}");
