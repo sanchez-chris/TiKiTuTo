@@ -119,7 +119,7 @@ namespace TiKiTuTo.View
 
 
 
-        public int SavedTournamentsSelection(string[] loadableFiles)
+        public int AvailableTournamentSelection(string[] availableFiles)
         {
             List<string> headerLines = new()
             {
@@ -130,13 +130,13 @@ namespace TiKiTuTo.View
                 "-----------------------"
             };
 
-            Array.Reverse(loadableFiles);
+            Array.Reverse(availableFiles);
 
             List<string> options = new List<string>();
 
-            for (int i = 0; i < loadableFiles.Length; i++)
+            for (int i = 0; i < availableFiles.Length; i++)
             {
-                string fileName = Path.GetFileName(loadableFiles[i]);
+                string fileName = Path.GetFileName(availableFiles[i]);
                 options.Add(fileName);
             }
 
@@ -147,26 +147,6 @@ namespace TiKiTuTo.View
             return userChoice;
         }
 
-        public int FinishedTournamentsSelection(IEnumerable<string> availableFiles)
-        {
-            List<string> headerLines = new()
-            {
-                "-----------------------",
-                "|     TiKiTuTo        |",
-                "-----------------------",
-                "--Finished Tournaments-",
-                "-----------------------"
-            };
-
-            List<string> options = availableFiles.ToList();
-            options.Add("Back to Main Menu");
-
-
-            int userChoice = PromptSelectionMultiLine(headerLines, options);
-
-            return userChoice;
-
-        }
 
         public int SettingsCreatedSelection()
         {
@@ -195,26 +175,6 @@ namespace TiKiTuTo.View
             }
         }
 
-        public int LoadableTournamentSettingsSelection(IEnumerable<string> availableFiles)
-        {
-            List<string> headerLines = new()
-            {
-                "-----------------------",
-                "|     TiKiTuTo        |",
-                "-----------------------",
-                "--Tournament Settings--",
-                "-----------------------"
-            };
-
-            List<string> options = availableFiles.ToList();
-            options.Add("Back to Main Menu");
-
-
-            int userChoice = PromptSelectionMultiLine(headerLines, options);
-
-            return userChoice;
-
-        }
 
         public int DuringTournamentMenuSelection()
         {

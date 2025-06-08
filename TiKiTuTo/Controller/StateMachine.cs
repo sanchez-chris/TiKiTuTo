@@ -69,11 +69,11 @@ namespace TiKiTuTo.Controller
                 case AppState.StartTournamentMenu:
                     return _view.StartTournamentMenuSelection();
                 case AppState.ShowSavedTournaments:
-                    string[] loadableFiles = _jsonService.GetUnfinishedTournamentFiles();
-                    return _view.SavedTournamentsSelection(loadableFiles);
+                    string[] avilableFiles = _jsonService.GetUnfinishedTournamentFiles();
+                    return _view.AvailableTournamentSelection(avilableFiles);
                 case AppState.ShowFinishedTournaments:
-                    string[] loadableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
-                    return _view.FinishedTournamentsSelection(loadableFinishedFiles);
+                    string[] availableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
+                    return _view.AvailableTournamentSelection(availableFinishedFiles);
                 case AppState.TournamentSettingsCreationDialogue:
                     TournamentSettings tournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
                     _jsonService.SaveTournamentSettings(tournamentSettings); 
@@ -82,8 +82,8 @@ namespace TiKiTuTo.Controller
                     _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
                 case AppState.ShowLoadableTournamentSettings:
-                    string[] availableFiles = _jsonService.GetTournamentSettingsFiles();
-                    return _view.LoadableTournamentSettingsSelection(availableFiles);
+                    string[] availableSettingsFiles = _jsonService.GetTournamentSettingsFiles();
+                    return _view.AvailableTournamentSelection(availableSettingsFiles);
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings(_tournamentModel.Tournament);
