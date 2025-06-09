@@ -221,7 +221,7 @@ namespace TiKiTuTo.Controller
             string[] unfinishedTournamentFiles = _jsonService.GetUnfinishedTournamentFiles();
             if (unfinishedTournamentFiles.Length > 0 && choice < unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice];
+                string chosenTournament = unfinishedTournamentFiles[choice - 1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 _jsonService.LoadTournament(chosenTournament); //jsonService.LoadGame should take a filename or path, no?
                 TransitionTo(AppState.RunTournament);
