@@ -103,7 +103,7 @@ namespace TiKiTuTo.Controller
 
             bool result = false;
             bool answerGiven = false;
-            string prompt = $"Should a timer be used for the matches? y/n]";
+            string prompt = $"Should a timer be used for the matches? y/n";
             View.ShowMessage(prompt);
             
             while(!answerGiven)
@@ -120,7 +120,7 @@ namespace TiKiTuTo.Controller
                     result = false;
                     answerGiven = true;
                 }
-                else View.ShowMessage($"\"{userInput}\" is not a valid input, try again! (y/n)");
+                else View.ShowMessage($"\"{userInput}\" is not a valid input, try again! y/n");
 
             }
             return result;

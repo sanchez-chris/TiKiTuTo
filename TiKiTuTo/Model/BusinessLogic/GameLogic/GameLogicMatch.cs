@@ -53,11 +53,13 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             
             int goalsA = 0;
             int goalsB = 0;
+            bool isThereTimer = false;
             InputHandler.View.ShowMessage($"\n\nMatch: {match.teamA.TeamName} vs {match.teamB.TeamName}");
             
             if (TournamentModel.Tournament.TournamentSettings.UseTimer)
             {
                 StartMatchTimer(match, (double)TournamentModel.Tournament.TournamentSettings.MatchDuration);
+                isThereTimer = true;
             }    
             
             bool goalsAsked = false;
@@ -65,7 +67,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (!goalsAsked)
             {
-                if (isTimerFinished)
+                if (isTimerFinished || !isThereTimer)
                 {
                     goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
                     match.goalsTeamA = goalsA;
