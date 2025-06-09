@@ -89,7 +89,7 @@ namespace TiKiTuTo.Controller
             int maxAllowed = 30;
             string prompt = $"How many minutes should each match run for? Minimum: {minAllowed}. Maximum: {maxAllowed}.";
             int matchDuration = GetNumber(prompt);
-            while (!(matchDuration > minAllowed && matchDuration <= maxAllowed))
+            while (!(matchDuration >= minAllowed && matchDuration <= maxAllowed))
             {
                 matchDuration = GetNumber($"Try again! Minimum: {minAllowed}. Maximum: {maxAllowed}.");
             }
@@ -98,18 +98,34 @@ namespace TiKiTuTo.Controller
         
         public bool GetApproval()
         {
-            List<string> validInputs = new() { "y", "Y", "YES", "yes" };
+            List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
+            List<string> validInputsNo = new() { "n", "N", "NO", "no" };
+
             bool result = false;
-
-            string prompt = $"Should a timer be used for the matches? \nAny of the following inputs activates timer usage: [{string.Join(", ", validInputs)}]";
+            bool answerGiven = false;
+            string prompt = $"Should a timer be used for the matches? y/n]";
             View.ShowMessage(prompt);
-            string? userInput = View.ReadInput();
-
-            if (validInputs.Contains(userInput))
+            
+            while(!answerGiven)
             {
-                result = true;
+                string? userInput = View.ReadInput();
+
+                if (validInputsYes.Contains(userInput))
+                {
+                    result = true;
+                    answerGiven = true;
+                }
+                 else if (validInputsNo.Contains(userInput))
+                {
+                    result = false;
+                    answerGiven = true;
+                }
+                else View.ShowMessage($"\"{userInput}\" is not a valid input, try again! (y/n)");
+
             }
             return result;
+
+
         }
 
 
