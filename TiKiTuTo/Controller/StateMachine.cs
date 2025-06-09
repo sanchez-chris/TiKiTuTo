@@ -1,4 +1,4 @@
-﻿using TiKiTuTo.View;
+using TiKiTuTo.View;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
@@ -69,11 +69,11 @@ namespace TiKiTuTo.Controller
                 case AppState.StartTournamentMenu:
                     return _view.StartTournamentMenuSelection();
                 case AppState.ShowSavedTournaments:
-                    string[] loadableFiles = _jsonService.GetUnfinishedTournamentFiles();
-                    return _view.SavedTournamentsSelection(loadableFiles);
+                    string[] avilableUnfinishedFiles = _jsonService.GetUnfinishedTournamentFiles();
+                    return _view.AvailableTournamentSelection(avilableUnfinishedFiles, SelectLoadingType.UnfinishedTournament);
                 case AppState.ShowFinishedTournaments:
-                    string[] loadableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
-                    return _view.FinishedTournamentsSelection(loadableFinishedFiles);
+                    string[] availableFinishedFiles = _jsonService.GetFinishedTournamentFiles();
+                    return _view.AvailableTournamentSelection(availableFinishedFiles, SelectLoadingType.FinishedTournament);
                 case AppState.TournamentSettingsCreationDialogue:
                     TournamentSettings tournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
                     _jsonService.SaveTournamentSettings(tournamentSettings); 
@@ -82,8 +82,8 @@ namespace TiKiTuTo.Controller
                     _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
                 case AppState.ShowLoadableTournamentSettings:
-                    string[] availableFiles = _jsonService.GetTournamentSettingsFiles();
-                    return _view.LoadableTournamentSettingsSelection(availableFiles);
+                    string[] availableSettingsFiles = _jsonService.GetTournamentSettingsFiles();
+                    return _view.AvailableTournamentSelection(availableSettingsFiles, SelectLoadingType.TournamentSettings);
                 case AppState.RunTournament:
                     _gameLogicTournament.RunTournament();
                     _view.ShowStandings(_tournamentModel.Tournament);
@@ -219,11 +219,18 @@ namespace TiKiTuTo.Controller
         private void HandleShowSavedTournamentsChoice(int choice)
         {
             string[] unfinishedTournamentFiles = _jsonService.GetUnfinishedTournamentFiles();
-            if (unfinishedTournamentFiles.Length > 0 && choice < unfinishedTournamentFiles.Length) //a valid tournament file
+
+            Array.Reverse(unfinishedTournamentFiles);
+
+            if (choice == unfinishedTournamentFiles.Length + 1) 
+            {
+                TransitionTo(AppState.MainMenu);
+            }
+            else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = unfinishedTournamentFiles[choice];
                 _view.ShowMessage($"Opening {chosenTournament}");
-                _jsonService.LoadTournament(chosenTournament); //jsonService.LoadGame should take a filename or path, no?
+                _jsonService.LoadTournament(chosenTournament); 
                 TransitionTo(AppState.RunTournament);
             }
             else //choosing last option
@@ -242,7 +249,13 @@ namespace TiKiTuTo.Controller
         {
             string[] finishedTournamentFiles = _jsonService.GetFinishedTournamentFiles();
 
-            if (finishedTournamentFiles.Length > 0 && choice - 1 < finishedTournamentFiles.Length) 
+            Array.Reverse(finishedTournamentFiles);
+
+            if (choice == finishedTournamentFiles.Length + 1) 
+            {
+                TransitionTo(AppState.MainMenu);
+            }
+            else if (choice >= 1 && choice <= finishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = finishedTournamentFiles[choice - 1];
                 _view.ShowMessage($"Opening {chosenTournament}");

@@ -34,14 +34,14 @@ namespace TiKiTuTo.Controller
 
         public void SaveTournament()
         {
-            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{_tournamentModel.Tournament.TournamentName}.json";
+            string fileName = $"{DateTime.Now:yyyy-MM-dd HH-mm-ss} {_tournamentModel.Tournament.TournamentName}.json";
             SaveToFile(saveFolder, fileName, _tournamentModel.Tournament);
             _view.AnimateAndConfirmSave(Path.Combine(saveFolder, fileName));
         }
 
         public void SaveFinishedTournament()
         {
-            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{_tournamentModel.Tournament.TournamentName}.json";
+            string fileName = $"{DateTime.Now:yyyy-MM-dd HH-mm-ss} {_tournamentModel.Tournament.TournamentName}.json";
             SaveToFile(finishedTournamentFolder, fileName, _tournamentModel.Tournament);
             _view.AnimateAndConfirmSave(Path.Combine(finishedTournamentFolder, fileName));
         }
@@ -49,7 +49,7 @@ namespace TiKiTuTo.Controller
         public void SaveTournamentSettings(TournamentSettings tournamentSettings)
         {
             var settingsName = tournamentSettings.SettingsName;
-            string fileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json";
+            string fileName = $"{DateTime.Now:yyyy-MM-dd HH-mm-ss} {settingsName}.json";
             SaveToFile(settingsFolder, fileName, tournamentSettings);
         }
 
@@ -95,7 +95,6 @@ namespace TiKiTuTo.Controller
         {
             try
             {
-
                 string tournamentJSON = File.ReadAllText(chosenFile);
 
                 JsonSerializerOptions options = new JsonSerializerOptions
