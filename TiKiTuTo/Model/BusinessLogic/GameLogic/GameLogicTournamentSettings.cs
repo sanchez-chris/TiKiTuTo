@@ -46,7 +46,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             NumberOfTeamsTotal = InputHandler.GetValidNumberOfTotalTeams();
             NumberOfPreliminaryGamesPerTeam = InputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
             NumberOfTeamsInKORound = InputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
-            useTimer = InputHandler.GetApproval();
+            useTimer = InputHandler.GetApproval("Should a timer be used for the matches? y/n");
             
             if (useTimer)
             {

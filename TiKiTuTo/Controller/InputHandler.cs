@@ -97,14 +97,13 @@ namespace TiKiTuTo.Controller
             return matchDuration;
         }
         
-        public bool GetApproval()
+        public bool GetApproval(string prompt)
         {
             List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
             List<string> validInputsNo = new() { "n", "N", "NO", "no" };
 
             bool result = false;
             bool answerGiven = false;
-            string prompt = $"Should a timer be used for the matches? y/n";
             View.ShowMessage(prompt);
             
             while(!answerGiven)
@@ -122,42 +121,8 @@ namespace TiKiTuTo.Controller
                     answerGiven = true;
                 }
                 else View.ShowMessage($"\"{userInput}\" is not a valid input, try again! y/n");
-
             }
             return result;
-
-
-        }
-
-        public bool GetApprovalForExcelImport()
-        {
-            List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
-            List<string> validInputsNo = new() { "n", "N", "NO", "no" };
-
-            bool result = false;
-            bool answerGiven = false;
-            string prompt = "Do you want to continue? (y/n)";
-            View.ShowMessage(prompt);
-
-            while (!answerGiven)
-            {
-                string? userInput = View.ReadInput();
-
-                if (validInputsYes.Contains(userInput))
-                {
-                    result = true;
-                    answerGiven = true;
-                }
-                else if (validInputsNo.Contains(userInput))
-                {
-                    result = false;
-                    answerGiven = true;
-                }
-                else View.ShowMessage($"\"{userInput}\" is not a valid input, try again! y/n");
-
-            }
-            return result;
-
         }
 
 
