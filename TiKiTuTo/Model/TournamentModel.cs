@@ -14,10 +14,10 @@ namespace TiKiTuTo.Model
         //  Prevention of NullReferenceExceptions
         public TournamentModel()
         {
-            //Tournament = new Tournament
-            //{
-            //    TournamentSettings = new TournamentSettings()
-            //};
+            Tournament = new Tournament
+            {
+                TournamentSettings = new TournamentSettings()
+            };
         }
     }
 

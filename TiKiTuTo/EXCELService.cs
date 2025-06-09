@@ -94,7 +94,7 @@ namespace TiKiTuTo
         public string GetExcelImportFolderPath()
         {
             return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TikiTuto\\ImportFolder");
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TikiTuto\\1.Import_Folder");
         }
 
 
