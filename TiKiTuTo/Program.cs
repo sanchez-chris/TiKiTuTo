@@ -16,7 +16,7 @@ namespace TiKiTuTo.Controller
             InputValidator inputValidator = new InputValidator();
             InputHandler inputHandler = new InputHandler(view, inputValidator);
             JSONService json = new JSONService(model, view);
-            GameLogicMatch gameLogicMatch = new(inputHandler, json);
+            GameLogicMatch gameLogicMatch = new(inputHandler, json, model);
             GameLogicRound gameLogicRound = new(inputHandler, json, inputValidator, model);
             GameLogicTournamentSettings gameLogicTournamentSettings = new(model, inputHandler);
             GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler, model, json);

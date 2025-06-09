@@ -39,7 +39,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             JSONService = json;
             TournamentModel = tournamentModel;
             // Initialize GameLogicMatch after properties are set
-            GameLogicMatch = new GameLogicMatch(InputHandler, JSONService);
+            GameLogicMatch = new GameLogicMatch(InputHandler, JSONService, tournamentModel);
         }
 
         private Random random = new Random();

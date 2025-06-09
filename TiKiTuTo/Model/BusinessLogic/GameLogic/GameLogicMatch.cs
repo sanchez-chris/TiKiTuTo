@@ -1,5 +1,6 @@
 ﻿using System.Media;
 using TiKiTuTo.Controller;
+using TiKiTuTo.Model;
 using TiKiTuTo.Model.DataObjects;
 using Timer = System.Timers.Timer;
 
@@ -10,12 +11,16 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         //GameLogicRound GameLogicRound { get; set; }
         InputHandler InputHandler { get; set; }
         JSONService JSONService { get; set; }
+
+        TournamentModel TournamentModel { get; set; }
+        
         bool isTimerFinished = false;
-        public GameLogicMatch(InputHandler inputHandler, JSONService json)
+        public GameLogicMatch(InputHandler inputHandler, JSONService json, TournamentModel model)
         {
             //GameLogicRound = new GameLogicRound(inputHandler, json);
             InputHandler = inputHandler;
             JSONService = json;
+            TournamentModel = model;
         }
 
     /*    public void RunMatch(Match match)
@@ -48,14 +53,21 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             
             int goalsA = 0;
             int goalsB = 0;
+            bool isThereTimer = false;
             InputHandler.View.ShowMessage($"\n\nMatch: {match.teamA.TeamName} vs {match.teamB.TeamName}");
-            StartMatchTimer(match);
+            
+            if (TournamentModel.Tournament.TournamentSettings.UseTimer)
+            {
+                StartMatchTimer(match, (double)TournamentModel.Tournament.TournamentSettings.MatchDuration);
+                isThereTimer = true;
+            }    
+            
             bool goalsAsked = false;
             isTimerFinished = false;
 
             while (!goalsAsked)
             {
-                if (isTimerFinished)
+                if (isTimerFinished || !isThereTimer)
                 {
                     goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
                     match.goalsTeamA = goalsA;
