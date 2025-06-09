@@ -228,7 +228,7 @@ namespace TiKiTuTo.Controller
             }
             else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice];
+                string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {chosenTournament}");
                 _jsonService.LoadTournament(chosenTournament); 
                 TransitionTo(AppState.RunTournament);
