@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spectre.Console;
 using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.View
@@ -10,6 +11,9 @@ namespace TiKiTuTo.View
     public interface IView
     {
         //Methods which directly return user input 
+
+        public void CreateFrame();
+
         public void ShowTikiTutoHeader();
 
         public int MainMenuSelection();
@@ -18,9 +22,9 @@ namespace TiKiTuTo.View
 
         public int TournamentStartSelection();
 
-        public int SettingsCreatedSelection();
-
         public int AvailableTournamentSelection(string[] loadableFiles, Enum SelectLoadingType);
+
+        public int SettingsCreatedSelection();
 
         public int DuringTournamentMenuSelection();
 
@@ -31,29 +35,29 @@ namespace TiKiTuTo.View
 
         public void ShowInvalidInputMessage();
 
-        public void ShowExitMessage();
-
-        public void ShowGamePlan();
+        public void ShowTeamsAndPlayer(List<Team> teams);
 
         public void ShowStandings(Tournament tournament);
+        
+        public void ShowExitMessage();
 
-        public void ShowNextMatches(List<Match> matches);
+        public void ShowLoadingAnimation(string message);
 
         public void ShowMessage(string message);
 
-        public string ReadInput();
-
         public void WriteEmptyLine();
+
+        public string ReadInput();
 
         public void ClearCurrentConsoleLine();
 
-        public void ShowTeamsAndPlayer(List<Team> teams);
+        public void DisplayFiles(string[] currentFiles);
 
         public void AnimateAndConfirmSave(string filePath);
 
-        public void DisplayFiles(string[] currentFiles);
-
         public void WaitForAnyKeyToProceed();
+
+        public void ShowFooter();
 
     }
 }

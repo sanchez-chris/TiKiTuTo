@@ -75,11 +75,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 else
                 {
                     GameLogicMatch.RunMatch(match);
-                    if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
+/*                   if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
                     {
                         InputHandler.View.ShowStandings(tournament);
                     }
-                }
+*/                }
                 matchIndex++;
             }
             tournament.PreliminaryStandings = GenerateRanking(tournament);

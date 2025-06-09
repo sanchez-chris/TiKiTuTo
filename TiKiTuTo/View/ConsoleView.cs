@@ -23,20 +23,27 @@ namespace TiKiTuTo.View
             AnsiConsole.Cursor.Hide();
         }
 
+        public void CreateFrame()
+        {
+            ShowTikiTutoHeader();
+            ShowFooter();
+        }
+
         public void ShowTikiTutoHeader()
         {
             AnsiConsole.Clear();
 
+            AnsiConsole.Write(new Rule("[yellow]Welcome to TiKiTuTo[/]").RuleStyle("cyan").Centered());
 
             AnsiConsole.Write(
                 new Panel(
                     Align.Center(
                         new FigletText("TikiTuto")
-                            .Color(new Color(201, 245, 5))))
-                .Border(BoxBorder.Double)
-                .BorderColor(new Color(0, 150, 199))
-                .Padding(1, 1)
-                .Header("[rgb(0,150,199)]Tournament Manager[/]")
+                            .Color(Color.Lime)))
+                .Border(BoxBorder.Rounded)
+                .BorderColor(Color.Blue)
+                .Padding(2, 2)
+                .Header("[bold blue]DAS TIschKIckerTUrnierTOol[/]")
                 .HeaderAlignment(Justify.Center));
 
             AnsiConsole.WriteLine();
@@ -49,11 +56,8 @@ namespace TiKiTuTo.View
 
             List<string> headerLines = new()
             {
-                " -----------------------",
-                " |     TiKiTuTo        |",
-                " -----------------------",
-                " -------Main Menu-------",
-                " -----------------------",
+                $"       [underline][blink]Main Menu[/][/]",
+
 
             };
 
@@ -61,7 +65,7 @@ namespace TiKiTuTo.View
             {
             "Start New Tournament",
             "Resume Earlier Tournament",
-            "Show Results Of Earlier Tournament",
+            "Show Results Of Finished Tournaments",
             "Create Tournament Configurations",
             "Exit Application"
             };
@@ -76,9 +80,7 @@ namespace TiKiTuTo.View
             List<string> headerLines = new()
             {
                 " -----------------------",
-                " |     TiKiTuTo        |",
-                " -----------------------",
-                " ---Start Tournament----",
+                " ---[reverse]Start Tournament[/]----",
                 " -----------------------"
             };
 
@@ -100,11 +102,9 @@ namespace TiKiTuTo.View
             {
                 List<string> headerLines = new()
             {
-                " -----------------------",
-                " |      TiKiTuTo       |",
-                " -----------------------",
-                " --Start now or later?--",
-                " -----------------------"
+                " -------------------------------------------------",
+                " Do you wish to start the tournament [underline]now[/] or [underline]later?[/]",
+                " -------------------------------------------------"
             };
 
                 List<string> options = new()
@@ -126,8 +126,6 @@ namespace TiKiTuTo.View
         {
             List<string> headerLines = new()
             {
-                "-----------------------",
-                "|     TiKiTuTo        |",
                 "-----------------------",
                 "---Saved Tournaments---",
                 "-----------------------"
@@ -156,13 +154,11 @@ namespace TiKiTuTo.View
             {
                 List<string> headerLines = new()
             {
-                " -----------------------",
-                " |      TiKiTuTo       |",
-                " -----------------------",
-                "----Settings created----",
-                "----Create another------",
+                "------------------------",
+                "----Settings created.---",
+                "----Create another one--",
                 "----or return to Menu?--",
-                " -----------------------"
+                "------------------------"
             };
 
                 List<string> options = new()
@@ -184,8 +180,6 @@ namespace TiKiTuTo.View
             {
                 List<string> headerLines = new()
             {
-                " -----------------------",
-                " |     TiKiTuTo        |",
                 " -----------------------",
                 " ------Mini Menu--------",
                 " -----------------------"
@@ -211,9 +205,7 @@ namespace TiKiTuTo.View
                 List<string> headerLines = new()
             {
                 " -----------------------",
-                " |      TiKiTuTo       |",
-                " -----------------------",
-                " ----Exit to desktop?---",
+                " ----[bold red]Exit[/] to desktop?---",
                 " -----------------------"
             };
 
@@ -231,15 +223,42 @@ namespace TiKiTuTo.View
         }
 
 
-
         public void ShowInvalidInputMessage()
         {
-            Console.WriteLine("Invalid input. Please enter a valid number.");
+            AnsiConsole.MarkupLine("[maroon]Invalid input.[/] [italics]Please enter a valid number.[/]");
         }
 
         public void ShowExitMessage()
         {
             Console.WriteLine("Exiting application...");
+            string[] ball = {
+            "  OOOO  ",
+            " OOOOOO ",
+            "OOOOOOOO",
+            " OOOOOO ",
+            "  OOOO  "
+        };
+
+            int screenWidth = Console.WindowWidth;
+            int ballWidth = ball[0].Length;
+
+            // Loop to simulate ball rolling across the screen
+            for (int i = 0; i < screenWidth - ballWidth; i++)
+            {
+                // Clear the console
+                Console.Clear();
+
+                // Print spaces to position the ball
+                Console.WriteLine(new string(' ', i) + ball[0]);
+                Console.WriteLine(new string(' ', i) + ball[1]);
+                Console.WriteLine(new string(' ', i) + ball[2]);
+                Console.WriteLine(new string(' ', i) + ball[3]);
+                Console.WriteLine(new string(' ', i) + ball[4]);
+
+                // Pause for animation effect
+                Thread.Sleep(25);
+
+            }
         }
 
 
@@ -256,40 +275,52 @@ namespace TiKiTuTo.View
             }
         }
 
-        //currently unused
-        public void ShowGamePlan()
-        {
-            // TODO: Implement functionality for showing a game plan
-        }
-
         public void ShowStandings(Tournament tournament)
         {
-            List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
-            List<Team> sortedTeams = Teams
-                     .OrderByDescending(t => t.NumberGamesWon)
-                     .ThenByDescending(t => t.Goaldifference)
-                     .ThenByDescending(t => t.NumberGoals)
-                     .ToList();
+            var table = new Table();
+            table.AddColumn("[bold blue]Team Name[/]");
+            table.AddColumn("[bold blue]Games Won[/]");
+            table.AddColumn("[bold blue]Goal Difference[/]");
+            table.AddColumn("[bold blue]Goals Scored[/]");
+            table.AddColumn("[bold blue]Goals Received[/]");
+
+            var sortedTeams = tournament.TournamentSettings.TeamsInTournament
+                .OrderByDescending(t => t.NumberGamesWon)
+                .ThenByDescending(t => t.Goaldifference)
+                .ThenByDescending(t => t.NumberGoals)
+                .ToList();
 
             foreach (var team in sortedTeams)
             {
-                ShowMessage($"{team.TeamName} - Games won: {team.NumberGamesWon} - Goals difference: {team.Goaldifference} - Goals scored: {team.NumberGoals} - Goals received: {team.NumberGoals - team.Goaldifference}");
+                table.AddRow(
+                    team.TeamName,
+                    team.NumberGamesWon.ToString(),
+                    team.Goaldifference.ToString(),
+                    team.NumberGoals.ToString(),
+                    (team.NumberGoals - team.Goaldifference).ToString());
             }
+
+            AnsiConsole.Write(table);
             WriteEmptyLine();
             WaitForAnyKeyToProceed();
         }
 
-
-        //currently unused
-        public void ShowNextMatches(List<Match> matches)
+        public void ShowLoadingAnimation(string message)
         {
-            // TODO: Implement functionality for showing the next match
+            AnsiConsole.Status()
+                .Start(message, ctx =>
+                {
+                    Task.Delay(2000).Wait(); // Simulate work
+                });
         }
-
 
         public void ShowMessage(string message)
         {
-            AnsiConsole.WriteLine(message);
+            if (message.Contains("Match"))
+                AnsiConsole.MarkupLine($"[deeppink4]{message}[/]");
+            else if (message.Contains("Final"))
+                AnsiConsole.MarkupLine($"[deeppink4]{message}[/][/]");
+            else AnsiConsole.MarkupLine(message);
         }
 
         public void WriteEmptyLine()
@@ -335,7 +366,7 @@ namespace TiKiTuTo.View
         public int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options, Enum? SelectedLoadingType = null)
         {
             AnsiConsole.Clear();
-
+            ShowTikiTutoHeader();
             foreach (string line in headerLines)
             {
                 AnsiConsole.MarkupLine($"[yellow]{line}[/]");
@@ -354,7 +385,7 @@ namespace TiKiTuTo.View
                     title = "[yellow]Tournament Settings[/]";
                     break;
                 default:
-                    title = $"[yellow]Please select an option[/]";
+                    title = $"[lightskyblue3_1] Please select an option[/]";
                     break;
             }
 
@@ -363,12 +394,16 @@ namespace TiKiTuTo.View
                 title += $": [red]No options available[/]";
             }
 
+
+
             var userChoice = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-            .Title(title)
-            .PageSize(10)
-            .MoreChoicesText($"[grey](Use arrow keys to navigate and press Enter to select)[/]")
-            .AddChoices(options));
+        new SelectionPrompt<string>()
+        .Title(title)
+        .PageSize(10)
+        .MoreChoicesText("[grey](Use arrow keys to navigate and press Enter to select)[/]")
+        .AddChoices(options)
+        .UseConverter(option => option) // Removes the question mark
+);
 
             return options.ToList().IndexOf(userChoice) + 1;
         }
@@ -383,22 +418,29 @@ namespace TiKiTuTo.View
 
                 while (!task.IsFinished)
                 {
-                    task.Increment(10); // Increment progress by 10%
-                    Task.Delay(80).Wait(); // Wait for 80ms
+                    task.Increment(5); // Increment progress by 5%
+                    Task.Delay(25).Wait(); // Wait for 25ms
                 }
             });
 
-            ShowMessage($"Tournament has been saved: {Path.GetFileName(filePath)}");
+            AnsiConsole.MarkupLine($"[bold green]Tournament has been saved:[/] [yellow]{Path.GetFileName(filePath)}[/]");
             WriteEmptyLine();
         }
 
         public void WaitForAnyKeyToProceed()
         {
-            ShowMessage("Press any key to continue.");
+            AnsiConsole.MarkupLine("Press [bold]any[/] key to continue.");
             Console.ReadKey();
         }
 
+        public void ShowFooter()
+        {
+            // Calculate the position for the footer
+            int footerPosition = Console.WindowHeight - 2;
+            Console.SetCursorPosition(0, footerPosition);
 
+            AnsiConsole.Write(new Rule("[italic grey]PlayTeach Solutions© 2025 TiKiTuTo[/]").Centered());
+        }
 
 
     }

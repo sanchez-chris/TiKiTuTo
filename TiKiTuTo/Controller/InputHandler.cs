@@ -23,11 +23,11 @@ namespace TiKiTuTo.Controller
         
         public int GetValidGoalInput(string teamName)
         {
-            int GoalInput = GetNumber($"\nHow many goals has {teamName}?");
+            int GoalInput = GetNumber($"\nHow many goals has {teamName} made?");
 
             while (!_inputValidator.IsValidGoalInput(GoalInput))
             {
-                GoalInput = GetNumber($"This was not a valid goal Input (max 10)!");
+                GoalInput = GetNumber($"This was not a valid goal Input [italic grey]max 10[/]");
             }
 
             return GoalInput;
@@ -39,11 +39,11 @@ namespace TiKiTuTo.Controller
         /// <returns>The number of teams playing in a tournament, guaranteed to be a valid value.</returns>
         public int GetValidNumberOfTotalTeams()
         {
-            int NumberOfTeams = GetNumber($"How many teams are going to join this tournament?");
+            int NumberOfTeams = GetNumber($"How many teams are going to join this tournament? [italic grey]At least 4[/]");
 
             while (!_inputValidator.IsValidNumberOfTotalTeams(NumberOfTeams))
             {
-                NumberOfTeams = GetNumber("This is not a valid number of teams (minimum 4, maximum 256).");
+                NumberOfTeams = GetNumber("This is not a valid number of teams. [italic grey]minimum 4, maximum 256[/]");
             }
 
             return NumberOfTeams;
@@ -60,7 +60,7 @@ namespace TiKiTuTo.Controller
 
             while (!_inputValidator.IsValidNumberOfPreliminaryGamesPerTeam(NumberOfPreliminaryGames, NumberOfTeamsTotal))
             {
-                NumberOfPreliminaryGames = GetNumber($"This is not a valid number of games per team (minimum 1, maximum {NumberOfTeamsTotal - 1}).");
+                NumberOfPreliminaryGames = GetNumber($"This is not a valid number of games per team [italic grey]minimum 1, maximum {NumberOfTeamsTotal - 1}[/].");
             }
             return NumberOfPreliminaryGames;
         }
@@ -73,10 +73,10 @@ namespace TiKiTuTo.Controller
         public int GetValidNumberOfTeamsInKORound(int NumberOfTeamsTotal)
         {
             int maxAllowed = BasicFunctions.HighestPowerOf2(NumberOfTeamsTotal);
-            int NumberOfTeamsInKO = GetNumber($"How many teams should continue into the KO phase (minimum 2, maximum {maxAllowed})?");
+            int NumberOfTeamsInKO = GetNumber($"How many teams should continue into the KO phase? [italic grey]minimum 2, maximum {maxAllowed}[/]");
             while (!_inputValidator.IsValidNumberOfTeamsInKORound(NumberOfTeamsInKO, NumberOfTeamsTotal))
             {
-                NumberOfTeamsInKO = GetNumber($"This is not a valid number of teams for KO round (has to be 2^n, minimum 2, maximum {maxAllowed}).");
+                NumberOfTeamsInKO = GetNumber($"This is not a valid number of teams for KO round [italic grey]has to be 2^n, minimum 2, maximum {maxAllowed}[/].");
             }
             return NumberOfTeamsInKO;
         }

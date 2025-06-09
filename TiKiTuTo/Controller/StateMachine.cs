@@ -62,6 +62,7 @@ namespace TiKiTuTo.Controller
 
         public int ExecuteCurrentState()
         {
+            _view.ShowTikiTutoHeader();
             switch (CurrentState)
             {
                 case AppState.MainMenu:
@@ -92,6 +93,7 @@ namespace TiKiTuTo.Controller
                     return _view.ExitOptionsSelection();
                 case AppState.Exit:
                     _view.ShowExitMessage();
+                    _view.ShowFooter();
                     Environment.Exit(0);
                     break;
             }

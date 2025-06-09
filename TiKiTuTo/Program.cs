@@ -22,7 +22,7 @@ namespace TiKiTuTo.Controller
             GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler, model, json);
             StateMachine stateMachine = new StateMachine(view, gameLogicTournament, gameLogicRound, model, json, gameLogicTournamentSettings);
             Controller controller = new Controller(view, model, stateMachine, inputHandler, gameLogicMatch, gameLogicRound, gameLogicTournament, gameLogicTournamentSettings);
-            
+            Console.Title = "TiKiTuTo";
             while (true)
             {
                 controller.Run();
