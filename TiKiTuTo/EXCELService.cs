@@ -43,11 +43,20 @@ namespace TiKiTuTo
 
                     try
                     {
-                        tournamentSettings.NumberOfTeamsTotal = tournamentSheet.Cell("B1").GetValue<int>();
-                        tournamentSettings.NumberOfTeamsInKoRound = tournamentSheet.Cell("B2").GetValue<int>();
-                        tournamentSettings.NumberOfPreliminaryGamesPerTeam = tournamentSheet.Cell("B3").GetValue<int>();
-                        tournamentSettings.MatchDuration = tournamentSheet.Cell("B4").GetValue<int>();
-                        tournamentSettings.SettingsName = tournamentSheet.Cell("B5").GetValue<string>();
+                        tournamentSettings.SettingsName = tournamentSheet.Cell("B2").GetValue<string>();
+                        tournamentSettings.NumberOfTeamsTotal = tournamentSheet.Cell("B3").GetValue<int>();
+                        tournamentSettings.NumberOfPreliminaryGamesPerTeam = tournamentSheet.Cell("B4").GetValue<int>();
+                        tournamentSettings.NumberOfTeamsInKoRound = tournamentSheet.Cell("B5").GetValue<int>();
+                        string answer = tournamentSheet.Cell("B6").GetValue<string>();
+                        tournamentSettings.MatchDuration = tournamentSheet.Cell("B7").GetValue<int>();
+                        if (answer == "Yes")
+                        {
+                            tournamentSettings.UseTimer = true;
+                        }
+                        else
+                        {
+                            tournamentSettings.UseTimer = false;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -116,7 +125,10 @@ namespace TiKiTuTo
         }
         public void InitialCreationOfFolder()
         {
-            Directory.CreateDirectory(ExcelImportFolder);
+            if (!Directory.Exists(ExcelImportFolder))
+            {
+                Directory.CreateDirectory(ExcelImportFolder);
+            }
         }
 
 
@@ -128,7 +140,7 @@ namespace TiKiTuTo
         public string GetExcelImportFolderPath()
         {
             return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TikiTuto\\1.Import_Folder");
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TikiTuto\\Import_Folder");
         }
 
 
