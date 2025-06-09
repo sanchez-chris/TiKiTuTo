@@ -33,7 +33,7 @@ namespace TiKiTuTo.View
         {
             AnsiConsole.Clear();
 
-            AnsiConsole.Write(new Rule("[yellow]Welcome to TiKiTuTo[/]").RuleStyle("cyan").Centered());
+            AnsiConsole.Write(new Rule("[yellow]Welcome to TikiTuto[/]").RuleStyle("cyan").Centered());
 
             AnsiConsole.Write(
                 new Panel(
@@ -43,7 +43,7 @@ namespace TiKiTuTo.View
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Blue)
                 .Padding(2, 2)
-                .Header("[bold blue]DAS TIschKIckerTUrnierTOol[/]")
+                .Header("[bold blue]DAS TischkickerTurniertool[/]")
                 .HeaderAlignment(Justify.Center));
 
             AnsiConsole.WriteLine();
@@ -256,7 +256,7 @@ namespace TiKiTuTo.View
                 Console.WriteLine(new string(' ', i) + ball[4]);
 
                 // Pause for animation effect
-                Thread.Sleep(25);
+                Thread.Sleep(10);
 
             }
         }
@@ -317,9 +317,9 @@ namespace TiKiTuTo.View
         public void ShowMessage(string message)
         {
             if (message.Contains("Match"))
-                AnsiConsole.MarkupLine($"[deeppink4]{message}[/]");
+                AnsiConsole.MarkupLine($"[darkred on darkseagreen]{message}[/]");
             else if (message.Contains("Final"))
-                AnsiConsole.MarkupLine($"[deeppink4]{message}[/][/]");
+                AnsiConsole.MarkupLine($"[darkred on darkseagreen]{message}[/]");
             else AnsiConsole.MarkupLine(message);
         }
 
@@ -439,7 +439,7 @@ namespace TiKiTuTo.View
             int footerPosition = Console.WindowHeight - 2;
             Console.SetCursorPosition(0, footerPosition);
 
-            AnsiConsole.Write(new Rule("[italic grey]PlayTeach Solutions© 2025 TiKiTuTo[/]").Centered());
+            AnsiConsole.Write(new Rule("[italic grey]PlayTeach Solutions© 2025 TikiTuto[/]").Centered());
         }
 
 
