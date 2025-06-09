@@ -231,7 +231,7 @@ namespace TiKiTuTo.Controller
             else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = unfinishedTournamentFiles[choice-1];
-                _view.ShowMessage($"Opening {chosenTournament}");
+                _view.ShowMessage($"Opening {Path.GetFileName(chosenTournament)}");
                 _jsonService.LoadTournament(chosenTournament); 
                 TransitionTo(AppState.RunTournament);
             }
@@ -260,7 +260,7 @@ namespace TiKiTuTo.Controller
             else if (choice >= 1 && choice <= finishedTournamentFiles.Length) //a valid tournament file
             {
                 string chosenTournament = finishedTournamentFiles[choice - 1];
-                _view.ShowMessage($"Opening {chosenTournament}");
+                _view.ShowMessage($"Opening {Path.GetFileName(chosenTournament)}");
                 _jsonService.LoadTournament(chosenTournament);
                 TransitionTo(AppState.RunTournament);
             }
@@ -291,16 +291,23 @@ namespace TiKiTuTo.Controller
         private void HandleShowLoadableTournamentSettingsChoice(int choice)
         {
             string[] tournamentSettingsFiles = _jsonService.GetTournamentSettingsFiles();
-            if (tournamentSettingsFiles.Length > 0 && choice - 1 < tournamentSettingsFiles.Length) //a valid tournament file
+
+            Array.Reverse(tournamentSettingsFiles);
+            
+            if (choice == tournamentSettingsFiles.Length + 1)
+            {
+                TransitionTo(AppState.MainMenu);
+            }
+            else if (choice >= 1 && choice <= tournamentSettingsFiles.Length) //a valid tournament file
             {
                 string chosenSetting = tournamentSettingsFiles[choice - 1];
-                _view.ShowMessage($"Opening {chosenSetting}");
+                _view.ShowMessage($"Opening {Path.GetFileName(chosenSetting)}");
                 var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting); 
                 _gameLogicTournament.CreateTournament(tournamentSettings);
                 _gameLogicRound.InitPreliminaryRound();
                 TransitionTo(AppState.RunTournament);
             }
-            else //choosing last option
+            else
             {
                 TransitionTo(AppState.MainMenu);
             }
