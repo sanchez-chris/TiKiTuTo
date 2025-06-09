@@ -15,11 +15,9 @@ namespace TiKiTuTo.View
 {
     public class ConsoleView : IView
     {
-        EXCELService EXCELService;
 
-        public ConsoleView(EXCELService excel)
+        public ConsoleView()
         {
-            EXCELService = excel;
             Console.CursorVisible = false;
             AnsiConsole.Cursor.Hide();
         }
@@ -42,7 +40,6 @@ namespace TiKiTuTo.View
 
             AnsiConsole.WriteLine();
         }
-
 
 
         public int MainMenuSelection()
@@ -173,18 +170,14 @@ namespace TiKiTuTo.View
             AnsiConsole.MarkupLine("[bold red]Important:[/]");
             AnsiConsole.WriteLine("- Follow the instructions in the file carefully.");
             AnsiConsole.WriteLine("- Ensure that you adhere to the specified formatting.\n");
-
-            // Display a simple footer
-            AnsiConsole.MarkupLine("[bold blue]Do you want to continue? (y/n)[/]");
-            Console.ReadKey();
-            
             return 1;
-        }
+            }
 
         public void ConfirmingImportAction()
         {
-            AnsiConsole.MarkupLine("[bold blue]Have you ensured the file is saved and all instructions have been followed? (y/n)[/]");
-            Console.ReadKey();
+            AnsiConsole.WriteLine("When you have ensured the file is saved and all instructions have been followed, press random key to continue");
+            Console.ReadLine();
+            Console.Clear();
         }
 
 

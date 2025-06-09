@@ -16,6 +16,7 @@ namespace TiKiTuTo.Controller
         private TournamentModel _tournamentModel;
         private JSONService _jsonService;
         private EXCELService _excelService;
+        private InputHandler _inputHandler;
         private GameLogicTournamentSettings _gameLogicTournamentSettings;
 
 
@@ -27,7 +28,7 @@ namespace TiKiTuTo.Controller
         /// <param name="gameLogicTournament">used to handle tournament logic</param>
         /// <param name="model">used to store the tournament</param>
         /// <param name="jsonService">used to save and load tournaments</param>
-        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, EXCELService excel, GameLogicTournamentSettings gameLogicTournamentSettings)
+        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, EXCELService excel, InputHandler inputHandler, GameLogicTournamentSettings gameLogicTournamentSettings)
         {
             CurrentState = AppState.MainMenu;
             _view = view;
@@ -36,6 +37,7 @@ namespace TiKiTuTo.Controller
             _tournamentModel = model;
             _jsonService = jsonService;
             _excelService = excel;
+            _inputHandler = inputHandler;
             _gameLogicTournamentSettings = gameLogicTournamentSettings;
         }
 
@@ -317,12 +319,20 @@ namespace TiKiTuTo.Controller
         
         private void HandleExcelImport()
         {
-            Process.Start("explorer.exe", _excelService.ExcelImportFolder);
-            TournamentSettings importedTournamentSettings = _excelService.ImportExcelFile();
-            _view.ConfirmingImportAction();
-            _gameLogicTournament.CreateTournament(importedTournamentSettings);
-            _gameLogicRound.InitPreliminaryRound();
-            TransitionTo(AppState.RunTournament);
+            bool answer = _inputHandler.GetExcelApproval();
+            if (answer)
+            {
+                Process.Start("explorer.exe", _excelService.ExcelImportFolder);
+                TournamentSettings importedTournamentSettings = _excelService.ImportExcelFile();
+                _view.ConfirmingImportAction();
+                _gameLogicTournament.CreateTournament(importedTournamentSettings);
+                _gameLogicRound.InitPreliminaryRound();
+                TransitionTo(AppState.RunTournament);
+            }
+            else 
+            {
+               TransitionTo(AppState.StartTournamentMenu);
+            }
         }
 
 

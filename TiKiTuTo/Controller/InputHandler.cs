@@ -1,6 +1,7 @@
 using TiKiTuTo.View;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic;
+using Spectre.Console;
 
 namespace TiKiTuTo.Controller
 {
@@ -125,6 +126,37 @@ namespace TiKiTuTo.Controller
             }
             return result;
 
+
+        }
+
+        public bool GetExcelApproval()
+        {
+            List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
+            List<string> validInputsNo = new() { "n", "N", "NO", "no" };
+
+            bool result = false;
+            bool answerGiven = false;
+            string prompt = "Do you want to continue? (y/n)";
+            View.ShowMessage(prompt);
+
+            while (!answerGiven)
+            {
+                string? userInput = View.ReadInput();
+
+                if (validInputsYes.Contains(userInput))
+                {
+                    result = true;
+                    answerGiven = true;
+                }
+                else if (validInputsNo.Contains(userInput))
+                {
+                    result = false;
+                    answerGiven = true;
+                }
+                else View.ShowMessage($"\"{userInput}\" is not a valid input, try again! y/n");
+
+            }
+            return result;
 
         }
 
