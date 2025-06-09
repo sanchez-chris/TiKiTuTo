@@ -2,6 +2,7 @@ using TiKiTuTo.View;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
+using System.Diagnostics;
 
 
 namespace TiKiTuTo.Controller
@@ -81,9 +82,7 @@ namespace TiKiTuTo.Controller
                     _jsonService.SaveTournamentSettings(tournamentSettings); 
                     return _view.SettingsCreatedSelection();
                 case AppState.ImportTournamentSettingsFromExcelFile:
-                    TournamentSettings importedTournamentSettings = _excelService.ImportExcelFile();
-                    _jsonService.SaveTournamentSettings(importedTournamentSettings);
-                    return _view.SettingsCreatedSelection();
+                    return _view.AvailableExcelFiles();
                 case AppState.InitTournament:
                     _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
@@ -134,6 +133,9 @@ namespace TiKiTuTo.Controller
                     break;
                 case AppState.ShowLoadableTournamentSettings:
                     HandleShowLoadableTournamentSettingsChoice(choice);
+                    break;
+                case AppState.ImportTournamentSettingsFromExcelFile:
+                    HandleExcelImport();
                     break;
                 case AppState.InitTournament:
                     HandleTournamentStartChoice(choice);
@@ -311,7 +313,17 @@ namespace TiKiTuTo.Controller
             {
                 TransitionTo(AppState.MainMenu);
             }
-        }        
+        } 
+        
+        private void HandleExcelImport()
+        {
+            Process.Start("explorer.exe", _excelService.ExcelImportFolder);
+            TournamentSettings importedTournamentSettings = _excelService.ImportExcelFile();
+            _view.ConfirmingImportAction();
+            _gameLogicTournament.CreateTournament(importedTournamentSettings);
+            _gameLogicRound.InitPreliminaryRound();
+            TransitionTo(AppState.RunTournament);
+        }
 
 
         private void HandleRunTournamentChoice(int choice)

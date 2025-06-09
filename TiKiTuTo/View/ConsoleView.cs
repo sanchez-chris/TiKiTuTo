@@ -15,10 +15,11 @@ namespace TiKiTuTo.View
 {
     public class ConsoleView : IView
     {
+        EXCELService EXCELService;
 
-
-        public ConsoleView()
+        public ConsoleView(EXCELService excel)
         {
+            EXCELService = excel;
             Console.CursorVisible = false;
             AnsiConsole.Cursor.Hide();
         }
@@ -149,6 +150,41 @@ namespace TiKiTuTo.View
             int userChoice = PromptSelectionMultiLine(headerLines, options, SelectLoadingType);
 
             return userChoice;
+        }
+
+        public int AvailableExcelFiles()
+        {
+            AnsiConsole.MarkupLine("[bold blue]Excel File Import Instructions[/]");
+            AnsiConsole.MarkupLine("[blue]=====================================[/]");
+
+            // Display the introduction
+            AnsiConsole.MarkupLine("[bold green]Next Step:[/]");
+            AnsiConsole.WriteLine("You will be taken to the Excel Import folder of the program.");
+            AnsiConsole.WriteLine("In this folder, you will find an Excel file that provides the required format for entering your data.\n");
+
+            // Display the steps
+            AnsiConsole.MarkupLine("[bold yellow]Steps to Import:[/]");
+            AnsiConsole.MarkupLine("[bold]1.[/] [green]Enter Your Data:[/] Open the Excel file and input your data according to the format provided.");
+            AnsiConsole.MarkupLine("[bold]2.[/] [green]Save the File:[/] Make sure to save the file after entering your data.");
+            AnsiConsole.MarkupLine("[bold]3.[/] [green]Alternative Option:[/] You can use your own Excel file, but it must be named 'Settings.xlsx'.");
+            AnsiConsole.MarkupLine("[bold]4.[/] [green]Confirm Import:[/] After saving the Excel file, return to the console and confirm that you have completed the process. Once confirmed, the Excel file will be imported automatically.\n");
+
+            // Display the important notes
+            AnsiConsole.MarkupLine("[bold red]Important:[/]");
+            AnsiConsole.WriteLine("- Follow the instructions in the file carefully.");
+            AnsiConsole.WriteLine("- Ensure that you adhere to the specified formatting.\n");
+
+            // Display a simple footer
+            AnsiConsole.MarkupLine("[bold blue]Do you want to continue? (y/n)[/]");
+            Console.ReadKey();
+            
+            return 1;
+        }
+
+        public void ConfirmingImportAction()
+        {
+            AnsiConsole.MarkupLine("[bold blue]Have you ensured the file is saved and all instructions have been followed? (y/n)[/]");
+            Console.ReadKey();
         }
 
 

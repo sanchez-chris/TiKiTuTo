@@ -10,6 +10,10 @@ namespace TiKiTuTo.View
     public interface IView
     {
         //Methods which directly return user input 
+
+        public int AvailableExcelFiles();
+        public void ConfirmingImportAction();
+
         public void ShowTikiTutoHeader();
 
         public int MainMenuSelection();

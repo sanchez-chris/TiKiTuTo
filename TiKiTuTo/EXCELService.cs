@@ -12,7 +12,7 @@ namespace TiKiTuTo
     public class EXCELService
     {
         private readonly string ProjectDirectory; 
-        private readonly string ExcelImportFolder;
+        public readonly string ExcelImportFolder;
 
         TournamentModel TournamentModel { get; set; }
 

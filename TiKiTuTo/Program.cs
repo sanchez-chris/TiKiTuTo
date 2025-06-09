@@ -12,11 +12,11 @@ namespace TiKiTuTo.Controller
         public static void Main()
         {
             TournamentModel model = new();
-            IView view = new ConsoleView();
+            EXCELService excel = new EXCELService(model);
+            IView view = new ConsoleView(excel);
             InputValidator inputValidator = new InputValidator();
             InputHandler inputHandler = new InputHandler(view, inputValidator);
             JSONService json = new JSONService(model, view);
-            EXCELService excel = new EXCELService(model);
             GameLogicMatch gameLogicMatch = new(inputHandler, json, model);
             GameLogicRound gameLogicRound = new(inputHandler, json, inputValidator, model);
             GameLogicTournamentSettings gameLogicTournamentSettings = new(model, inputHandler);

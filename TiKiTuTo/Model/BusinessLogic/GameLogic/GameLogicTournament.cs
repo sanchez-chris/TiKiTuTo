@@ -44,6 +44,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             JSONService.SaveTournament();
         }
 
+        public void InitTournamentFromExcel()
+        {
+            GameLogicRound.InitPreliminaryRound();
+            JSONService.SaveTournament();
+        }
+
         public void SetupTournament()
         {
             TournamentSettings tournamentSettings = GameLogicTournamentSettings.CreateTournamentSettings();
