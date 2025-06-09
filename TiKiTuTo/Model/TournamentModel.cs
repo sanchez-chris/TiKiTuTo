@@ -10,8 +10,15 @@ namespace TiKiTuTo.Model
     public class TournamentModel
     {
         public Tournament Tournament { get; set; }
-        public TournamentSettings TournamentSettingsModel { get; set; }
-        public TournamentModel() { }
+        
+        //  Prevention of NullReferenceExceptions
+        public TournamentModel()
+        {
+            Tournament = new Tournament
+            {
+                TournamentSettings = new TournamentSettings()
+            };
+        }
     }
 
 }
