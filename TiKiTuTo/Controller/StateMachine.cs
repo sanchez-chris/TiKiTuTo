@@ -137,7 +137,7 @@ namespace TiKiTuTo.Controller
                     HandleShowLoadableTournamentSettingsChoice(choice);
                     break;
                 case AppState.ImportTournamentSettingsFromExcelFile:
-                    HandleExcelImport();
+                    HandleImportTournamentSettingsFromExcel();
                     break;
                 case AppState.InitTournament:
                     HandleTournamentStartChoice(choice);
@@ -317,9 +317,9 @@ namespace TiKiTuTo.Controller
             }
         } 
         
-        private void HandleExcelImport()
+        private void HandleImportTournamentSettingsFromExcel()
         {
-            bool answer = _inputHandler.GetExcelApproval();
+            bool answer = _inputHandler.GetApprovalForExcelImport();
             if (answer)
             {
                 Process.Start("explorer.exe", _excelService.ExcelImportFolder);

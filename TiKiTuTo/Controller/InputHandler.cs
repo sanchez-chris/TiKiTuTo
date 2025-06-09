@@ -129,7 +129,7 @@ namespace TiKiTuTo.Controller
 
         }
 
-        public bool GetExcelApproval()
+        public bool GetApprovalForExcelImport()
         {
             List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
             List<string> validInputsNo = new() { "n", "N", "NO", "no" };
