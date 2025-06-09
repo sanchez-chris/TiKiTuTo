@@ -42,8 +42,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             GameLogicMatch = new GameLogicMatch(InputHandler, JSONService, tournamentModel);
         }
 
-        private Random random = new Random();
-
         public void InitPreliminaryRound()
         {
             var tournament = TournamentModel.Tournament;
@@ -54,12 +52,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
         
         
-
         public void RunPreliminaryRound()
         {
             var tournament = TournamentModel.Tournament;
             InputHandler.View.ShowMessage($"Preliminary round initialized with {tournament.GamePlanPreliminaryRound.Count} matches.");
-            InputHandler.View.ShowMessage("\nGameplan preliminary round:\n");
+            InputHandler.View.ShowMessage("\nGameplan preliminary round:\numberOfTeamsWDummy");
 
             tournament.GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
 
@@ -134,7 +131,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                         tournament.ThirdPosition = tournament.Semifinalists[1];
 
                     }
-                    InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round is {tournament.ThirdPosition.TeamName}.");
+                    InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\nThe 3. Position of the KO round is {tournament.ThirdPosition.TeamName}.");
                 }
             }
 
@@ -143,12 +140,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             if (tournament.KoStandings.Count == 1)
             {
                 tournament.Winner = tournament.KoStandings[0];
-                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
-                InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
+                InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\nThe winner of the KO round is {tournament.Winner.TeamName}!");
+                InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\n1. {tournament.Winner.TeamName}");
+                InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\n2. {tournament.Finalist.TeamName}");
                 if (tournament.ThirdPosition != null)
                 {
-                    InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
+                    InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\n3. {tournament.ThirdPosition.TeamName}");
                 }
                 tournament.IsFinished = true;
                 JSONService.SaveFinishedTournament();
@@ -159,11 +156,13 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void CreateGamePlanPreRound(Tournament tournament)
         {
             var Settings = tournament.TournamentSettings;
-
             int gamesPerTeam = Settings.NumberOfPreliminaryGamesPerTeam;
             List<Team> teams = Settings.TeamsInTournament;
 
-            // Verify if it's possible to generate the required number of matches
+            // Create a random object for shuffling
+            Random random = new Random();
+
+            // 1. Verify if generating the required matches is possible
             int totalGamesNeeded = teams.Count * gamesPerTeam / 2;
             int totalPossibleMatches = teams.Count * (teams.Count - 1) / 2;
             if (totalGamesNeeded > totalPossibleMatches)
@@ -171,42 +170,63 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 throw new InvalidOperationException("Not enough teams to generate the required number of matches.");
             }
 
-            // Initialize the preliminary round matches
-            var teamMatchCount = new Dictionary<Team, int>();
-            var matchesCreated = new HashSet<(Team, Team)>();
+            // 2. Shuffle teams randomly - this is where all randomness is introduced
+            List<Team> shuffledTeams = teams.OrderBy(t => random.Next()).ToList();
 
-            // Initialize match count for each team
-            foreach (var team in teams)
+            // 3. Initialize tracking variable
+            var teamMatchCount = new Dictionary<Team, int>();
+
+            foreach (var team in shuffledTeams)
             {
                 teamMatchCount[team] = 0;
             }
 
-            // Generate matches randomly
-            while (teamMatchCount.Values.Any(count => count < gamesPerTeam))
+            // 4. Apply modified round-robin algorithm
+            // For odd number of teams, add a dummy team
+            List<Team> schedulingTeams = new List<Team>(shuffledTeams);
+            if (schedulingTeams.Count % 2 != 0)
             {
-                // Determine the current minimum number of matches played by any team
-                int currentMinMatches = teamMatchCount.Values.Min();
-                // Select two random teams that have played fewer matches than the current minimum
+                schedulingTeams.Add(null); // Add dummy team for scheduling
+            }
 
-                // Select two random teams
-                var availableTeams = teams.Where(t => teamMatchCount[t] < gamesPerTeam && teamMatchCount[t] <= currentMinMatches).ToList();
+            int numberOfTeamsWDummy = schedulingTeams.Count;
+            int maxRounds = (int)Math.Ceiling((double)gamesPerTeam * numberOfTeamsWDummy / (numberOfTeamsWDummy - 1));
 
-
-                Team teamA = availableTeams[random.Next(availableTeams.Count)];
-                Team teamB = availableTeams[random.Next(availableTeams.Count)];
-
-                // Ensure the teams are not the same and have not already played against each other
-                if (teamA != teamB && !matchesCreated.Contains((teamA, teamB)) && !matchesCreated.Contains((teamB, teamA)))
+            // Create matches using round-robin scheduling
+            for (int round = 0; round < maxRounds && teamMatchCount.Values.Any(count => count < gamesPerTeam); round++)
+            {
+                // In each round, create numberOfTeamsWDummy/2 matches
+                for (int i = 0; i < numberOfTeamsWDummy / 2; i++)
                 {
+                    // Match schedulingTeams[i] with team at mirrored position (first w/ last, second w/ second-to-last...)
+                    Team teamA = schedulingTeams[i];
+                    Team teamB = schedulingTeams[numberOfTeamsWDummy - 1 - i];
+
+                    // Skip if either team is the dummy
+                    if (teamA == null || teamB == null)
+                        continue;
+
+                    //Skip if a team has already played often enough
+                    if (teamMatchCount[teamA] >= gamesPerTeam || teamMatchCount[teamB] >= gamesPerTeam)
+                        continue;
+
                     // Create the match
                     Match match = new Match(teamA, teamB);
-
                     tournament.GamePlanPreliminaryRound.Add(match);
-                    // Update counts
+
+                    // Update tracking variables
                     teamMatchCount[teamA]++;
                     teamMatchCount[teamB]++;
-                    matchesCreated.Add((teamA, teamB));
                 }
+
+                // Rotate teams for the next round (keeping first team fixed)
+                // This is a standard rotation technique for round-robin scheduling
+                Team temp = schedulingTeams[1];
+                for (int i = 1; i < numberOfTeamsWDummy - 1; i++)
+                {
+                    schedulingTeams[i] = schedulingTeams[i + 1];
+                }
+                schedulingTeams[numberOfTeamsWDummy - 1] = temp;
             }
         }
 
@@ -224,7 +244,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.TournamentSettings.NumberOfTeamsInKoRound).ToList();
 
             // Select teams for KO round
-            InputHandler.View.ShowMessage("\n\nKO Round contestants:\n");
+            InputHandler.View.ShowMessage("\numberOfTeamsWDummy\nKO Round contestants:\numberOfTeamsWDummy");
             foreach (var team in tournament.KoStandings)
             {
                 InputHandler.View.ShowMessage($"{team.TeamName}");
@@ -257,7 +277,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             // Show the current round
             //InputHandler.View.ShowMessage($"Current Round: {currentRound + 1}");
-            InputHandler.View.ShowMessage("\n");
+            InputHandler.View.ShowMessage("\numberOfTeamsWDummy");
 
             if (currentRound == totalRounds)
             {
@@ -350,7 +370,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
                 else
                 {
-                    InputHandler.View.ShowMessage($"\n\n{match.teamA.TeamName} vs {match.teamB.TeamName} is finished.");
+                    InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\numberOfTeamsWDummy{match.teamA.TeamName} vs {match.teamB.TeamName} is finished.");
                     break;
                 }
             }
