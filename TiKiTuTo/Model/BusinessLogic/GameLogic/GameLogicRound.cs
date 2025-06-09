@@ -56,7 +56,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             var tournament = TournamentModel.Tournament;
             InputHandler.View.ShowMessage($"Preliminary round initialized with {tournament.GamePlanPreliminaryRound.Count} matches.");
-            InputHandler.View.ShowMessage("\nGameplan preliminary round:\n");
+            InputHandler.View.ShowMessage("\nGameplan preliminary round:\numberOfTeamsWDummy");
 
             tournament.GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
 
@@ -131,7 +131,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                         tournament.ThirdPosition = tournament.Semifinalists[1];
 
                     }
-                    InputHandler.View.ShowMessage($"\n\nThe 3. Position of the KO round is {tournament.ThirdPosition.TeamName}.");
+                    InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\nThe 3. Position of the KO round is {tournament.ThirdPosition.TeamName}.");
                 }
             }
 
@@ -140,12 +140,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             if (tournament.KoStandings.Count == 1)
             {
                 tournament.Winner = tournament.KoStandings[0];
-                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
-                InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
+                InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\nThe winner of the KO round is {tournament.Winner.TeamName}!");
+                InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\n1. {tournament.Winner.TeamName}");
+                InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\n2. {tournament.Finalist.TeamName}");
                 if (tournament.ThirdPosition != null)
                 {
-                    InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
+                    InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\n3. {tournament.ThirdPosition.TeamName}");
                 }
                 tournament.IsFinished = true;
                 JSONService.SaveFinishedTournament();
@@ -244,7 +244,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.KoStandings = tournament.PreliminaryStandings.Take(tournament.TournamentSettings.NumberOfTeamsInKoRound).ToList();
 
             // Select teams for KO round
-            InputHandler.View.ShowMessage("\n\nKO Round contestants:\n");
+            InputHandler.View.ShowMessage("\numberOfTeamsWDummy\nKO Round contestants:\numberOfTeamsWDummy");
             foreach (var team in tournament.KoStandings)
             {
                 InputHandler.View.ShowMessage($"{team.TeamName}");
@@ -277,7 +277,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             // Show the current round
             //InputHandler.View.ShowMessage($"Current Round: {currentRound + 1}");
-            InputHandler.View.ShowMessage("\n");
+            InputHandler.View.ShowMessage("\numberOfTeamsWDummy");
 
             if (currentRound == totalRounds)
             {
@@ -370,7 +370,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
                 else
                 {
-                    InputHandler.View.ShowMessage($"\n\n{match.teamA.TeamName} vs {match.teamB.TeamName} is finished.");
+                    InputHandler.View.ShowMessage($"\numberOfTeamsWDummy\numberOfTeamsWDummy{match.teamA.TeamName} vs {match.teamB.TeamName} is finished.");
                     break;
                 }
             }
