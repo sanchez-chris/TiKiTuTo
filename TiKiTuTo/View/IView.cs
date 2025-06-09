@@ -14,6 +14,10 @@ namespace TiKiTuTo.View
 
         public void CreateFrame();
 
+
+        public int AvailableExcelFiles();
+        public void ConfirmingImportAction();
+
         public void ShowTikiTutoHeader();
 
         public int MainMenuSelection();

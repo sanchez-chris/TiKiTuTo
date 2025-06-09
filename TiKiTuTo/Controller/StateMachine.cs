@@ -2,6 +2,7 @@ using TiKiTuTo.View;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
+using System.Diagnostics;
 
 
 namespace TiKiTuTo.Controller
@@ -14,6 +15,8 @@ namespace TiKiTuTo.Controller
         private GameLogicRound _gameLogicRound;
         private TournamentModel _tournamentModel;
         private JSONService _jsonService;
+        private EXCELService _excelService;
+        private InputHandler _inputHandler;
         private GameLogicTournamentSettings _gameLogicTournamentSettings;
 
 
@@ -25,7 +28,7 @@ namespace TiKiTuTo.Controller
         /// <param name="gameLogicTournament">used to handle tournament logic</param>
         /// <param name="model">used to store the tournament</param>
         /// <param name="jsonService">used to save and load tournaments</param>
-        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, GameLogicTournamentSettings gameLogicTournamentSettings)
+        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, EXCELService excel, InputHandler inputHandler, GameLogicTournamentSettings gameLogicTournamentSettings)
         {
             CurrentState = AppState.MainMenu;
             _view = view;
@@ -33,6 +36,8 @@ namespace TiKiTuTo.Controller
             _gameLogicRound = gameLogicRound;
             _tournamentModel = model;
             _jsonService = jsonService;
+            _excelService = excel;
+            _inputHandler = inputHandler;
             _gameLogicTournamentSettings = gameLogicTournamentSettings;
         }
 
@@ -79,6 +84,8 @@ namespace TiKiTuTo.Controller
                     TournamentSettings tournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
                     _jsonService.SaveTournamentSettings(tournamentSettings); 
                     return _view.SettingsCreatedSelection();
+                case AppState.ImportTournamentSettingsFromExcelFile:
+                    return _view.AvailableExcelFiles();
                 case AppState.InitTournament:
                     _gameLogicTournament.InitTournament();
                     return _view.TournamentStartSelection();
@@ -130,6 +137,9 @@ namespace TiKiTuTo.Controller
                     break;
                 case AppState.ShowLoadableTournamentSettings:
                     HandleShowLoadableTournamentSettingsChoice(choice);
+                    break;
+                case AppState.ImportTournamentSettingsFromExcelFile:
+                    HandleImportTournamentSettingsFromExcel();
                     break;
                 case AppState.InitTournament:
                     HandleTournamentStartChoice(choice);
@@ -206,6 +216,9 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.ShowLoadableTournamentSettings);
                     break;
                 case 3:
+                    TransitionTo(AppState.ImportTournamentSettingsFromExcelFile);
+                    break;
+                case 4:
                     TransitionTo(AppState.MainMenu);
                     break;
 
@@ -311,7 +324,25 @@ namespace TiKiTuTo.Controller
             {
                 TransitionTo(AppState.MainMenu);
             }
-        }        
+        } 
+        
+        private void HandleImportTournamentSettingsFromExcel()
+        {
+            bool answer = _inputHandler.GetApprovalForExcelImport();
+            if (answer)
+            {
+                Process.Start("explorer.exe", _excelService.ExcelImportFolder);
+                TournamentSettings importedTournamentSettings = _excelService.ImportExcelFile();
+                _view.ConfirmingImportAction();
+                _gameLogicTournament.CreateTournament(importedTournamentSettings);
+                _gameLogicRound.InitPreliminaryRound();
+                TransitionTo(AppState.RunTournament);
+            }
+            else 
+            {
+               TransitionTo(AppState.StartTournamentMenu);
+            }
+        }
 
 
         private void HandleRunTournamentChoice(int choice)
