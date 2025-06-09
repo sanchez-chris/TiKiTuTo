@@ -23,7 +23,7 @@ namespace TiKiTuTo.Model.DataObjects
             NumberOfTeamsInKoRound = koteams;
             TeamsInTournament = teams;
             UseTimer = useTimer;
-            MatchDuration = 10;
+            MatchDuration = matchDuration;
             SettingsName = settingsName;
         }
 
