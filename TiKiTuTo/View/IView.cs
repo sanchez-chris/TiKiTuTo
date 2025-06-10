@@ -14,7 +14,6 @@ namespace TiKiTuTo.View
 
         public void CreateFrame();
 
-
         public int AvailableExcelFiles();
         public void ConfirmingImportAction();
 
@@ -29,11 +28,9 @@ namespace TiKiTuTo.View
         public int AvailableTournamentSelection(string[] loadableFiles, Enum SelectLoadingType);
 
         public int SettingsCreatedSelection();
-
         public int DuringTournamentMenuSelection();
 
         public int ExitOptionsSelection();
-
 
         //Methods which simply show things
 

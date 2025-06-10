@@ -13,7 +13,6 @@ namespace TiKiTuTo
     {
         private readonly string ProjectDirectory; 
         public readonly string ExcelImportFolder;
-
         TournamentModel TournamentModel { get; set; }
 
 
@@ -27,7 +26,16 @@ namespace TiKiTuTo
             CopyTemplateIfNotExists();
         }
 
-
+        /// <summary>
+        /// Imports tournament settings and team data from an Excel file.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="TournamentSettings"/> object populated with data from the Excel file.
+        /// </returns>
+        /// <remarks>
+        /// Reads tournament settings from the first worksheet and team/player data from the second worksheet.
+        /// Handles file not found, I/O, and data format errors during the import process.
+        /// </remarks>
         public TournamentSettings ImportExcelFile()
         {
             var tournamentSettings = TournamentModel.Tournament.TournamentSettings;
@@ -35,21 +43,19 @@ namespace TiKiTuTo
 
             try
             {
-
-
                 using (var workbook = new XLWorkbook($"{ExcelImportFolder}\\Import_Tournament_Settings.xlsx"))
                 {
                     var tournamentSheet = workbook.Worksheet(1);
-
+                    
                     try
                     {
                         tournamentSettings.SettingsName = tournamentSheet.Cell("B2").GetValue<string>();
                         tournamentSettings.NumberOfTeamsTotal = tournamentSheet.Cell("B3").GetValue<int>();
                         tournamentSettings.NumberOfPreliminaryGamesPerTeam = tournamentSheet.Cell("B4").GetValue<int>();
                         tournamentSettings.NumberOfTeamsInKoRound = tournamentSheet.Cell("B5").GetValue<int>();
-                        string answer = tournamentSheet.Cell("B6").GetValue<string>();
+                        string useTimerAnswer = tournamentSheet.Cell("B6").GetValue<string>();
                         tournamentSettings.MatchDuration = tournamentSheet.Cell("B7").GetValue<int>();
-                        if (answer == "YES")
+                        if (useTimerAnswer == "YES")
                         {
                             tournamentSettings.UseTimer = true;
                         }
@@ -109,10 +115,16 @@ namespace TiKiTuTo
             {
                 throw new Exception("An unexpected error occurred during the Excel import process.", ex);
             }
-
             return tournamentSettings;
         }
 
+
+        /// <summary>
+        /// Copies the tournament settings template to the import folder if it does not already exist.
+        /// </summary>
+        /// <remarks>
+        /// Checks if the template file exists in the destination; if not, copies it from the project directory.
+        /// </remarks>
         private void CopyTemplateIfNotExists()
         {
             var destinationFile = Path.Combine(ExcelImportFolder, "Import_Tournament_Settings.xlsx");
@@ -123,6 +135,14 @@ namespace TiKiTuTo
                 File.Copy(templatePath, destinationFile);
             }
         }
+
+
+        /// <summary>
+        /// Ensures the Excel import folder exists by creating it if necessary.
+        /// </summary>
+        /// <remarks>
+        /// Checks if the folder exists and creates it if it does not.
+        /// </remarks>
         public void InitialCreationOfFolder()
         {
             if (!Directory.Exists(ExcelImportFolder))
@@ -131,12 +151,26 @@ namespace TiKiTuTo
             }
         }
 
-
+        /// <summary>
+        /// Retrieves the full path to the project directory.
+        /// </summary>
+        /// <returns>The full path of the project directory.</returns>
+        /// <remarks>
+        /// Navigates up the directory hierarchy from the application's base directory to locate the project root.
+        /// </remarks>
         public string GetProjectDirectoryPath()
         {
             return Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
         }
 
+
+        /// <summary>
+        /// Retrieves the full path to the Excel import folder within the local application data directory.
+        /// </summary>
+        /// <returns>The full path of the Excel import folder.</returns>
+        /// <remarks>
+        /// Combines the local application data path with the specific folder structure for the import folder.
+        /// </remarks>
         public string GetExcelImportFolderPath()
         {
             return Path.Combine(
