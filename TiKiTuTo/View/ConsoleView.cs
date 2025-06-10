@@ -261,21 +261,22 @@ namespace TiKiTuTo.View
         {
             Console.WriteLine("Exiting application...");
             string[] ball = {
-            "  .OOOO.  ",
-            " .OOOOOO. ",
-            ".OOOOOOOO ",
-            " .OOOOOO. ",
-            "  .OOOO.  "
+            "  (OOOO)  ",
+            " (OOOOOO) ",
+            "(OOOOOOOO) ",
+            " (OOOOOO) ",
+            "  (OOOO)  "
         };
 
             int screenWidth = Console.WindowWidth;
-            int ballWidth = ball[0].Length;
+            int ballWidth = ball[2].Length;
 
             // Loop to simulate ball rolling across the screen
             for (int i = 0; i < screenWidth - ballWidth; i++)
             {
                 // Clear the console
                 Console.Clear();
+                AnsiConsole.Cursor.Hide();
 
                 // Print spaces to position the ball
                 Console.WriteLine(new string(' ', i) + ball[0]);
@@ -284,8 +285,9 @@ namespace TiKiTuTo.View
                 Console.WriteLine(new string(' ', i) + ball[3]);
                 Console.WriteLine(new string(' ', i) + ball[4]);
 
+
                 // Pause for animation effect
-                Thread.Sleep(10);
+                Thread.Sleep(15);
 
             }
         }

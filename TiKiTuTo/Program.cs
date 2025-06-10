@@ -3,6 +3,7 @@ using TiKiTuTo.View;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
+using System.Text;
 
 namespace TiKiTuTo.Controller
 {
@@ -23,7 +24,7 @@ namespace TiKiTuTo.Controller
             GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler, model, json);
             StateMachine stateMachine = new StateMachine(view, gameLogicTournament, gameLogicRound, model, json, excel, inputHandler, gameLogicTournamentSettings);
             Controller controller = new Controller(view, model, stateMachine, inputHandler, gameLogicMatch, gameLogicRound, gameLogicTournament, gameLogicTournamentSettings);
-            Console.Title = "TiKiTuTo";
+            Console.Title = "TikiTuto";
 
             while (true)
             {
