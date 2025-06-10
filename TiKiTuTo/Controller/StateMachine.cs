@@ -54,14 +54,11 @@ namespace TiKiTuTo.Controller
         /////// TODO FOR ExecuteCurrentState
         //MainMenu DONE
         //StartTournamentMenu DONE
-        //ShowSavedTournaments WORK IN PROGRESS
-        //ShowFinishedTournaments  WORK IN PROGRESS
+        //ShowSavedTournaments DONE
+        //ShowFinishedTournaments  DONE
         //ManageSettingsMenu DONE
         //TournamentSettingsCreationDialogue DONE
-        //ShowLoadableTournamentSettings TODO
-        //RunTournament TODO
-        //ShowEditableTournamentSettings TODO
-        //TournamentSettingsEditingDialogue TODO
+        //RunTournament DONE
         //InGameMenu  DONE
         //Exit  DONE
 
@@ -104,6 +101,7 @@ namespace TiKiTuTo.Controller
                     Environment.Exit(0);
                     break;
             }
+            _view.ShowFooter(); // Display footer as a fallback
             //base case for states where the user decides to stay in the current context (no state transition)
             return 0;
         }
