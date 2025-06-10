@@ -1,18 +1,26 @@
-﻿using TiKiTuTo.Controller;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TiKiTuTo.Controller;
+using TiKiTuTo.View;
+using TiKiTuTo.Model.BusinessLogic;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Model;
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
     /// Handles business logic regarding TournamentSettings objects. 
     /// </summary>
-
+    
 
     public class GameLogicTournamentSettings
     {
         InputHandler InputHandler;
         public TournamentModel TournamentModel { get; set; }
 
-        public GameLogicTournamentSettings(TournamentModel model, InputHandler inputHandler)
+        public GameLogicTournamentSettings(TournamentModel model, InputHandler inputHandler) 
         {
             InputHandler = inputHandler;
             TournamentModel = model;
@@ -39,23 +47,23 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             NumberOfPreliminaryGamesPerTeam = InputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
             NumberOfTeamsInKORound = InputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
             useTimer = InputHandler.GetApproval("Do you want to set a timer for the matches? [bold green]Y[/]/[bold red]N[/]");
-
+            
             if (useTimer)
             {
                 matchDuration = InputHandler.GetValidMatchDuration();
             }
             Teams = CreateListOfTeams(NumberOfTeamsTotal);
-
+            
             string TournamentSettingsName = InputHandler.GetMandatoryName("Name the Settings.");
 
             TournamentSettings tournamentSettings = new TournamentSettings
                 (
-                NumberOfTeamsTotal,
-                NumberOfPreliminaryGamesPerTeam,
-                NumberOfTeamsInKORound,
-                Teams,
-                useTimer,
-                matchDuration,
+                NumberOfTeamsTotal, 
+                NumberOfPreliminaryGamesPerTeam, 
+                NumberOfTeamsInKORound, 
+                Teams, 
+                useTimer, 
+                matchDuration, 
                 TournamentSettingsName
                 );
 
@@ -70,7 +78,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 teams.Add(CreateTeam(i, maxTeamMembers));
             }
-
+            
             InputHandler.View.ShowMessage($"You have created {teams.Count} teams.\n\nPreliminary round contestant:");
             InputHandler.View.ShowTeamsAndPlayer(teams);
             return teams;
@@ -89,7 +97,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             List<Player> playerList = new List<Player>();
             Team team = new Team(teamName, playerList);
-            //           maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
+//           maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
             for (int p = 1; p <= maxTeamMembers; p++)
             {
                 string? playerName = InputHandler.GetPlayerName($"Please enter the name of the next team member. Default name when empty: Player {p}.", p);

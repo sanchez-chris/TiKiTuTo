@@ -1,4 +1,13 @@
-﻿using Spectre.Console;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Diagnostics;
+using System.Linq;
+using System.Numerics;
+using System.Runtime.Intrinsics.X86;
+using System.Text;
+using System.Threading.Tasks;
+using Spectre.Console;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 
@@ -154,7 +163,7 @@ namespace TiKiTuTo.View
             AnsiConsole.WriteLine("- Follow the instructions in the file carefully.");
             AnsiConsole.WriteLine("- Ensure that you adhere to the specified formatting.\n");
             return 1;
-        }
+            }
 
         public void ConfirmingImportAction()
         {
@@ -474,30 +483,6 @@ namespace TiKiTuTo.View
             AnsiConsole.Write(new Rule("[italic grey]PlayTeach Solutions© 2025 TikiTuto[/]").Centered());
         }
 
-        public void ShowKoTree(Tournament tournament)
-        {
-            var tree = new Tree("[bold yellow]Knockout Tournament[/]");
 
-            // Loop through each round
-            for (int round = 0; round < tournament.GamePlanKoRound.Count; round++)
-            {
-                string roundName = round == tournament.GamePlanKoRound.Count - 1
-                    ? "Final"
-                    : round == tournament.GamePlanKoRound.Count - 2
-                        ? "Semifinals"
-                        : $"Round {round + 1}";
-
-                var roundNode = tree.AddNode($"[bold red]{roundName}[/]");
-
-                // Add matches for the current round
-                foreach (var match in tournament.GamePlanKoRound[round])
-                {
-                    roundNode.AddNode($"[green]{match.teamA.TeamName}[/] vs [green]{match.teamB.TeamName}[/]");
-                }
-            }
-
-            // Display the tree
-            AnsiConsole.Write(tree);
-        }
     }
 }

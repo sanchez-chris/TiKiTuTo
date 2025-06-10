@@ -1,5 +1,8 @@
-﻿using TiKiTuTo.Model.BusinessLogic.GameLogic;
+﻿using System.ComponentModel.Design;
 using TiKiTuTo.View;
+using TiKiTuTo.Model.BusinessLogic.GameLogic;
+using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Model;
 
 namespace TiKiTuTo.Controller
 {
@@ -17,13 +20,13 @@ namespace TiKiTuTo.Controller
 
         public Controller
             (
-            IView view,
+            IView view, 
             Model.TournamentModel tournamentModel,
-            StateMachine stateMachine,
-            InputHandler inputHandler,
-            GameLogicMatch gameLogicMatch,
-            GameLogicRound gameLogicRound,
-            GameLogicTournament gameLogicTournament,
+            StateMachine stateMachine, 
+            InputHandler inputHandler, 
+            GameLogicMatch gameLogicMatch, 
+            GameLogicRound gameLogicRound, 
+            GameLogicTournament gameLogicTournament, 
             GameLogicTournamentSettings gameLogicTournamentSettings
             )
         {

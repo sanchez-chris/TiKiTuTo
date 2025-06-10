@@ -1,5 +1,14 @@
-﻿using TiKiTuTo.Controller;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Xml.Schema;
+using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.View;
 using Match = TiKiTuTo.Model.DataObjects.Match;
 
 
@@ -41,8 +50,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             InputHandler.View.WaitForAnyKeyToProceed();
             InputHandler.View.ShowMessage("Good luck to all teams!");
         }
-
-
+        
+        
         public void RunPreliminaryRound()
         {
             var tournament = TournamentModel.Tournament;
@@ -63,16 +72,15 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 else
                 {
                     GameLogicMatch.RunMatch(match);
-                    /*                   if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
-                                        {
-                                            InputHandler.View.ShowStandings(tournament);
-                                        }
-                    */
-                }
+/*                   if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
+                    {
+                        InputHandler.View.ShowStandings(tournament);
+                    }
+*/                }
                 matchIndex++;
             }
             tournament.PreliminaryStandings = GenerateRanking(tournament);
-
+            
             //InputHandler.View.ShowStandings(tournament);
 
         }
@@ -94,8 +102,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (tournament.CurrentKoRound < totalRounds)
             {
-                //ShowKoGamePlanKoRound(tournament, tournament.CurrentKoRound);
-                InputHandler.View.ShowKoTree(tournament);
+                ShowKoGamePlanKoRound(tournament, tournament.CurrentKoRound);
+
 
                 foreach (var match in tournament.GamePlanKoRound[tournament.CurrentKoRound])
                 {
@@ -330,7 +338,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (!tournament.IsFinished)
             {
-                if (!match.isFinished)
+                if(!match.isFinished)
                 {
                     GameLogicMatch.RunMatch(match);
                     if (match.goalsTeamA > match.goalsTeamB)

@@ -15,5 +15,5 @@ namespace TiKiTuTo.Controller
         RunTournament,
         ExitOptions,
         Exit
-    }
+    } 
 }
