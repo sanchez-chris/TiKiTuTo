@@ -1,8 +1,8 @@
-using System.Diagnostics;
+using TiKiTuTo.View;
 using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
-using TiKiTuTo.View;
+using System.Diagnostics;
 
 
 namespace TiKiTuTo.Controller
@@ -54,14 +54,11 @@ namespace TiKiTuTo.Controller
         /////// TODO FOR ExecuteCurrentState
         //MainMenu DONE
         //StartTournamentMenu DONE
-        //ShowSavedTournaments WORK IN PROGRESS
-        //ShowFinishedTournaments  WORK IN PROGRESS
+        //ShowSavedTournaments DONE
+        //ShowFinishedTournaments  DONE
         //ManageSettingsMenu DONE
         //TournamentSettingsCreationDialogue DONE
-        //ShowLoadableTournamentSettings TODO
-        //RunTournament TODO
-        //ShowEditableTournamentSettings TODO
-        //TournamentSettingsEditingDialogue TODO
+        //RunTournament DONE
         //InGameMenu  DONE
         //Exit  DONE
 
@@ -82,7 +79,7 @@ namespace TiKiTuTo.Controller
                     return _view.AvailableTournamentSelection(availableFinishedFiles, SelectLoadingType.FinishedTournament);
                 case AppState.TournamentSettingsCreationDialogue:
                     TournamentSettings tournamentSettings = _gameLogicTournamentSettings.CreateTournamentSettings();
-                    _jsonService.SaveTournamentSettings(tournamentSettings);
+                    _jsonService.SaveTournamentSettings(tournamentSettings); 
                     return _view.SettingsCreatedSelection();
                 case AppState.ImportTournamentSettingsFromExcelFile:
                     return _view.AvailableExcelFiles();
@@ -104,6 +101,7 @@ namespace TiKiTuTo.Controller
                     Environment.Exit(0);
                     break;
             }
+            _view.ShowFooter(); // Display footer as a fallback
             //base case for states where the user decides to stay in the current context (no state transition)
             return 0;
         }
@@ -235,15 +233,15 @@ namespace TiKiTuTo.Controller
 
             Array.Reverse(unfinishedTournamentFiles);
 
-            if (choice == unfinishedTournamentFiles.Length + 1)
+            if (choice == unfinishedTournamentFiles.Length + 1) 
             {
                 TransitionTo(AppState.MainMenu);
             }
             else if (choice >= 1 && choice <= unfinishedTournamentFiles.Length) //a valid tournament file
             {
-                string chosenTournament = unfinishedTournamentFiles[choice - 1];
+                string chosenTournament = unfinishedTournamentFiles[choice-1];
                 _view.ShowMessage($"Opening {Path.GetFileName(chosenTournament)}");
-                _jsonService.LoadTournament(chosenTournament);
+                _jsonService.LoadTournament(chosenTournament); 
                 TransitionTo(AppState.RunTournament);
             }
             else //choosing last option
@@ -264,7 +262,7 @@ namespace TiKiTuTo.Controller
 
             Array.Reverse(finishedTournamentFiles);
 
-            if (choice == finishedTournamentFiles.Length + 1)
+            if (choice == finishedTournamentFiles.Length + 1) 
             {
                 TransitionTo(AppState.MainMenu);
             }
@@ -280,7 +278,7 @@ namespace TiKiTuTo.Controller
                 TransitionTo(AppState.MainMenu);
             }
         }
-
+                
         private void HandleSettingsCreationChoice(int choice)
         {
             switch (choice)
@@ -304,7 +302,7 @@ namespace TiKiTuTo.Controller
             string[] tournamentSettingsFiles = _jsonService.GetTournamentSettingsFiles();
 
             Array.Reverse(tournamentSettingsFiles);
-
+            
             if (choice == tournamentSettingsFiles.Length + 1)
             {
                 TransitionTo(AppState.MainMenu);
@@ -313,7 +311,7 @@ namespace TiKiTuTo.Controller
             {
                 string chosenSetting = tournamentSettingsFiles[choice - 1];
                 _view.ShowMessage($"Opening {Path.GetFileName(chosenSetting)}");
-                var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting);
+                var tournamentSettings = _jsonService.LoadTournamentSettings(chosenSetting); 
                 _gameLogicTournament.CreateTournament(tournamentSettings);
                 _gameLogicRound.InitPreliminaryRound();
                 TransitionTo(AppState.RunTournament);
@@ -322,11 +320,11 @@ namespace TiKiTuTo.Controller
             {
                 TransitionTo(AppState.MainMenu);
             }
-        }
-
+        } 
+        
         private void HandleImportTournamentSettingsFromExcel()
         {
-            bool answer = _inputHandler.GetApproval("Do you want to continue? [bold green]Y[/]/[bold red]N[/]");
+            bool answer = _inputHandler.GetApproval("Do you want to continue? [[[bold green]Y[/]/[bold red]N[/]]]");
             if (answer)
             {
                 Process.Start("explorer.exe", _excelService.ExcelImportFolder);
@@ -336,9 +334,9 @@ namespace TiKiTuTo.Controller
                 _gameLogicRound.InitPreliminaryRound();
                 TransitionTo(AppState.RunTournament);
             }
-            else
+            else 
             {
-                TransitionTo(AppState.StartTournamentMenu);
+               TransitionTo(AppState.StartTournamentMenu);
             }
         }
 
@@ -357,7 +355,7 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.Exit);
                     break;
             }
-        }
+        }     
 
 
         private void HandleExitChoice(int choice)

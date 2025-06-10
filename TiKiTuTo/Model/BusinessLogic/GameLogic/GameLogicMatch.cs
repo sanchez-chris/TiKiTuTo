@@ -1,4 +1,6 @@
-﻿using TiKiTuTo.Controller;
+﻿using System.Media;
+using TiKiTuTo.Controller;
+using TiKiTuTo.Model;
 using TiKiTuTo.Model.DataObjects;
 using Timer = System.Timers.Timer;
 
@@ -11,7 +13,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         JSONService JSONService { get; set; }
 
         TournamentModel TournamentModel { get; set; }
-
+        
         bool isTimerFinished = false;
         public GameLogicMatch(InputHandler inputHandler, JSONService json, TournamentModel model)
         {
@@ -21,34 +23,34 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             TournamentModel = model;
         }
 
-        /*    public void RunMatch(Match match)
+    /*    public void RunMatch(Match match)
+        {
+            int goalsA = 0;
+            int goalsB = 0;
+
+            StartMatchTimer(match);
+            bool flag = true;
+            while (flag)
             {
-                int goalsA = 0;
-                int goalsB = 0;
+                goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
+                match.goalsTeamA = goalsA;
 
-                StartMatchTimer(match);
-                bool flag = true;
-                while (flag)
+                goalsB = InputHandler.GetValidGoalInput(match.teamB.TeamName);
+                match.goalsTeamB = goalsB;
+                if (goalsA==goalsB)
                 {
-                    goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
-                    match.goalsTeamA = goalsA;
-
-                    goalsB = InputHandler.GetValidGoalInput(match.teamB.TeamName);
-                    match.goalsTeamB = goalsB;
-                    if (goalsA==goalsB)
-                    {
-                        InputHandler.View.ShowMessage("You can't have a draw.");
-                        continue;
-                    }
-                    InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
-                    FinishMatch(match);
-                    flag = false;
+                    InputHandler.View.ShowMessage("You can't have a draw.");
+                    continue;
                 }
-            }*/
+                InputHandler.View.ShowMessage($"Match finished! {match.teamA.TeamName} {goalsA} - {goalsB} {match.teamB.TeamName}");
+                FinishMatch(match);
+                flag = false;
+            }
+        }*/
 
         public void RunMatch(Match match)
         {
-
+            
             int goalsA = 0;
             int goalsB = 0;
             bool isThereTimer = false;
@@ -59,8 +61,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 StartMatchTimer(match, (double)TournamentModel.Tournament.TournamentSettings.MatchDuration);
                 isThereTimer = true;
-            }
-
+            }    
+            
             bool goalsAsked = false;
             isTimerFinished = false;
 
@@ -71,7 +73,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                     goalsA = InputHandler.GetValidGoalInput(match.teamA.TeamName);
                     match.goalsTeamA = goalsA;
                     goalsB = InputHandler.GetValidGoalInput(match.teamB.TeamName);
-                    match.goalsTeamB = goalsB;
+                    match.goalsTeamB = goalsB; 
 
                     if (goalsA == goalsB)
                     {

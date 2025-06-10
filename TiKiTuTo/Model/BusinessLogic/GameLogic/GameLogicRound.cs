@@ -1,5 +1,14 @@
-﻿using TiKiTuTo.Controller;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Xml.Schema;
+using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.View;
 using Match = TiKiTuTo.Model.DataObjects.Match;
 
 
@@ -41,8 +50,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             InputHandler.View.WaitForAnyKeyToProceed();
             InputHandler.View.ShowMessage("Good luck to all teams!");
         }
-
-
+        
+        
         public void RunPreliminaryRound()
         {
             var tournament = TournamentModel.Tournament;
@@ -52,6 +61,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             tournament.GamePlanPreliminaryRound.ForEach(match => InputHandler.View.ShowMessage($"{match.teamA.TeamName} vs {match.teamB.TeamName}"));
 
             int matchIndex = 1;
+
+            //To print an empty line between the last played game and the first unplayed match
+            if (tournament.GamePlanPreliminaryRound.Any(match => match.isFinished))
+            {
+                InputHandler.View.WriteEmptyLine();
+            }
 
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
             foreach (var match in tournament.GamePlanPreliminaryRound)
@@ -63,12 +78,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 else
                 {
                     GameLogicMatch.RunMatch(match);
-                    /*                   if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
-                                        {
-                                            InputHandler.View.ShowStandings(tournament);
-                                        }
-                    */
-                }
+/*                   if (matchIndex % (tournament.TournamentSettings.NumberOfTeamsTotal / 2) == 0)
+                    {
+                        InputHandler.View.ShowStandings(tournament);
+                    }
+*/                }
                 matchIndex++;
             }
             tournament.PreliminaryStandings = GenerateRanking();
@@ -94,8 +108,14 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (tournament.CurrentKoRound < totalRounds)
             {
-                ShowKoGamePlanKoRound();
+                //ShowKoGamePlanKoRound(tournament, tournament.CurrentKoRound);
+                InputHandler.View.ShowKoTree(tournament);
 
+                //To print an empty line between the last played game and the first unplayed match
+                if (tournament.GamePlanKoRound[tournament.CurrentKoRound].Any(match => match.isFinished))
+                {
+                    InputHandler.View.WriteEmptyLine();
+                }
 
                 foreach (var match in tournament.GamePlanKoRound[tournament.CurrentKoRound])
                 {
@@ -132,9 +152,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             if (tournament.KoStandings.Count == 1)
             {
                 tournament.Winner = tournament.KoStandings[0];
-                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
-                InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
+                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is [gold3]{tournament.Winner.TeamName}![/]");
+ //               InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
+                InputHandler.View.ShowMessage($"\n\nOur runner up on the second place is [lightskyblue1]{tournament.Finalist.TeamName}[/]");
                 if (tournament.ThirdPosition != null)
                 {
                     InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
@@ -339,7 +359,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (!tournament.IsFinished)
             {
-                if (!match.isFinished)
+                if(!match.isFinished)
                 {
                     GameLogicMatch.RunMatch(match);
                     if (match.goalsTeamA > match.goalsTeamB)

@@ -1,8 +1,11 @@
-﻿using TiKiTuTo.Model.DataObjects;
+﻿using System.ComponentModel.Design;
+using TiKiTuTo.View;
+using TiKiTuTo.Model;
+using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.Controller
 {
-    public class InputValidator
+     public class InputValidator
     {
 
         public bool IsValidGoalInput(int goals)

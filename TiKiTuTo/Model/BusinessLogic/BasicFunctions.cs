@@ -1,4 +1,10 @@
-﻿namespace TiKiTuTo.Model.BusinessLogic
+﻿
+using TiKiTuTo.Controller;
+using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Model.BusinessLogic.GameLogic;
+
+
+namespace TiKiTuTo.Model.BusinessLogic
 {
     public class BasicFunctions
     {
@@ -13,8 +19,5 @@
                            Math.Log(2));
             return (int)Math.Pow(2, p);
         }
-
-
-
     }
 }

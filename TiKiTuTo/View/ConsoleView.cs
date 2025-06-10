@@ -1,4 +1,13 @@
-﻿using Spectre.Console;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Diagnostics;
+using System.Linq;
+using System.Numerics;
+using System.Runtime.Intrinsics.X86;
+using System.Text;
+using System.Threading.Tasks;
+using Spectre.Console;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 
@@ -154,12 +163,12 @@ namespace TiKiTuTo.View
             AnsiConsole.WriteLine("- Follow the instructions in the file carefully.");
             AnsiConsole.WriteLine("- Ensure that you adhere to the specified formatting.\n");
             return 1;
-        }
+            }
 
         public void ConfirmingImportAction()
         {
-            AnsiConsole.WriteLine("When you have ensured the file is saved and all instructions have been followed, press random key to continue");
-            Console.ReadLine();
+            AnsiConsole.MarkupLine("When you have ensured the file is saved and all instructions have been followed, press [underline]any[/] key to continue");
+            Console.ReadKey();
         }
 
 
@@ -252,21 +261,22 @@ namespace TiKiTuTo.View
         {
             Console.WriteLine("Exiting application...");
             string[] ball = {
-            "  .OOOO.  ",
-            " .OOOOOO. ",
-            ".OOOOOOOO ",
-            " .OOOOOO. ",
-            "  .OOOO.  "
+            "  (OOOO)  ",
+            " (OOOOOO) ",
+            "(OOOOOOOO) ",
+            " (OOOOOO) ",
+            "  (OOOO)  "
         };
 
             int screenWidth = Console.WindowWidth;
-            int ballWidth = ball[0].Length;
+            int ballWidth = ball[2].Length;
 
             // Loop to simulate ball rolling across the screen
             for (int i = 0; i < screenWidth - ballWidth; i++)
             {
                 // Clear the console
                 Console.Clear();
+                AnsiConsole.Cursor.Hide();
 
                 // Print spaces to position the ball
                 Console.WriteLine(new string(' ', i) + ball[0]);
@@ -275,8 +285,9 @@ namespace TiKiTuTo.View
                 Console.WriteLine(new string(' ', i) + ball[3]);
                 Console.WriteLine(new string(' ', i) + ball[4]);
 
+
                 // Pause for animation effect
-                Thread.Sleep(10);
+                Thread.Sleep(15);
 
             }
         }
@@ -474,6 +485,67 @@ namespace TiKiTuTo.View
             AnsiConsole.Write(new Rule("[italic grey]PlayTeach Solutions© 2025 TikiTuto[/]").Centered());
         }
 
+        public void ShowKoTree(Tournament tournament)
+        {
+            var tree = new Tree("[bold yellow]Knockout Tournament[/]");
 
+            // Determine the total number of rounds
+            int totalRounds = tournament.GamePlanKoRound.Count;
+
+            // Loop through each round
+            for (int round = 0; round < totalRounds; round++)
+            {
+                string roundName;
+
+                // Assign names based on the round index
+                if (round == totalRounds - 1)
+                {
+                    roundName = "Final";
+                }
+                else if (round == totalRounds - 2)
+                {
+                    roundName = "Semifinals";
+                }
+                else if (round == totalRounds - 3)
+                {
+                    roundName = "Quarterfinals";
+                }
+                else if (round == totalRounds - 4)
+                {
+                    roundName = "Best of 16";
+                }
+                else if (round == totalRounds - 5)
+                {
+                    roundName = "Best of 32";
+                }
+                else if (round == totalRounds - 6)
+                {
+                    roundName = "Best of 64";
+                }
+                else if (round == totalRounds - 7)
+                {
+                    roundName = "Best of 128";
+                }
+                else if (round == totalRounds - 8)
+                {
+                    roundName = "Best of 256";
+                }
+                else
+                {
+                    roundName = $"Round {round + 1}";
+                }
+
+                var roundNode = tree.AddNode($"[bold red]{roundName}[/]");
+
+                // Add matches for the current round
+                foreach (var match in tournament.GamePlanKoRound[round])
+                {
+                    roundNode.AddNode($"[green]{match.teamA.TeamName}[/] vs [green]{match.teamB.TeamName}[/]");
+                }
+            }
+
+            // Display the tree
+            AnsiConsole.Write(tree);
+        }
     }
 }
