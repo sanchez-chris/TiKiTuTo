@@ -473,7 +473,7 @@ namespace TiKiTuTo.View
         public void WaitForAnyKeyToProceed()
         {
             AnsiConsole.MarkupLine("Press [underline]any[/] key to continue.");
-            Console.ReadKey();
+            Console.ReadKey(true);
         }
 
         public void ShowFooter()
