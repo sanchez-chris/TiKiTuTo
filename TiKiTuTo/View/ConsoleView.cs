@@ -38,9 +38,9 @@ namespace TiKiTuTo.View
                 new Panel(
                     Align.Center(
                         new FigletText("TikiTuto")
-                            .Color(Color.Lime)))
+                            .Color(Color.LightSkyBlue1)))
                 .Border(BoxBorder.Rounded)
-                .BorderColor(Color.Blue)
+                .BorderColor(Color.NavajoWhite1)
                 .Padding(2, 2)
                 .Header("[bold blue]DAS TischkickerTurniertool[/]")
                 .HeaderAlignment(Justify.Center));
