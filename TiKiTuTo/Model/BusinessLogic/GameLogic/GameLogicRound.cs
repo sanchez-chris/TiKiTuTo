@@ -37,7 +37,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             var tournament = TournamentModel.Tournament;
 
-            CreateGamePlanPreRound(tournament);
+            CreateGamePlanPreRound();
             InputHandler.View.WaitForAnyKeyToProceed();
             InputHandler.View.ShowMessage("Good luck to all teams!");
         }
@@ -71,7 +71,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
                 matchIndex++;
             }
-            tournament.PreliminaryStandings = GenerateRanking(tournament);
+            tournament.PreliminaryStandings = GenerateRanking();
 
             //InputHandler.View.ShowStandings(tournament);
 
@@ -80,7 +80,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public void InitKoRound()
         {
             var tournament = TournamentModel.Tournament;
-            CreateGamePlanKoRound(tournament);
+            CreateGamePlanKoRound();
         }
 
         public void RunKoRound()
@@ -94,7 +94,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (tournament.CurrentKoRound < totalRounds)
             {
-                ShowKoGamePlanKoRound(tournament, tournament.CurrentKoRound);
+                ShowKoGamePlanKoRound();
 
 
                 foreach (var match in tournament.GamePlanKoRound[tournament.CurrentKoRound])
@@ -105,7 +105,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 tournament.CurrentKoRound++;
                 if (tournament.CurrentKoRound < totalRounds)
                 {
-                    organizeMatchesForNextRound(tournament, tournament.CurrentKoRound);
+                    organizeMatchesForNextRound();
                 }
                 if (totalRounds >= 2 && !tournament.IsSemifinalPlayed && tournament.KoStandings.Count == 2) // there is a semifinal
                 {
@@ -145,8 +145,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
-        public void CreateGamePlanPreRound(Tournament tournament)
+        public void CreateGamePlanPreRound()
         {
+            Tournament tournament = TournamentModel.Tournament;
             var Settings = tournament.TournamentSettings;
             int gamesPerTeam = Settings.NumberOfPreliminaryGamesPerTeam;
             List<Team> teams = Settings.TeamsInTournament;
@@ -222,8 +223,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
-        public void CreateGamePlanKoRound(Tournament tournament)
+        public void CreateGamePlanKoRound()
         {
+            Tournament tournament = TournamentModel.Tournament;
             int currentRound = tournament.CurrentKoRound;
 
 
@@ -252,11 +254,14 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 tournament.GamePlanKoRound.Add(new List<Match>());
             }
-            organizeMatchesForNextRound(tournament, currentRound);
+            organizeMatchesForNextRound();
         }
 
-        public void ShowKoGamePlanKoRound(Tournament tournament, int currentRound)
+        public void ShowKoGamePlanKoRound()
         {
+            Tournament tournament = TournamentModel.Tournament;
+            int currentRound = tournament.CurrentKoRound;
+
             // Calculate how many rounds there are in the tournament
             int totalRounds = (int)Math.Ceiling(Math.Log2(tournament.TournamentSettings.NumberOfTeamsInKoRound)) - 1;
 
@@ -297,8 +302,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         }
 
-        public void organizeMatchesForNextRound(Tournament tournament, int currentRound)
+        public void organizeMatchesForNextRound()
         {
+            Tournament tournament = TournamentModel.Tournament;
+            int currentRound = tournament.CurrentKoRound;
+
             for (int i = 0; i < tournament.KoStandings.Count; i += 2)
             {
                 if (i + 1 < tournament.KoStandings.Count) // Ensure there is a pair
@@ -314,8 +322,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
         }
 
-        public List<Team> GenerateRanking(Tournament tournament)
+        public List<Team> GenerateRanking()
         {
+            Tournament tournament = TournamentModel.Tournament;
             List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
 
             return Teams
