@@ -151,11 +151,13 @@ namespace TiKiTuTo.Controller
         //TODO: ADJUST XML COMMENT FOR GetXYName methods
 
         /// <summary>
-        /// Asks the user to enter any string, using the prompt argument. Repeats until valid string is entered.
+        /// Asks the user to enter a player name string, using the prompt argument. Defaults to a player name
+        /// using playerNumber.
         /// </summary>
         /// <param name="prompt">Message shown to the user to prompt input.</param>
-        /// <returns>a string entered by the user.</returns>
-        public string? GetPlayerName(string prompt, int playerNumber)
+        /// <param name="playerNumber">Index of the player created. Used for default names.</param>
+        /// <returns>A player name.</returns>
+        public string GetPlayerName(string prompt, int playerNumber)
         {
             View.ShowMessage(prompt);
             string? playerName = View.ReadInput();
@@ -168,14 +170,21 @@ namespace TiKiTuTo.Controller
           return playerName;
         }
 
-        public string? GetTeamName(string prompt, int teamNumber)
+        /// <summary>
+        /// Asks the user to enter a team name string, using the prompt argument. Defaults to a team name
+        /// using teamNumber.
+        /// </summary>
+        /// <param name="prompt">Message shown to the user to prompt input.</param>
+        /// <param name="teamNumber">Index of the player created. Used for default names.</param>
+        /// <returns>A player name.</returns>
+        public string GetTeamName(string prompt, int teamNumber)
         {
             View.ShowMessage(prompt);
             string? teamName = View.ReadInput();
 
             if (string.IsNullOrEmpty(teamName))
             {
-                teamName = $"Team{teamNumber}";
+                teamName = $"Team {teamNumber}";
             }
 
             View.ShowMessage($"Creating Team {teamName}");

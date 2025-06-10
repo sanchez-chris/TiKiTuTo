@@ -87,13 +87,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
         public Team CreateTeam(int i, int maxTeamMembers)
         {
-            bool emptyNameAllowed = true;
-            string? teamName = InputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", i);
-
-            if (string.IsNullOrEmpty(teamName))
-            {
-                teamName = $"Team {i}";
-            }
+            string teamName = InputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", i);
 
             List<Player> playerList = new List<Player>();
             Team team = new Team(teamName, playerList);
