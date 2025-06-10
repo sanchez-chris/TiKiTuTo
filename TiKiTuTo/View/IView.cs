@@ -12,12 +12,9 @@ namespace TiKiTuTo.View
     {
         //Methods which directly return user input 
 
-        public void CreateFrame();
-
-
+        
         public int AvailableExcelFiles();
-        public void ConfirmingImportAction();
-
+        
         public void ShowTikiTutoHeader();
 
         public int MainMenuSelection();
@@ -34,6 +31,7 @@ namespace TiKiTuTo.View
 
         public int ExitOptionsSelection();
 
+        public string ReadInput();
 
         //Methods which simply show things
 
@@ -51,11 +49,10 @@ namespace TiKiTuTo.View
 
         public void WriteEmptyLine();
 
-        public string ReadInput();
-
         public void ClearCurrentConsoleLine();
 
-        public void DisplayFiles(string[] currentFiles);
+        //unused
+        //public void DisplayFiles(string[] currentFiles);
 
         public void AnimateAndConfirmSave(string filePath);
 
@@ -64,6 +61,10 @@ namespace TiKiTuTo.View
         public void ShowFooter();
 
         public void ShowKoTree(Tournament tournament);
+
+        public void CreateFrame();
+
+        public void ConfirmingImportAction();
 
     }
 }
