@@ -5,9 +5,8 @@ using Spectre.Console;
 
 namespace TiKiTuTo.Controller
 {
-    /// <summary>
     /// This class implements all methods which retrieve user input, for integers as well as strings.
-    /// </summary>
+    /// Handles validation and re-prompting of user input for tournament configuration and gameplay.
     public class InputHandler
     {
 
@@ -21,7 +20,11 @@ namespace TiKiTuTo.Controller
             _inputValidator = inputValidator;
         }
 
-        
+        /// <summary>
+        /// Prompts the user for a valid goal count for a specific team and validates the input.
+        /// </summary>
+        /// <param name="teamName">The name of the team scoring the goals.</param>
+        /// <returns>A valid number of goals (between 0 and 10).</returns>
         public int GetValidGoalInput(string teamName)
         {
             int GoalInput = GetNumber($"\nHow many goals has {teamName} made?");
@@ -83,7 +86,10 @@ namespace TiKiTuTo.Controller
         }
 
 
-
+        /// <summary>
+        /// Prompts the user for a valid match duration in minutes.
+        /// </summary>
+        /// <returns>A valid match duration in minutes (between 1 and 30).</returns>
         public int GetValidMatchDuration()
         {
             int minAllowed = 1;
@@ -96,7 +102,12 @@ namespace TiKiTuTo.Controller
             }
             return matchDuration;
         }
-        
+
+        /// <summary>
+        /// Prompts the user for a yes/no response and returns the corresponding boolean value.
+        /// </summary>
+        /// <param name="prompt">The message to display when asking for approval.</param>
+        /// <returns>True if the user approves (y/Y/yes/YES), false if the user disapproves (n/N/no/NO).</returns>
         public bool GetApproval(string prompt)
         {
             List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
@@ -146,17 +157,12 @@ namespace TiKiTuTo.Controller
             return result;
         }
 
-
-
-        //TODO: ADJUST XML COMMENT FOR GetXYName methods
-
         /// <summary>
-        /// Asks the user to enter a player name string, using the prompt argument. Defaults to a player name
-        /// using playerNumber.
+        /// Prompts the user to enter a team name. If no name is entered, generates a default name.
         /// </summary>
         /// <param name="prompt">Message shown to the user to prompt input.</param>
-        /// <param name="playerNumber">Index of the player created. Used for default names.</param>
-        /// <returns>A player name.</returns>
+        /// <param name="teamNumber">Index of the team being created. Used for generating default names.</param>
+        /// <returns>The team name entered by the user or a default name if none was provided.</returns>
         public string GetPlayerName(string prompt, int playerNumber)
         {
             View.ShowMessage(prompt);
@@ -191,6 +197,11 @@ namespace TiKiTuTo.Controller
             return teamName;
         }
 
+        /// <summary>
+    /// Prompts the user for a name that cannot be empty. Continues to prompt until a non-empty name is provided.
+    /// </summary>
+    /// <param name="prompt">Message shown to the user to prompt input.</param>
+    /// <returns>A non-empty string containing the name entered by the user.</returns>
         public string GetMandatoryName(string prompt)
         {
             View.ShowMessage(prompt);
