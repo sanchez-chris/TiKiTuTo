@@ -28,7 +28,7 @@ namespace TiKiTuTo.Controller
 
             while (!_inputValidator.IsValidGoalInput(GoalInput))
             {
-                GoalInput = GetNumber($"This was not a valid goal Input [italic grey]Max value is 10[/]");
+                GoalInput = GetNumber($"This was [bold red]not[/] a valid goal Input [italic grey]Max value is 10[/]");
             }
 
             return GoalInput;

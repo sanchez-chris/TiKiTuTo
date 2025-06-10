@@ -254,7 +254,7 @@ namespace TiKiTuTo.View
 
         public void ShowInvalidInputMessage()
         {
-            AnsiConsole.MarkupLine("[maroon]Invalid input.[/] [italics]Please enter a valid number.[/]");
+            AnsiConsole.MarkupLine("[maroon red]Invalid input.[/] [italics]Please enter a valid number.[/]");
         }
 
         public void ShowExitMessage()
