@@ -487,14 +487,51 @@ namespace TiKiTuTo.View
         {
             var tree = new Tree("[bold yellow]Knockout Tournament[/]");
 
+            // Determine the total number of rounds
+            int totalRounds = tournament.GamePlanKoRound.Count;
+
             // Loop through each round
-            for (int round = 0; round < tournament.GamePlanKoRound.Count; round++)
+            for (int round = 0; round < totalRounds; round++)
             {
-                string roundName = round == tournament.GamePlanKoRound.Count - 1
-                    ? "Final"
-                    : round == tournament.GamePlanKoRound.Count - 2
-                        ? "Semifinals"
-                        : $"Round {round + 1}";
+                string roundName;
+
+                // Assign names based on the round index
+                if (round == totalRounds - 1)
+                {
+                    roundName = "Final";
+                }
+                else if (round == totalRounds - 2)
+                {
+                    roundName = "Semifinals";
+                }
+                else if (round == totalRounds - 3)
+                {
+                    roundName = "Quarterfinals";
+                }
+                else if (round == totalRounds - 4)
+                {
+                    roundName = "Best of 16";
+                }
+                else if (round == totalRounds - 5)
+                {
+                    roundName = "Best of 32";
+                }
+                else if (round == totalRounds - 6)
+                {
+                    roundName = "Best of 64";
+                }
+                else if (round == totalRounds - 7)
+                {
+                    roundName = "Best of 128";
+                }
+                else if (round == totalRounds - 8)
+                {
+                    roundName = "Best of 256";
+                }
+                else
+                {
+                    roundName = $"Round {round + 1}";
+                }
 
                 var roundNode = tree.AddNode($"[bold red]{roundName}[/]");
 
