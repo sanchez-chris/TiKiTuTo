@@ -474,6 +474,30 @@ namespace TiKiTuTo.View
             AnsiConsole.Write(new Rule("[italic grey]PlayTeach Solutions© 2025 TikiTuto[/]").Centered());
         }
 
+        public void ShowKoTree(Tournament tournament)
+        {
+            var tree = new Tree("[bold yellow]Knockout Tournament[/]");
 
+            // Loop through each round
+            for (int round = 0; round < tournament.GamePlanKoRound.Count; round++)
+            {
+                string roundName = round == tournament.GamePlanKoRound.Count - 1
+                    ? "Final"
+                    : round == tournament.GamePlanKoRound.Count - 2
+                        ? "Semifinals"
+                        : $"Round {round + 1}";
+
+                var roundNode = tree.AddNode($"[bold red]{roundName}[/]");
+
+                // Add matches for the current round
+                foreach (var match in tournament.GamePlanKoRound[round])
+                {
+                    roundNode.AddNode($"[green]{match.teamA.TeamName}[/] vs [green]{match.teamB.TeamName}[/]");
+                }
+            }
+
+            // Display the tree
+            AnsiConsole.Write(tree);
+        }
     }
 }

@@ -57,5 +57,7 @@ namespace TiKiTuTo.View
 
         public void ShowFooter();
 
+        public void ShowKoTree(Tournament tournament);
+
     }
 }
