@@ -152,9 +152,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             if (tournament.KoStandings.Count == 1)
             {
                 tournament.Winner = tournament.KoStandings[0];
-                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is {tournament.Winner.TeamName}!");
-                InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
-                InputHandler.View.ShowMessage($"\n\n2. {tournament.Finalist.TeamName}");
+                InputHandler.View.ShowMessage($"\n\nThe winner of the KO round is [gold3]{tournament.Winner.TeamName}![/]");
+ //               InputHandler.View.ShowMessage($"\n\n1. {tournament.Winner.TeamName}");
+                InputHandler.View.ShowMessage($"\n\nOur runner up on the second place is [lightskyblue1]{tournament.Finalist.TeamName}[/]");
                 if (tournament.ThirdPosition != null)
                 {
                     InputHandler.View.ShowMessage($"\n\n3. {tournament.ThirdPosition.TeamName}");
