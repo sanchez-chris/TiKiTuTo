@@ -107,7 +107,7 @@ namespace TiKiTuTo.Controller
 
                 if (loadedTournament != null)
                 {
-                    _view.ShowMessage($"Turnier {loadedTournament.TournamentName} geladen");
+                    _view.ShowLoadingAnimation($"Tournament {loadedTournament.TournamentName} loaded");
                     _tournamentModel.Tournament = loadedTournament;
                 }
 
@@ -143,7 +143,7 @@ namespace TiKiTuTo.Controller
 
                 if (loadedTournamentSettings != null)
                 {
-                    _view.ShowMessage($"TournamentSettings geladen");
+                    _view.ShowLoadingAnimation($"TournamentSettings {loadedTournamentSettings.SettingsName} loaded");
                     return loadedTournamentSettings;
                 }
 
