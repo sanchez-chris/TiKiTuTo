@@ -28,7 +28,7 @@ namespace TiKiTuTo.Controller
 
             while (!_inputValidator.IsValidGoalInput(GoalInput))
             {
-                GoalInput = GetNumber($"This was not a valid goal Input [italic grey]max 10[/]");
+                GoalInput = GetNumber($"This was not a valid goal Input [italic grey]Max value is 10[/]");
             }
 
             return GoalInput;
@@ -44,7 +44,7 @@ namespace TiKiTuTo.Controller
 
             while (!_inputValidator.IsValidNumberOfTotalTeams(NumberOfTeams))
             {
-                NumberOfTeams = GetNumber("This is not a valid number of teams. [italic grey]minimum 4, maximum 256[/]");
+                NumberOfTeams = GetNumber("This is [bold red]not[/] a valid number of teams for a tournament. [italic grey]minimum 4, maximum 256[/]");
             }
 
             return NumberOfTeams;
@@ -57,11 +57,11 @@ namespace TiKiTuTo.Controller
         /// <returns>The number of games each team has to play in the preliminaries, guaranteed to be a valid value.</returns>
         public int GetValidNumberOfPreliminaryGames(int NumberOfTeamsTotal)
         {
-            int NumberOfPreliminaryGames = GetNumber("How many games should each team play in the preliminaries?");
+            int NumberOfPreliminaryGames = GetNumber($"How many games should each team play in the preliminaries?[italic grey]minimum 1, maximum {NumberOfTeamsTotal - 1}[/]");
 
             while (!_inputValidator.IsValidNumberOfPreliminaryGamesPerTeam(NumberOfPreliminaryGames, NumberOfTeamsTotal))
             {
-                NumberOfPreliminaryGames = GetNumber($"This is not a valid number of games per team [italic grey]minimum 1, maximum {NumberOfTeamsTotal - 1}[/].");
+                NumberOfPreliminaryGames = GetNumber($"This is [bold red]not[/] a valid number of games per team.");
             }
             return NumberOfPreliminaryGames;
         }
@@ -77,7 +77,7 @@ namespace TiKiTuTo.Controller
             int NumberOfTeamsInKO = GetNumber($"How many teams should continue into the KO phase? [italic grey]minimum 2, maximum {maxAllowed}[/]");
             while (!_inputValidator.IsValidNumberOfTeamsInKORound(NumberOfTeamsInKO, NumberOfTeamsTotal))
             {
-                NumberOfTeamsInKO = GetNumber($"This is not a valid number of teams for KO round [italic grey]has to be 2^n, minimum 2, maximum {maxAllowed}[/].");
+                NumberOfTeamsInKO = GetNumber($"This is [bold red]not[/] a valid number of teams for the KO round. [italic grey] minimum 2, maximum {maxAllowed}[/].");
             }
             return NumberOfTeamsInKO;
         }
@@ -88,11 +88,11 @@ namespace TiKiTuTo.Controller
         {
             int minAllowed = 1;
             int maxAllowed = 30;
-            string prompt = $"How many minutes should each match run for? Minimum: {minAllowed}. Maximum: {maxAllowed}.";
+            string prompt = $"How many minutes should each match run for? [italic gray]Minimum: {minAllowed}. Maximum: {maxAllowed}[/]";
             int matchDuration = GetNumber(prompt);
             while (!(matchDuration >= minAllowed && matchDuration <= maxAllowed))
             {
-                matchDuration = GetNumber($"Try again! Minimum: {minAllowed}. Maximum: {maxAllowed}.");
+                matchDuration = GetNumber($"This is [bold red]not[/] a valid duration for the timer. [italic gray]Minimum: {minAllowed}. Maximum: {maxAllowed}[/]");
             }
             return matchDuration;
         }
@@ -120,7 +120,7 @@ namespace TiKiTuTo.Controller
                     result = false;
                     answerGiven = true;
                 }
-                else View.ShowMessage($"\"{userInput}\" is not a valid input, try again! y/n");
+                else View.ShowMessage($"\"{userInput}\" is [bold red]not[/] a valid input, try again! y/n");
             }
             return result;
         }
@@ -140,7 +140,7 @@ namespace TiKiTuTo.Controller
 
             while (!int.TryParse(userInput, out result))
             {
-                View.ShowMessage($"\"{userInput}\" is not a valid number input, please try again!");
+                View.ShowMessage($"\"{userInput}\" is [bold red]not[/] a valid number input, please try again!");
                 userInput = View.ReadInput();
             }
             return result;
@@ -191,7 +191,7 @@ namespace TiKiTuTo.Controller
 
             while (string.IsNullOrEmpty(name))
             {
-                View.ShowMessage("Your input can not be empty.");
+                View.ShowMessage("Your input can [bold red]not[/] be empty.");
                 name = View.ReadInput();
             }
             View.ShowMessage($"{name} has been created.");

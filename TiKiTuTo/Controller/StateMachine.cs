@@ -46,7 +46,7 @@ namespace TiKiTuTo.Controller
         public void TransitionTo(AppState newState)
         {
             CurrentState = newState;
-
+            _view.ShowFooter();
         }
 
 
@@ -160,14 +160,12 @@ namespace TiKiTuTo.Controller
         /////// TODO FOR HandleChoiceMethods
         //MainMenu DONE
         //StartTournamentMenu DONE
-        //ShowSavedTournaments WORK IN PROGRESS
-        //ShowFinishedTournaments  WORK IN PROGRESS
+        //ShowSavedTournaments DONE
+        //ShowFinishedTournaments DONE
         //ManageSettingsMenu DONE
         //TournamentSettingsCreationDialogue DONE
-        //ShowLoadableTournamentSettings TODO
-        //RunTournament TODO
-        //ShowEditableTournamentSettings TODO
-        //TournamentSettingsEditingDialogue TODO
+        //ShowLoadableTournamentSettings DONE
+        //RunTournament DONE
         //InGameMenu  DONE
         //Exit  DONE
 
@@ -328,7 +326,7 @@ namespace TiKiTuTo.Controller
         
         private void HandleImportTournamentSettingsFromExcel()
         {
-            bool answer = _inputHandler.GetApproval("Do you want to continue? (y/n)");
+            bool answer = _inputHandler.GetApproval("Do you want to continue? [bold green]Y[/]/[bold red]N[/]");
             if (answer)
             {
                 Process.Start("explorer.exe", _excelService.ExcelImportFolder);

@@ -54,9 +54,7 @@ namespace TiKiTuTo.View
 
             List<string> headerLines = new()
             {
-                $"       [underline][blink]Main Menu[/][/]",
-
-
+                $"       [underline]Main Menu[/]",
             };
 
             List<string> options = new()
@@ -77,9 +75,7 @@ namespace TiKiTuTo.View
         {
             List<string> headerLines = new()
             {
-                " -----------------------",
-                " ---[reverse]Start Tournament[/]----",
-                " -----------------------"
+               $"       [underline]Start Tournament[/]"
             };
 
             List<string> options = new()
@@ -101,10 +97,9 @@ namespace TiKiTuTo.View
             {
                 List<string> headerLines = new()
             {
-                " -------------------------------------------------",
                 " Do you wish to start the tournament [underline]now[/] or [underline]later?[/]",
-                " -------------------------------------------------"
             };
+
 
                 List<string> options = new()
             {
@@ -125,9 +120,7 @@ namespace TiKiTuTo.View
         {
             List<string> headerLines = new()
             {
-                "-----------------------",
-                "---Saved Tournaments---",
-                "-----------------------"
+                //$"   Saved Tournaments",
             };
 
             Array.Reverse(availableFiles);
@@ -182,12 +175,11 @@ namespace TiKiTuTo.View
         {
             {
                 List<string> headerLines = new()
+
             {
-                "------------------------",
-                "----Settings created.---",
-                "----Create another one--",
-                "----or return to Menu?--",
-                "------------------------"
+                "Your settings have been saved.",
+                "Create another configuration",
+                "or return to the main menu?"
             };
 
                 List<string> options = new()
@@ -209,9 +201,18 @@ namespace TiKiTuTo.View
             {
                 List<string> headerLines = new()
             {
-                " -----------------------",
-                " ------Mini Menu--------",
-                " -----------------------"
+                $"           Mini Menu",
+                $"  ___________________________" ,
+                $" |             |             |",
+                $" |___          |          ___|",
+                $" |_  |         |         |  _|",
+                $",| | |,       ,|,       ,| | |,",
+                $"|| | | )     ( | )     ( | | ||",
+                $"'|_| |'       '|'       '| |_|'",
+                $" |___|         |         |___|",
+                $" |             |             |",
+                $" |_____________|_____________|",
+
             };
 
                 List<string> options = new()
@@ -233,9 +234,7 @@ namespace TiKiTuTo.View
             {
                 List<string> headerLines = new()
             {
-                " -----------------------",
-                " ----[bold red]Exit[/] to desktop?---",
-                " -----------------------"
+                $"[bold red] Exit[/] to desktop?",
             };
 
                 List<string> options = new()
@@ -261,11 +260,11 @@ namespace TiKiTuTo.View
         {
             Console.WriteLine("Exiting application...");
             string[] ball = {
-            "  OOOO  ",
-            " OOOOOO ",
-            "OOOOOOOO",
-            " OOOOOO ",
-            "  OOOO  "
+            "  .OOOO.  ",
+            " .OOOOOO. ",
+            ".OOOOOOOO ",
+            " .OOOOOO. ",
+            "  .OOOO.  "
         };
 
             int screenWidth = Console.WindowWidth;
@@ -307,27 +306,38 @@ namespace TiKiTuTo.View
         public void ShowStandings(Tournament tournament)
         {
             var table = new Table();
-            table.AddColumn("[bold blue]Team Name[/]");
-            table.AddColumn("[bold blue]Games Won[/]");
-            table.AddColumn("[bold blue]Goal Difference[/]");
-            table.AddColumn("[bold blue]Goals Scored[/]");
-            table.AddColumn("[bold blue]Goals Received[/]");
+            table.AddColumn(new TableColumn("[bold yellow4]Position[/]").Padding(1, 1).Alignment(Justify.Center));
+            table.AddColumn(new TableColumn("[bold blue]Team Name[/]").Padding(2, 2).Alignment(Justify.Center));
+            table.AddColumn(new TableColumn("[bold blue]Games Won[/]").Padding(1, 1).Alignment(Justify.Center));
+            table.AddColumn(new TableColumn("[bold blue]Goal Difference[/]").Padding(1, 1).Alignment(Justify.Center));
+            table.AddColumn(new TableColumn("[bold green]Goals Scored[/]").Padding(1, 1).Alignment(Justify.Center));
+            table.AddColumn(new TableColumn("[bold red]Goals Received[/]").Padding(1, 1).Alignment(Justify.Center));
+            table.Border(TableBorder.Rounded);
+            table.BorderColor(Color.Wheat4);
 
             var sortedTeams = tournament.TournamentSettings.TeamsInTournament
                 .OrderByDescending(t => t.NumberGamesWon)
                 .ThenByDescending(t => t.Goaldifference)
                 .ThenByDescending(t => t.NumberGoals)
                 .ToList();
-
+            int i = 1;
             foreach (var team in sortedTeams)
             {
                 table.AddRow(
+                    Convert.ToString(i),
                     team.TeamName,
                     team.NumberGamesWon.ToString(),
                     team.Goaldifference.ToString(),
                     team.NumberGoals.ToString(),
                     (team.NumberGoals - team.Goaldifference).ToString());
+                i++;
             }
+            AnsiConsole.Write(
+                        new Panel("[bold yellow]Tournament Standings[/]")
+                            .Border(BoxBorder.Rounded)
+                            .BorderColor(Color.Blue)
+                            );
+
 
             AnsiConsole.Write(table);
             WriteEmptyLine();
@@ -398,23 +408,23 @@ namespace TiKiTuTo.View
             ShowTikiTutoHeader();
             foreach (string line in headerLines)
             {
-                AnsiConsole.MarkupLine($"[yellow]{line}[/]");
+                AnsiConsole.MarkupLine($"[bold]{line}[/]");
             }
 
             string title;
             switch (SelectedLoadingType)
             {
                 case SelectLoadingType.UnfinishedTournament:
-                    title = "[yellow]Saved Tournaments[/]";
+                    title = $"       [underline]Saved Tournaments[/]";
                     break;
                 case SelectLoadingType.FinishedTournament:
-                    title = "[yellow]Finished Tournaments[/]";
+                    title = $"       [underline]Finished Tournaments[/]";
                     break;
                 case SelectLoadingType.TournamentSettings:
-                    title = "[yellow]Tournament Settings[/]";
+                    title = $"       [underline]Tournament Settings[/]";
                     break;
                 default:
-                    title = $"[lightskyblue3_1] Please select an option[/]";
+                    title = $"[italic lightskyblue3_1]Please select an option to continue.[/]";
                     break;
             }
 
@@ -429,9 +439,9 @@ namespace TiKiTuTo.View
         new SelectionPrompt<string>()
         .Title(title)
         .PageSize(10)
-        .MoreChoicesText("[grey](Use arrow keys to navigate and press Enter to select)[/]")
+        .MoreChoicesText("[italic grey](Use arrow keys to navigate and press Enter to select)[/]")
         .AddChoices(options)
-        .UseConverter(option => option) // Removes the question mark
+        .UseConverter(option => option)
 );
 
             return options.ToList().IndexOf(userChoice) + 1;
@@ -458,7 +468,7 @@ namespace TiKiTuTo.View
 
         public void WaitForAnyKeyToProceed()
         {
-            AnsiConsole.MarkupLine("Press [bold]any[/] key to continue.");
+            AnsiConsole.MarkupLine("Press [underline]any[/] key to continue.");
             Console.ReadKey();
         }
 
