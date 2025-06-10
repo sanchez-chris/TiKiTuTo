@@ -49,7 +49,7 @@ namespace TiKiTuTo
                         tournamentSettings.NumberOfTeamsInKoRound = tournamentSheet.Cell("B5").GetValue<int>();
                         string answer = tournamentSheet.Cell("B6").GetValue<string>();
                         tournamentSettings.MatchDuration = tournamentSheet.Cell("B7").GetValue<int>();
-                        if (answer == "Yes")
+                        if (answer == "YES")
                         {
                             tournamentSettings.UseTimer = true;
                         }

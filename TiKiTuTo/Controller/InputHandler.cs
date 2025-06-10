@@ -40,7 +40,7 @@ namespace TiKiTuTo.Controller
         /// <returns>The number of teams playing in a tournament, guaranteed to be a valid value.</returns>
         public int GetValidNumberOfTotalTeams()
         {
-            int NumberOfTeams = GetNumber($"How many teams are going to join this tournament? [italic grey]At least 4[/]");
+            int NumberOfTeams = GetNumber($"How many teams are going to join this tournament? [italic grey]minimum 4, maximum 256[/]");
 
             while (!_inputValidator.IsValidNumberOfTotalTeams(NumberOfTeams))
             {
@@ -57,7 +57,7 @@ namespace TiKiTuTo.Controller
         /// <returns>The number of games each team has to play in the preliminaries, guaranteed to be a valid value.</returns>
         public int GetValidNumberOfPreliminaryGames(int NumberOfTeamsTotal)
         {
-            int NumberOfPreliminaryGames = GetNumber($"How many games should each team play in the preliminaries?[italic grey]minimum 1, maximum {NumberOfTeamsTotal - 1}[/]");
+            int NumberOfPreliminaryGames = GetNumber($"How many games should each team play in the preliminaries? [italic grey]minimum 1, maximum {NumberOfTeamsTotal - 1}[/]");
 
             while (!_inputValidator.IsValidNumberOfPreliminaryGamesPerTeam(NumberOfPreliminaryGames, NumberOfTeamsTotal))
             {
@@ -77,7 +77,7 @@ namespace TiKiTuTo.Controller
             int NumberOfTeamsInKO = GetNumber($"How many teams should continue into the KO phase? [italic grey]minimum 2, maximum {maxAllowed}[/]");
             while (!_inputValidator.IsValidNumberOfTeamsInKORound(NumberOfTeamsInKO, NumberOfTeamsTotal))
             {
-                NumberOfTeamsInKO = GetNumber($"This is [bold red]not[/] a valid number of teams for the KO round. [italic grey] minimum 2, maximum {maxAllowed}[/].");
+                NumberOfTeamsInKO = GetNumber($"This is [bold red]not[/] a valid number of teams for the KO round. [italic grey]minimum 2, maximum {maxAllowed}[/].");
             }
             return NumberOfTeamsInKO;
         }
@@ -88,11 +88,11 @@ namespace TiKiTuTo.Controller
         {
             int minAllowed = 1;
             int maxAllowed = 30;
-            string prompt = $"How many minutes should each match run for? [italic gray]Minimum: {minAllowed}. Maximum: {maxAllowed}[/]";
+            string prompt = $"How many minutes should each match run for? [italic gray]minimum: {minAllowed}, maximum: {maxAllowed}[/]";
             int matchDuration = GetNumber(prompt);
             while (!(matchDuration >= minAllowed && matchDuration <= maxAllowed))
             {
-                matchDuration = GetNumber($"This is [bold red]not[/] a valid duration for the timer. [italic gray]Minimum: {minAllowed}. Maximum: {maxAllowed}[/]");
+                matchDuration = GetNumber($"This is [bold red]not[/] a valid duration for the timer. [italic gray]minimum: {minAllowed}, maximum: {maxAllowed}[/]");
             }
             return matchDuration;
         }
@@ -120,7 +120,7 @@ namespace TiKiTuTo.Controller
                     result = false;
                     answerGiven = true;
                 }
-                else View.ShowMessage($"\"{userInput}\" is [bold red]not[/] a valid input, try again! y/n");
+                else View.ShowMessage($"\"{userInput}\" is [bold red]not[/] a valid input, try again! [y/n]");
             }
             return result;
         }

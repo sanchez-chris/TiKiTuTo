@@ -326,7 +326,7 @@ namespace TiKiTuTo.Controller
         
         private void HandleImportTournamentSettingsFromExcel()
         {
-            bool answer = _inputHandler.GetApproval("Do you want to continue? [bold green]Y[/]/[bold red]N[/]");
+            bool answer = _inputHandler.GetApproval("Do you want to continue? [[[bold green]Y[/]/[bold red]N[/]]]");
             if (answer)
             {
                 Process.Start("explorer.exe", _excelService.ExcelImportFolder);

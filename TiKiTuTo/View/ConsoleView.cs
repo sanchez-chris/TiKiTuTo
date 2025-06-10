@@ -167,8 +167,8 @@ namespace TiKiTuTo.View
 
         public void ConfirmingImportAction()
         {
-            AnsiConsole.WriteLine("When you have ensured the file is saved and all instructions have been followed, press random key to continue");
-            Console.ReadLine();
+            AnsiConsole.WriteLine("When you have ensured the file is saved and all instructions have been followed, press [underline]any[/] key to continue");
+            Console.ReadKey();
         }
 
 
