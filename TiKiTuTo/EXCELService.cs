@@ -15,7 +15,6 @@ namespace TiKiTuTo
         public readonly string ExcelImportFolder;
         TournamentModel TournamentModel { get; set; }
 
-
         public EXCELService(TournamentModel tournamentModel)
         {
             TournamentModel = tournamentModel;
@@ -43,7 +42,7 @@ namespace TiKiTuTo
 
             try
             {
-                using (var workbook = new XLWorkbook($"{ExcelImportFolder}\\Import_Tournament_Settings.xlsx"))
+                using (var workbook = new XLWorkbook($"{ExcelImportFolder}\\Settings.xlsx"))
                 {
                     var tournamentSheet = workbook.Worksheet(1);
                     
@@ -127,8 +126,8 @@ namespace TiKiTuTo
         /// </remarks>
         private void CopyTemplateIfNotExists()
         {
-            var destinationFile = Path.Combine(ExcelImportFolder, "Import_Tournament_Settings.xlsx");
-            string templatePath = Path.Combine(ProjectDirectory, "Templates", "Import_Tournament_Settings.xlsx");
+            var destinationFile = Path.Combine(ExcelImportFolder, "Settings.xlsx");
+            string templatePath = Path.Combine(ProjectDirectory, "Templates", "Settings.xlsx");
 
             if (!File.Exists(destinationFile))
             {
