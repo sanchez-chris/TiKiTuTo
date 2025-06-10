@@ -62,6 +62,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             int matchIndex = 1;
 
+            //To print an empty line between the last played game and the first unplayed match
+            if (tournament.GamePlanPreliminaryRound.Any(match => match.isFinished))
+            {
+                InputHandler.View.WriteEmptyLine();
+            }
+
             // take a list of matches tournament.GamePlanPreliminaryRound and execute it, asking the goals scored, updating the teams attributes accordingly (teamA.goalsScored, etc)
             foreach (var match in tournament.GamePlanPreliminaryRound)
             {
@@ -104,6 +110,12 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 //ShowKoGamePlanKoRound(tournament, tournament.CurrentKoRound);
                 InputHandler.View.ShowKoTree(tournament);
+
+                //To print an empty line between the last played game and the first unplayed match
+                if (tournament.GamePlanKoRound[tournament.CurrentKoRound].Any(match => match.isFinished))
+                {
+                    InputHandler.View.WriteEmptyLine();
+                }
 
                 foreach (var match in tournament.GamePlanKoRound[tournament.CurrentKoRound])
                 {
