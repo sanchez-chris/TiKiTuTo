@@ -102,8 +102,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             while (tournament.CurrentKoRound < totalRounds)
             {
-                ShowKoGamePlanKoRound(tournament, tournament.CurrentKoRound);
-
+                //ShowKoGamePlanKoRound(tournament, tournament.CurrentKoRound);
+                InputHandler.View.ShowKoTree(tournament);
 
                 foreach (var match in tournament.GamePlanKoRound[tournament.CurrentKoRound])
                 {
