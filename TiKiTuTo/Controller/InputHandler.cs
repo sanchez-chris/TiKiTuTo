@@ -175,7 +175,7 @@ namespace TiKiTuTo.Controller
 
             if (string.IsNullOrEmpty(teamName))
             {
-                teamName = $"Tea   m             {teamNumber}";
+                teamName = $"Team {teamNumber}";
             }
 
             View.ShowMessage($"Creating Team {teamName}");
