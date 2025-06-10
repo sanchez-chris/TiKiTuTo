@@ -1,7 +1,5 @@
 using TiKiTuTo.View;
-using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic;
-using Spectre.Console;
 
 namespace TiKiTuTo.Controller
 {

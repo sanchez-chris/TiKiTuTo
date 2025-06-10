@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
-using Spectre.Console;
+﻿using Spectre.Console;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 
@@ -19,6 +10,7 @@ namespace TiKiTuTo.View
         public ConsoleView()
         {
             Console.CursorVisible = false;
+            Console.Title = "TikiTuto";
             AnsiConsole.Cursor.Hide();
         }
 

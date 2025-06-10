@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Spectre.Console;
-using TiKiTuTo.Model.DataObjects;
+﻿using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.View
 {
