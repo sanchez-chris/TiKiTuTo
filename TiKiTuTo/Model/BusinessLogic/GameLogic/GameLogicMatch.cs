@@ -55,7 +55,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             int goalsB = 0;
             bool isThereTimer = false;
             InputHandler.View.ShowMessage($"\n\nMatch: {match.teamA.TeamName} vs {match.teamB.TeamName}");
-            
+            InputHandler.View.WaitForAnyKeyToProceed();
+
             if (TournamentModel.Tournament.TournamentSettings.UseTimer)
             {
                 StartMatchTimer(match, (double)TournamentModel.Tournament.TournamentSettings.MatchDuration);
@@ -121,7 +122,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             };
 
             // Start the timer
-            InputHandler.View.WaitForAnyKeyToProceed();
             InputHandler.View.ShowMessage($"Timer started for {duration} minutes.");
             InputHandler.View.WriteEmptyLine();
             timer.Start();

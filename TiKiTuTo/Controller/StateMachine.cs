@@ -328,7 +328,7 @@ namespace TiKiTuTo.Controller
         
         private void HandleImportTournamentSettingsFromExcel()
         {
-            bool answer = _inputHandler.GetApprovalForExcelImport();
+            bool answer = _inputHandler.GetApproval("Do you want to continue? (y/n)");
             if (answer)
             {
                 Process.Start("explorer.exe", _excelService.ExcelImportFolder);

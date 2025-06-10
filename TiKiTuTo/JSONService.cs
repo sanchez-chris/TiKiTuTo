@@ -13,9 +13,9 @@ namespace TiKiTuTo.Controller
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "TikiTuto");
 
-        private string saveFolder => Path.Combine(baseFolder, "3.Saved_Tournaments");
-        private string settingsFolder => Path.Combine(baseFolder, "2.Saved_Tournament_Settings");
-        private string finishedTournamentFolder => Path.Combine(baseFolder, "4.Finished_Tournaments");
+        private string saveFolder => Path.Combine(baseFolder, "Saved_Tournaments");
+        private string settingsFolder => Path.Combine(baseFolder, "Saved_Tournament_Settings");
+        private string finishedTournamentFolder => Path.Combine(baseFolder, "Finished_Tournaments");
         
         private TournamentModel _tournamentModel;
         private IView _view;

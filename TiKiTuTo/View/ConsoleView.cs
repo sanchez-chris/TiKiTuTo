@@ -175,7 +175,6 @@ namespace TiKiTuTo.View
         {
             AnsiConsole.WriteLine("When you have ensured the file is saved and all instructions have been followed, press random key to continue");
             Console.ReadLine();
-            Console.Clear();
         }
 
 
