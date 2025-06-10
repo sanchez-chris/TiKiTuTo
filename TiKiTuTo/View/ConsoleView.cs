@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
-using Spectre.Console;
+﻿using Spectre.Console;
 using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 
@@ -55,6 +46,7 @@ namespace TiKiTuTo.View
             List<string> headerLines = new()
             {
                 $"       [underline]Main Menu[/]",
+                ""
             };
 
             List<string> options = new()
@@ -162,7 +154,7 @@ namespace TiKiTuTo.View
             AnsiConsole.WriteLine("- Follow the instructions in the file carefully.");
             AnsiConsole.WriteLine("- Ensure that you adhere to the specified formatting.\n");
             return 1;
-            }
+        }
 
         public void ConfirmingImportAction()
         {
@@ -406,6 +398,7 @@ namespace TiKiTuTo.View
         {
             AnsiConsole.Clear();
             ShowTikiTutoHeader();
+            WriteEmptyLine();
             foreach (string line in headerLines)
             {
                 AnsiConsole.MarkupLine($"[bold]{line}[/]");

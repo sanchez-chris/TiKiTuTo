@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using TiKiTuTo.Model;
-using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
 
@@ -16,7 +15,7 @@ namespace TiKiTuTo.Controller
         private string saveFolder => Path.Combine(baseFolder, "Saved_Tournaments");
         private string settingsFolder => Path.Combine(baseFolder, "Saved_Tournament_Settings");
         private string finishedTournamentFolder => Path.Combine(baseFolder, "Finished_Tournaments");
-        
+
         private TournamentModel _tournamentModel;
         private IView _view;
 
@@ -100,10 +99,10 @@ namespace TiKiTuTo.Controller
                 JsonSerializerOptions options = new JsonSerializerOptions
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
-                    PropertyNameCaseInsensitive = true 
+                    PropertyNameCaseInsensitive = true
                 };
                 Tournament loadedTournament = JsonSerializer.Deserialize<Tournament>(tournamentJSON, options);
-             
+
 
                 if (loadedTournament != null)
                 {

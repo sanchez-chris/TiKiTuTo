@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TiKiTuTo.Model.DataObjects;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 using TiKiTuTo.Model;
+using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo
 {
     public class EXCELService
     {
-        private readonly string ProjectDirectory; 
+        private readonly string ProjectDirectory;
         public readonly string ExcelImportFolder;
 
         TournamentModel TournamentModel { get; set; }

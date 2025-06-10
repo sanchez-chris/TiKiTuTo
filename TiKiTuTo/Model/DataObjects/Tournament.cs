@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TiKiTuTo.Model.DataObjects
+﻿namespace TiKiTuTo.Model.DataObjects
 {
     public class Tournament
     {
@@ -21,7 +15,7 @@ namespace TiKiTuTo.Model.DataObjects
         public bool IsSemifinalPlayed { get; set; } = false;
         public int CurrentKoRound { get; set; } = 0;
         public bool IsFinished { get; set; } = false;
-        
+
 
         public Tournament(string name, TournamentSettings settings)
         {

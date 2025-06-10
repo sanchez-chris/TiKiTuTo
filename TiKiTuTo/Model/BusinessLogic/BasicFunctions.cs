@@ -1,10 +1,4 @@
-﻿
-using TiKiTuTo.Controller;
-using TiKiTuTo.Model.DataObjects;
-using TiKiTuTo.Model.BusinessLogic.GameLogic;
-
-
-namespace TiKiTuTo.Model.BusinessLogic
+﻿namespace TiKiTuTo.Model.BusinessLogic
 {
     public class BasicFunctions
     {
@@ -21,6 +15,6 @@ namespace TiKiTuTo.Model.BusinessLogic
         }
 
 
-        
+
     }
 }

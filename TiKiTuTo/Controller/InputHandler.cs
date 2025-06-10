@@ -1,7 +1,5 @@
-using TiKiTuTo.View;
-using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic;
-using Spectre.Console;
+using TiKiTuTo.View;
 
 namespace TiKiTuTo.Controller
 {
@@ -21,7 +19,7 @@ namespace TiKiTuTo.Controller
             _inputValidator = inputValidator;
         }
 
-        
+
         public int GetValidGoalInput(string teamName)
         {
             int GoalInput = GetNumber($"\nHow many goals has {teamName} made?");
@@ -96,7 +94,7 @@ namespace TiKiTuTo.Controller
             }
             return matchDuration;
         }
-        
+
         public bool GetApproval(string prompt)
         {
             List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
@@ -105,8 +103,8 @@ namespace TiKiTuTo.Controller
             bool result = false;
             bool answerGiven = false;
             View.ShowMessage(prompt);
-            
-            while(!answerGiven)
+
+            while (!answerGiven)
             {
                 string? userInput = View.ReadInput();
 
@@ -115,7 +113,7 @@ namespace TiKiTuTo.Controller
                     result = true;
                     answerGiven = true;
                 }
-                 else if (validInputsNo.Contains(userInput))
+                else if (validInputsNo.Contains(userInput))
                 {
                     result = false;
                     answerGiven = true;
@@ -176,8 +174,8 @@ namespace TiKiTuTo.Controller
             if (string.IsNullOrEmpty(teamName))
             {
                 teamName = $"Team {teamNumber}";
-            }   
-            
+            }
+
             View.ShowMessage($"Creating Team {teamName}");
             return teamName;
         }
@@ -197,6 +195,6 @@ namespace TiKiTuTo.Controller
             View.ShowMessage($"{name} has been created.");
             return name;
         }
-        
+
     }
 }

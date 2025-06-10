@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using TiKiTuTo.Controller;
-
-namespace TiKiTuTo.Model.DataObjects
+﻿namespace TiKiTuTo.Model.DataObjects
 {
     public class Team
     {

@@ -1,8 +1,6 @@
-﻿using TiKiTuTo.Controller;
-using TiKiTuTo.View;
-using TiKiTuTo.Model;
-using TiKiTuTo.Model.DataObjects;
+﻿using TiKiTuTo.Model;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
+using TiKiTuTo.View;
 
 namespace TiKiTuTo.Controller
 {
