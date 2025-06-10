@@ -1,4 +1,10 @@
-﻿using TiKiTuTo.Model.DataObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Spectre.Console;
+using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.View
 {
@@ -36,7 +42,7 @@ namespace TiKiTuTo.View
         public void ShowTeamsAndPlayer(List<Team> teams);
 
         public void ShowStandings(Tournament tournament);
-
+        
         public void ShowExitMessage();
 
         public void ShowLoadingAnimation(string message);
@@ -56,8 +62,6 @@ namespace TiKiTuTo.View
         public void WaitForAnyKeyToProceed();
 
         public void ShowFooter();
-
-        public void ShowKoTree(Tournament tournament);
 
     }
 }
