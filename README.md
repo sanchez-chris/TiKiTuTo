@@ -15,7 +15,7 @@ This project is a .NET 8 console application designed to manage a table soccer t
   - Use project references to provide functionality to the console application.
   
 - **Input Requirements**:
-  - Read the number of teams (must be an even number).
+  - Read the number of teams.
   - Gather team information:
     - Team names (default to "Team 1", "Team 2", etc. if left blank).
     - Player names (default to "Player 1", "Player 2", etc. if left blank).
@@ -29,7 +29,7 @@ This project is a .NET 8 console application designed to manage a table soccer t
 
 - **Round Details**:
   - **Preliminary Round**: 
-    - Once the desired number of games per team is reached, select teams for the next round based on games won. In case of a tie, the team with the better goal difference advances.
+    - Once the desired number of games per team is reached, select teams for the next round based on games won. In case of a tie, the team with the better goal difference advances, in case of another tie, the           total amount of goals will decide.
   - **KO Rounds**:
     - Form groups of 2 teams, with 1 game per group. The winner advances to the next round. The two losers in the semifinals play for 3rd place.
   - **Final**: 
@@ -37,13 +37,13 @@ This project is a .NET 8 console application designed to manage a table soccer t
 
 - **Persistence**:
   - Automatically save the current game state to allow resuming after a restart.
-  - Enable automatic reading of user inputs required at startup, allowing pre-entry of teams and players before program execution.
+  - Enable automatic reading of user inputs required at startup, allowing pre-entry of teams and players before program execution in the program and as an Excel import.
   - Use established practices/formats (e.g., JSON) for data persistence.
 
 ## Bonus Tasks
 
 1. **Configurable Timer per Game**: 
-   - Set a maximum duration for a game. After the timer expires, if the score is tied, the team that scores next wins.
+   - Set a maximum duration (1-30 min) for a game. After the timer expires, if the score is tied, the team that scores next wins.
    - Implemented an acoustic signal to end the timer.
 
 ## Getting Started
@@ -64,6 +64,7 @@ This project is a .NET 8 console application designed to manage a table soccer t
 
 - Implement a graphical user interface (GUI) to replace the console application for improved user experience.
 - Add more configuration options for tournament rules and settings.
+- Add more logging.
 
 ## License
 
