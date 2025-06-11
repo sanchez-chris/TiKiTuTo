@@ -1,14 +1,11 @@
-﻿using TiKiTuTo.Controller;
-using TiKiTuTo.View;
+﻿using TiKiTuTo.View;
 using TiKiTuTo.Model;
-using TiKiTuTo.Model.DataObjects;
+using TiKiTuTo.Controller;
 using TiKiTuTo.Model.BusinessLogic.GameLogic;
-using System.Text;
 
-namespace TiKiTuTo.Controller
+namespace TiKiTuTo
 {
-
-    public class Program
+    internal static class Program
     {
         public static void Main()
         {
@@ -17,14 +14,14 @@ namespace TiKiTuTo.Controller
             InputValidator inputValidator = new InputValidator();
             InputHandler inputHandler = new InputHandler(view, inputValidator);
             JSONService json = new JSONService(model, view);
-            EXCELService excel = new EXCELService(model);
-            GameLogicMatch gameLogicMatch = new(inputHandler, json, model);
+            ExcelService excel = new ExcelService(model);
             GameLogicRound gameLogicRound = new(inputHandler, json, inputValidator, model);
-            GameLogicTournamentSettings gameLogicTournamentSettings = new(model, inputHandler);
-            GameLogicTournament gameLogicTournament = new(gameLogicRound, gameLogicTournamentSettings, inputHandler, model, json);
-            StateMachine stateMachine = new StateMachine(view, gameLogicTournament, gameLogicRound, model, json, excel, inputHandler, gameLogicTournamentSettings);
-            Controller controller = new Controller(view, model, stateMachine, inputHandler, gameLogicMatch, gameLogicRound, gameLogicTournament, gameLogicTournamentSettings);
-            Console.Title = "TikiTuto";
+            GameLogicTournamentSettings gameLogicTournamentSettings = new(inputHandler);
+            GameLogicTournament gameLogicTournament =
+                new(gameLogicRound, gameLogicTournamentSettings, inputHandler, model, json);
+            StateMachine stateMachine = new StateMachine(view, gameLogicTournament, gameLogicTournamentSettings,
+                gameLogicRound, model, json, excel, inputHandler);
+            Controller.Controller controller = new Controller.Controller(stateMachine);
 
             while (true)
             {
@@ -32,7 +29,5 @@ namespace TiKiTuTo.Controller
             }
 
         }
-
     }
-
 }

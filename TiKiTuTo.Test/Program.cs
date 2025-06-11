@@ -1,6 +1,4 @@
-﻿using System.IO;
-using Xunit;
-using TiKiTuTo;
+﻿using Xunit;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace TiKiTuTo.Test
@@ -25,7 +23,7 @@ namespace TiKiTuTo.Test
             catch (Exception ex)
             {
                 // Catch the Environment.Exit call
-                Assert.IsType<System.Threading.ThreadAbortException>(ex);
+                Assert.IsType<ThreadAbortException>(ex);
             }
 
             // Assert

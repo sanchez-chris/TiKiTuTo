@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TiKiTuTo.Controller;
-using TiKiTuTo.View;
-using TiKiTuTo.Model.BusinessLogic;
+﻿using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
-using TiKiTuTo.Model;
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
     /// <summary>
@@ -17,13 +9,11 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
     public class GameLogicTournamentSettings
     {
-        InputHandler InputHandler;
-        public TournamentModel TournamentModel { get; set; }
+        private readonly InputHandler _inputHandler;
 
-        public GameLogicTournamentSettings(TournamentModel model, InputHandler inputHandler) 
+        public GameLogicTournamentSettings(InputHandler inputHandler) 
         {
-            InputHandler = inputHandler;
-            TournamentModel = model;
+            _inputHandler = inputHandler;
         }
 
 
@@ -35,77 +25,66 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public TournamentSettings CreateTournamentSettings()
         {
 
-            int NumberOfTeamsTotal;                 //how many teams attend the tournament?
-            int NumberOfPreliminaryGamesPerTeam;    //how many games will be played per team in the preliminaries?
-            int NumberOfTeamsInKORound;             //how many teams will progress into knockout rounds?
+            int numberOfTeamsTotal;                 //how many teams attend the tournament?
+            int numberOfPreliminaryGamesPerTeam;    //how many games will be played per team in the preliminaries?
+            int numberOfTeamsInKORound;             //how many teams will progress into knockout rounds?
             bool useTimer;                          //should a timer be used?
             int matchDuration = 0;                  //how long should one match take?
-            List<Team> Teams;                       //the actual teams
+            List<Team> teams;                       //the actual teams
 
             //ask for the necessary inputs
-            NumberOfTeamsTotal = InputHandler.GetValidNumberOfTotalTeams();
-            NumberOfPreliminaryGamesPerTeam = InputHandler.GetValidNumberOfPreliminaryGames(NumberOfTeamsTotal);
-            NumberOfTeamsInKORound = InputHandler.GetValidNumberOfTeamsInKORound(NumberOfTeamsTotal);
-            useTimer = InputHandler.GetApproval("Do you want to set a timer for the matches? [[[bold green]Y[/]/[bold red]N[/]]]");
+            numberOfTeamsTotal = _inputHandler.GetValidNumberOfTotalTeams();
+            numberOfPreliminaryGamesPerTeam = _inputHandler.GetValidNumberOfPreliminaryGames(numberOfTeamsTotal);
+            numberOfTeamsInKORound = _inputHandler.GetValidNumberOfTeamsInKORound(numberOfTeamsTotal);
+            useTimer = _inputHandler.GetApproval("Do you want to set a timer for the matches? [[[bold green]Y[/]/[bold red]N[/]]]");
             
             if (useTimer)
             {
-                matchDuration = InputHandler.GetValidMatchDuration();
+                matchDuration = _inputHandler.GetValidMatchDuration();
             }
-            Teams = CreateListOfTeams(NumberOfTeamsTotal);
+            teams = CreateListOfTeams(numberOfTeamsTotal);
             
-            string TournamentSettingsName = InputHandler.GetMandatoryName("Name the Settings.");
+            string tournamentSettingsName = _inputHandler.GetMandatoryName("Name the Settings.");
 
             TournamentSettings tournamentSettings = new TournamentSettings
                 (
-                NumberOfTeamsTotal, 
-                NumberOfPreliminaryGamesPerTeam, 
-                NumberOfTeamsInKORound, 
-                Teams, 
+                numberOfTeamsTotal, 
+                numberOfPreliminaryGamesPerTeam, 
+                numberOfTeamsInKORound, 
+                teams, 
                 useTimer, 
                 matchDuration, 
-                TournamentSettingsName
+                tournamentSettingsName
                 );
 
             return tournamentSettings;
         }
 
-        public List<Team> CreateListOfTeams(int NumberOfTeamsTotal)
+        public List<Team> CreateListOfTeams(int numberOfTeamsTotal)
         {
             List<Team> teams = new List<Team>();
-            int maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
-            for (int i = 1; i <= NumberOfTeamsTotal; i++)
+            int maxTeamMembers = _inputHandler.GetNumber("How many Teammembers would you like to have?");
+            for (int i = 1; i <= numberOfTeamsTotal; i++)
             {
                 teams.Add(CreateTeam(i, maxTeamMembers));
             }
             
-            InputHandler.View.ShowMessage($"You have created {teams.Count} teams.\n\nPreliminary round contestant:");
-            InputHandler.View.ShowTeamsAndPlayer(teams);
+            _inputHandler.View.ShowMessage($"You have created {teams.Count} teams.\n\nPreliminary round contestant:");
+            _inputHandler.View.ShowTeamsAndPlayer(teams);
             return teams;
         }
 
 
         public Team CreateTeam(int i, int maxTeamMembers)
         {
-            bool emptyNameAllowed = true;
-            string? teamName = InputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", i);
+            string teamName = _inputHandler.GetTeamName($"Please enter the name of the team. Default name when empty: Team {i}.", i);
 
-            if (string.IsNullOrEmpty(teamName))
-            {
-                teamName = $"Team {i}";
-            }
-
-            List<Player> playerList = new List<Player>();
-            Team team = new Team(teamName, playerList);
+            Team team = new Team(teamName);
 //           maxTeamMembers = InputHandler.GetNumber("How many Teammembers would you like to have?");
             for (int p = 1; p <= maxTeamMembers; p++)
             {
-                string? playerName = InputHandler.GetPlayerName($"Please enter the name of the next team member. Default name when empty: Player {p}.", p);
+                string playerName = _inputHandler.GetPlayerName($"Please enter the name of the next team member. Default name when empty: Player {p}.", p);
 
-                if (string.IsNullOrEmpty(playerName))
-                {
-                    playerName = $"Player {p}";
-                }
                 Player player = new Player(playerName);
                 AddPlayer(player, team);
 
@@ -114,9 +93,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
 
         /// <summary>
-        /// Used to add a Player to a Team, needs a Player Object
+        /// Used to add a Player to a Team, needs a Player object and a Team object
         /// </summary>
-        /// <param name="player"></param>
+        /// <param name="player">The player added to team</param>
+        /// <param name="team">The team to add the player to</param>
         public void AddPlayer(Player player, Team team)
         {
             if (!team.PlayerInTeam.Contains(player))
