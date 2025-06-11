@@ -1,6 +1,7 @@
 ﻿using TiKiTuTo.Controller;
 using TiKiTuTo.Model.DataObjects;
 using Timer = System.Timers.Timer;
+using System.Media;
 
 namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 {
@@ -26,7 +27,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             int goalsA = 0;
             int goalsB = 0;
             bool isThereTimer = false;
-            InputHandler.View.ShowMessage($"\n\nMatch: {match.TeamA.TeamName} vs {match.TeamB.TeamName}");
+            InputHandler.View.ShowMessage($"\n\nMatch: {match.TeamA.TeamName} VS {match.TeamB.TeamName}");
 
             if (TournamentModel.Tournament.TournamentSettings.UseTimer)
             {

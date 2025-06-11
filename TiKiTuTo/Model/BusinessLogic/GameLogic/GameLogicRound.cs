@@ -48,7 +48,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             InputHandler.View.ShowMessage("\nGameplan preliminary round:\n");
 
             tournament.GamePlanPreliminaryRound.ForEach(match =>
-                InputHandler.View.ShowMessage($"{match.TeamA.TeamName} vs {match.TeamB.TeamName}"));
+                InputHandler.View.ShowMessage($"{match.TeamA.TeamName}{match.TeamB.TeamName}"));
 
             //To print an empty line between the last played game and the first unplayed match
             if (tournament.GamePlanPreliminaryRound.Any(match => match.IsFinished))
@@ -61,7 +61,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             {
                 if (match.IsFinished)
                 {
-                    InputHandler.View.ShowMessage($"{match.TeamA.TeamName} vs {match.TeamB.TeamName} is finished");
+                    InputHandler.View.ShowMessage($"{match.TeamA.TeamName} VS {match.TeamB.TeamName} is finished");
                 }
                 else
                 {
@@ -262,7 +262,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             OrganizeMatchesForNextRound();
         }
 
-        public void ShowKoGamePlanKoRound()
+ /*       public void ShowKoGamePlanKoRound()
         {
             Tournament tournament = TournamentModel.Tournament;
             int currentRound = tournament.CurrentKoRound;
@@ -283,8 +283,8 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             if (currentRound == totalRounds)
             {
-                InputHandler.View.ShowMessage("Final:");
-                InputHandler.View.ShowMessage("Match:");
+                InputHandler.View.ShowMessage("[bold gold3]Final Match[/]:");
+                
             }
             else if (currentRound == totalRounds - 1 && totalRounds > 1)
             {
@@ -302,10 +302,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
 
             foreach (var match in tournament.GamePlanKoRound[currentRound])
             {
-                InputHandler.View.ShowMessage($"{match.TeamA.TeamName.PadRight(spacing)} vs {match.TeamB.TeamName.PadRight(spacing)}");
+                InputHandler.View.ShowMessage($"{match.TeamA.TeamName.PadRight(spacing)} VS {match.TeamB.TeamName.PadRight(spacing)}");
             }
 
-        }
+        }*/
 
         public void OrganizeMatchesForNextRound()
         {
@@ -377,7 +377,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 }
                 else
                 {
-                    InputHandler.View.ShowMessage($"\n\n{match.TeamA.TeamName} vs {match.TeamB.TeamName} is finished.");
+                    InputHandler.View.ShowMessage($"\n\n{match.TeamA.TeamName} VS {match.TeamB.TeamName} is already finished.");
                     break;
                 }
             }

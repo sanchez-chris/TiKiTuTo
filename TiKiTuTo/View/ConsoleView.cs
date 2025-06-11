@@ -532,7 +532,7 @@ namespace TiKiTuTo.View
                 // Add matches for the current round
                 foreach (var match in tournament.GamePlanKoRound[round])
                 {
-                    roundNode.AddNode($"[green]{match.TeamA.TeamName}[/] vs [green]{match.TeamB.TeamName}[/]");
+                    roundNode.AddNode($"[green]{match.TeamA.TeamName}[/] VS [green]{match.TeamB.TeamName}[/]");
                 }
             }
 
