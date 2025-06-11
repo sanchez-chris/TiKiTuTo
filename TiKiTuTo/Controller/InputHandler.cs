@@ -88,7 +88,7 @@ namespace TiKiTuTo.Controller
         {
             int minAllowed = 1;
             int maxAllowed = 30;
-            string prompt = $"How many minutes should each match run for? [italic gray]minimum: {minAllowed}, maximum: {maxAllowed}[/]";
+            string prompt = $"How long should each match be?[dim yellow](minutes)[/] [italic gray]minimum: {minAllowed}, maximum: {maxAllowed}[/]";
             int matchDuration = GetNumber(prompt);
             while (!(matchDuration >= minAllowed && matchDuration <= maxAllowed))
             {

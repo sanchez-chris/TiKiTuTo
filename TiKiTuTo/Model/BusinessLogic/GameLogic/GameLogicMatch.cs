@@ -108,7 +108,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 if (timeRemaining.TotalSeconds <= 0)
                 {
                     InputHandler.View.ShowMessage("Time's up!");
-                    //SystemSounds.Exclamation.Play();
+                    SystemSounds.Exclamation.Play();
 
                     isTimerFinished = true;
                     //FinishMatch(match);
