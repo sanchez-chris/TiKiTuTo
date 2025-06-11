@@ -195,16 +195,16 @@ namespace TiKiTuTo.View
                 List<string> headerLines = new()
             {
                 $"           Mini Menu",
-                $"  ___________________________" ,
-                $" |             |             |",
-                $" |___          |          ___|",
-                $" |_  |         |         |  _|",
-                $",| | |,       ,|,       ,| | |,",
-                $"|| | | )     ( | )     ( | | ||",
-                $"'|_| |'       '|'       '| |_|'",
-                $" |___|         |         |___|",
-                $" |             |             |",
-                $" |_____________|_____________|",
+                $" [white]  ___________________________[/]" ,
+                $"  [white on chartreuse4]|             |             |[/]",
+                $"  [white on chartreuse4]|___          |          ___|[/]",
+                $"  [white on chartreuse4]|_  |         |         |  _|[/]",
+                $" ,[white on chartreuse4]| | |,       ,|,       ,| | |[/],",
+                $" |[white on chartreuse4]| | | )     ( | )     ( | | |[/]|",
+                $" '[white on chartreuse4]|_| |'       '|'       '| |_|[/]'",
+                $"  [white on chartreuse4]|___|         |         |___|[/]",
+                $"  [white on chartreuse4]|             |             |[/]",
+                $"  [white on chartreuse4]|_____________|_____________|[/]",
 
             };
 
@@ -532,7 +532,8 @@ namespace TiKiTuTo.View
                 // Add matches for the current round
                 foreach (var match in tournament.GamePlanKoRound[round])
                 {
-                    roundNode.AddNode($"[green]{match.TeamA.TeamName}[/] vs [green]{match.TeamB.TeamName}[/]");
+                    roundNode.AddNode($"[green]{match.TeamA.TeamName}[/] VS [green]{match.TeamB.TeamName}[/]");
+
                 }
             }
 
