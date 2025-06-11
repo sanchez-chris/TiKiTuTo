@@ -123,7 +123,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             };
 
             // Start the timer
-            if (duration > 1)
+            if (duration == 1)
             {
                 InputHandler.View.ShowMessage($"Timer started for {duration} minute.");
 
