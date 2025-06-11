@@ -126,8 +126,7 @@ This project is licensed under the MIT License.
 1. Clone the repository:
 
    git clone https://github.com/sanchez-chris/TiKiTuTo.git
-   cd TiKiTuTo
-              
+   cd TiKiTuTo              
 2. Build the Project:
 
    Build the application using the following command:

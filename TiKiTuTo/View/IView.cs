@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Spectre.Console;
-using TiKiTuTo.Model.DataObjects;
+﻿using TiKiTuTo.Model.DataObjects;
 
 namespace TiKiTuTo.View
 {
@@ -12,12 +6,9 @@ namespace TiKiTuTo.View
     {
         //Methods which directly return user input 
 
-        public void CreateFrame();
-
-
+        
         public int AvailableExcelFiles();
-        public void ConfirmingImportAction();
-
+        
         public void ShowTikiTutoHeader();
 
         public int MainMenuSelection();
@@ -26,14 +17,14 @@ namespace TiKiTuTo.View
 
         public int TournamentStartSelection();
 
-        public int AvailableTournamentSelection(string[] loadableFiles, Enum SelectLoadingType);
+        public int AvailableTournamentSelection(string[] loadableFiles, Enum selectLoadingType);
 
         public int SettingsCreatedSelection();
-
         public int DuringTournamentMenuSelection();
 
         public int ExitOptionsSelection();
 
+        public string ReadInput();
 
         //Methods which simply show things
 
@@ -51,11 +42,10 @@ namespace TiKiTuTo.View
 
         public void WriteEmptyLine();
 
-        public string ReadInput();
-
         public void ClearCurrentConsoleLine();
 
-        public void DisplayFiles(string[] currentFiles);
+        //unused
+        //public void DisplayFiles(string[] currentFiles);
 
         public void AnimateAndConfirmSave(string filePath);
 
@@ -64,6 +54,10 @@ namespace TiKiTuTo.View
         public void ShowFooter();
 
         public void ShowKoTree(Tournament tournament);
+
+        public void CreateFrame();
+
+        public void ConfirmingImportAction();
 
     }
 }
