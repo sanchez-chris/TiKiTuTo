@@ -73,7 +73,7 @@ namespace TiKiTuTo.View
 
             List<string> options = new()
             {
-            "Start tournament from scratch",
+            "Start fresh tournament",
             "Start tournament based on existing tournament settings",
             "Import tournament settings from import file",
             "Back to Main Menu",
