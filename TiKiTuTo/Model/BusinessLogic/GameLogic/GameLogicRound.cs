@@ -343,7 +343,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         {
             var tournament = TournamentModel.Tournament;
 
-            while (!tournament.IsFinished)
+            if (!tournament.IsFinished)
             {
                 if(!match.IsFinished)
                 {
@@ -378,7 +378,6 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 else
                 {
                     InputHandler.View.ShowMessage($"\n\n{match.TeamA.TeamName} VS {match.TeamB.TeamName} is already finished.");
-                    break;
                 }
             }
         }
