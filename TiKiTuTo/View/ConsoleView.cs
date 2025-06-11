@@ -534,11 +534,6 @@ namespace TiKiTuTo.View
                 {
                     roundNode.AddNode($"[green]{match.TeamA.TeamName}[/] VS [green]{match.TeamB.TeamName}[/]");
 
-
-                    if (round == totalRounds - 1)
-                    {
-                        matchNode.AddNode("[bold blue]This is the Final match! May the best team win![/]");
-                    }
                 }
             }
 
