@@ -48,7 +48,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             InputHandler.View.ShowMessage("\nGameplan preliminary round:\n");
 
             tournament.GamePlanPreliminaryRound.ForEach(match =>
-                InputHandler.View.ShowMessage($"{match.TeamA.TeamName}{match.TeamB.TeamName}"));
+                InputHandler.View.ShowMessage($"{match.TeamA.TeamName} VS {match.TeamB.TeamName}"));
 
             //To print an empty line between the last played game and the first unplayed match
             if (tournament.GamePlanPreliminaryRound.Any(match => match.IsFinished))
