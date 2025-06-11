@@ -75,7 +75,7 @@ namespace TiKiTuTo.View
             {
             "Start tournament from scratch",
             "Start tournament based on existing tournament settings",
-            "Import tournament settings from excel import file",
+            "Import tournament settings from import file",
             "Back to Main Menu",
             };
 
