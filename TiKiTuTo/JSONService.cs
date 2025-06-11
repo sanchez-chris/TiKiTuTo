@@ -1,24 +1,23 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using TiKiTuTo.Model;
-using TiKiTuTo.Model.BusinessLogic.GameLogic;
 using TiKiTuTo.Model.DataObjects;
 using TiKiTuTo.View;
 
-namespace TiKiTuTo.Controller
+namespace TiKiTuTo
 {
     public class JSONService
     {
-        private readonly string baseFolder = Path.Combine(
+        private readonly string _baseFolder = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "TikiTuto");
 
-        private string saveFolder => Path.Combine(baseFolder, "Saved_Tournaments");
-        private string settingsFolder => Path.Combine(baseFolder, "Saved_Tournament_Settings");
-        private string finishedTournamentFolder => Path.Combine(baseFolder, "Finished_Tournaments");
+        private string SaveFolder => Path.Combine(_baseFolder, "Saved_Tournaments");
+        private string SettingsFolder => Path.Combine(_baseFolder, "Saved_Tournament_Settings");
+        private string FinishedTournamentFolder => Path.Combine(_baseFolder, "Finished_Tournaments");
         
-        private TournamentModel _tournamentModel;
-        private IView _view;
+        private readonly TournamentModel _tournamentModel;
+        private readonly IView _view;
 
 
         public JSONService(TournamentModel tournamentModel, IView view)
@@ -26,9 +25,9 @@ namespace TiKiTuTo.Controller
             _tournamentModel = tournamentModel;
             _view = view;
 
-            InitialCreationOfFolder(settingsFolder);
-            InitialCreationOfFolder(saveFolder);
-            InitialCreationOfFolder(finishedTournamentFolder);
+            InitialCreationOfFolder(SettingsFolder);
+            InitialCreationOfFolder(SaveFolder);
+            InitialCreationOfFolder(FinishedTournamentFolder);
         }
 
         /// <summary>
@@ -41,8 +40,8 @@ namespace TiKiTuTo.Controller
         public void SaveTournament()
         {
             string fileName = $"{DateTime.Now:yyyy-MM-dd HH-mm-ss} {_tournamentModel.Tournament.TournamentName}.json";
-            SaveToFile(saveFolder, fileName, _tournamentModel.Tournament);
-            _view.AnimateAndConfirmSave(Path.Combine(saveFolder, fileName));
+            SaveToFile(SaveFolder, fileName, _tournamentModel.Tournament);
+            _view.AnimateAndConfirmSave(Path.Combine(SaveFolder, fileName));
         }
 
         /// <summary>
@@ -56,8 +55,8 @@ namespace TiKiTuTo.Controller
         public void SaveFinishedTournament()
         {
             string fileName = $"{DateTime.Now:yyyy-MM-dd HH-mm-ss} {_tournamentModel.Tournament.TournamentName}.json";
-            SaveToFile(finishedTournamentFolder, fileName, _tournamentModel.Tournament);
-            _view.AnimateAndConfirmSave(Path.Combine(finishedTournamentFolder, fileName));
+            SaveToFile(FinishedTournamentFolder, fileName, _tournamentModel.Tournament);
+            _view.AnimateAndConfirmSave(Path.Combine(FinishedTournamentFolder, fileName));
         }
 
         /// <summary>
@@ -72,7 +71,7 @@ namespace TiKiTuTo.Controller
         {
             var settingsName = tournamentSettings.SettingsName;
             string fileName = $"{DateTime.Now:yyyy-MM-dd HH-mm-ss} {settingsName}.json";
-            SaveToFile(settingsFolder, fileName, tournamentSettings);
+            SaveToFile(SettingsFolder, fileName, tournamentSettings);
         }
 
         /// <summary>
@@ -80,12 +79,12 @@ namespace TiKiTuTo.Controller
         /// </summary>
         /// <param name="folderPath">The path to the folder where the file will be saved.</param>
         /// <param name="fileName">The name of the file to save the object in.</param>
-        /// <param name="TikitutoObject">The object to be serialized and saved as JSON.</param>
+        /// <param name="tikitutoObject">The object to be serialized and saved as JSON.</param>
         /// <remarks>
         /// The method ensures the target folder exists, serializes the object to JSON with indentation, 
         /// and writes it to the specified file. Handles serialization errors, I/O errors, and other unexpected exceptions.
         /// </remarks>
-        private void SaveToFile(string folderPath, string fileName, object TikitutoObject)
+        private void SaveToFile(string folderPath, string fileName, object tikitutoObject)
         {
             try
             {
@@ -102,7 +101,7 @@ namespace TiKiTuTo.Controller
                     WriteIndented = true
                 };
 
-                string jsonString = JsonSerializer.Serialize(TikitutoObject, options);
+                string jsonString = JsonSerializer.Serialize(tikitutoObject, options);
 
                 File.WriteAllText(filePath, jsonString);
 
@@ -228,7 +227,7 @@ namespace TiKiTuTo.Controller
         public string[] GetUnfinishedTournamentFiles()
         {
             //Array because of return tye of Directory.GetFiles()
-            string[] currentSaveGames = Directory.GetFiles(saveFolder);
+            string[] currentSaveGames = Directory.GetFiles(SaveFolder);
 
             return currentSaveGames;
         }
@@ -239,7 +238,7 @@ namespace TiKiTuTo.Controller
         /// <returns>An array of file paths for finished tournaments.</returns>
         public string[] GetFinishedTournamentFiles()
         {
-            string[] finishedTournamentFiles = Directory.GetFiles(finishedTournamentFolder);
+            string[] finishedTournamentFiles = Directory.GetFiles(FinishedTournamentFolder);
 
             return finishedTournamentFiles;
         }
@@ -251,7 +250,7 @@ namespace TiKiTuTo.Controller
         public string[] GetTournamentSettingsFiles()
         {
             //Array because of return tye of Directory.GetFiles()
-            string[] tournamentSettings = Directory.GetFiles(settingsFolder);
+            string[] tournamentSettings = Directory.GetFiles(SettingsFolder);
 
             return tournamentSettings;
         }

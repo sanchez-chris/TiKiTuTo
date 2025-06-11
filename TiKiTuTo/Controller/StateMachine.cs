@@ -7,6 +7,10 @@ using System.Diagnostics;
 
 namespace TiKiTuTo.Controller
 {
+    /// <summary>
+    /// Manages the application state and transitions between different screens/states in TikiTuto.
+    /// Controls the flow of the application based on user input and coordinates between view and model components.
+    /// </summary>
     public class StateMachine
     {
         public AppState CurrentState { get; private set; }
@@ -15,20 +19,34 @@ namespace TiKiTuTo.Controller
         private GameLogicRound _gameLogicRound;
         private TournamentModel _tournamentModel;
         private JSONService _jsonService;
-        private EXCELService _excelService;
+        private ExcelService _excelService;
         private InputHandler _inputHandler;
         private GameLogicTournamentSettings _gameLogicTournamentSettings;
 
 
 
         /// <summary>
-        /// StateMachine constructor. Starts from the main menu by default.
+        /// StateMachine constructor. Initializes a new instance of the state machine that manages application flow.
+        /// Starts from the main menu by default.
         /// </summary>
-        /// <param name="view">used to show output to user</param>
-        /// <param name="gameLogicTournament">used to handle tournament logic</param>
-        /// <param name="model">used to store the tournament</param>
-        /// <param name="jsonService">used to save and load tournaments</param>
-        public StateMachine(IView view, GameLogicTournament gameLogicTournament, GameLogicRound gameLogicRound, TournamentModel model, JSONService jsonService, EXCELService excel, InputHandler inputHandler, GameLogicTournamentSettings gameLogicTournamentSettings)
+        /// <param name="view">Used to display information to the user and collect user input.</param>
+        /// <param name="gameLogicTournament">Used to handle tournament-level game logic.</param>
+        /// <param name="gameLogicTournamentSettings">Used to create and manage tournament settings.</param>
+        /// <param name="gameLogicRound">Used to handle round-level game logic.</param>
+        /// <param name="model">Used to store and access tournament data.</param>
+        /// <param name="jsonService">Used to save and load tournaments and settings from JSON files.</param>
+        /// <param name="excel">Used to import tournament settings from Excel files.</param>
+        /// <param name="inputHandler">Used to retrieve and validate user input.</param>
+        public StateMachine
+            (
+            IView view, 
+            GameLogicTournament gameLogicTournament,
+            GameLogicTournamentSettings gameLogicTournamentSettings, 
+            GameLogicRound gameLogicRound, 
+            TournamentModel model, 
+            JSONService jsonService, 
+            ExcelService excel, 
+            InputHandler inputHandler)
         {
             CurrentState = AppState.MainMenu;
             _view = view;
@@ -43,25 +61,21 @@ namespace TiKiTuTo.Controller
 
 
 
+        /// <summary>
+        /// Transitions the application to a new state.
+        /// </summary>
+        /// <param name="newState">The new application state to transition to.</param>
         public void TransitionTo(AppState newState)
         {
             CurrentState = newState;
             _view.ShowFooter();
         }
 
-
-
-        /////// TODO FOR ExecuteCurrentState
-        //MainMenu DONE
-        //StartTournamentMenu DONE
-        //ShowSavedTournaments DONE
-        //ShowFinishedTournaments  DONE
-        //ManageSettingsMenu DONE
-        //TournamentSettingsCreationDialogue DONE
-        //RunTournament DONE
-        //InGameMenu  DONE
-        //Exit  DONE
-
+        /// <summary>
+        /// Executes the logic for the current application state and returns the user's selection.
+        /// Handles UI rendering and interaction based on the current state.
+        /// </summary>
+        /// <returns>An integer representing the user's menu selection.</returns>
         public int ExecuteCurrentState()
         {
             _view.ShowTikiTutoHeader();
@@ -102,7 +116,6 @@ namespace TiKiTuTo.Controller
                     break;
             }
             _view.ShowFooter(); // Display footer as a fallback
-            //base case for states where the user decides to stay in the current context (no state transition)
             return 0;
         }
 
@@ -153,22 +166,6 @@ namespace TiKiTuTo.Controller
                     break;
             }
         }
-
-
-        /////// TODO FOR HandleChoiceMethods
-        //MainMenu DONE
-        //StartTournamentMenu DONE
-        //ShowSavedTournaments DONE
-        //ShowFinishedTournaments DONE
-        //ManageSettingsMenu DONE
-        //TournamentSettingsCreationDialogue DONE
-        //ShowLoadableTournamentSettings DONE
-        //RunTournament DONE
-        //InGameMenu  DONE
-        //Exit  DONE
-
-
-
 
 
         /// <summary>
@@ -278,7 +275,11 @@ namespace TiKiTuTo.Controller
                 TransitionTo(AppState.MainMenu);
             }
         }
-                
+
+        /// <summary>
+        /// Handles transitions after tournament settings creation based on user input.
+        /// </summary>
+        /// <param name="choice">User input determining whether to create another settings file or return to main menu.</param>
         private void HandleSettingsCreationChoice(int choice)
         {
             switch (choice)
@@ -294,7 +295,7 @@ namespace TiKiTuTo.Controller
 
         /// <summary>
         /// Handles transitions from the ShowLoadableTournamentSettings menu based on user input.
-        /// The number of valid options depends on the number of available tournament settings files found in the finished games folder.
+        /// The number of valid options depends on the number of available tournament settings files found in the settings folder.
         /// </summary>
         /// <param name="choice">user input</param>
         private void HandleShowLoadableTournamentSettingsChoice(int choice)
@@ -322,6 +323,10 @@ namespace TiKiTuTo.Controller
             }
         } 
         
+        /// <summary>
+        /// Handles the Excel import process for tournament settings.
+        /// Opens the import folder in Explorer and processes the selected Excel file.
+        /// </summary>
         private void HandleImportTournamentSettingsFromExcel()
         {
             bool answer = _inputHandler.GetApproval("Do you want to continue? [[[bold green]Y[/]/[bold red]N[/]]]");
@@ -341,6 +346,10 @@ namespace TiKiTuTo.Controller
         }
 
 
+        /// <summary>
+        /// Handles transitions from the tournament running screen based on user input.
+        /// </summary>
+        /// <param name="choice">User input determining whether to continue the tournament, return to main menu, or exit.</param>
         private void HandleRunTournamentChoice(int choice)
         {
             switch (choice)
@@ -355,9 +364,13 @@ namespace TiKiTuTo.Controller
                     TransitionTo(AppState.Exit);
                     break;
             }
-        }     
+        }
 
 
+        /// <summary>
+        /// Handles transitions from the exit confirmation screen based on user input.
+        /// </summary>
+        /// <param name="choice">User input determining whether to exit the application or return to main menu.</param>
         private void HandleExitChoice(int choice)
         {
             switch (choice)
@@ -371,6 +384,10 @@ namespace TiKiTuTo.Controller
             }
         }
 
+        /// <summary>
+        /// Handles transitions after tournament initialization based on user input.
+        /// </summary>
+        /// <param name="choice">User input determining whether to run the tournament or return to main menu.</param>
         private void HandleTournamentStartChoice(int choice)
         {
             switch (choice)
