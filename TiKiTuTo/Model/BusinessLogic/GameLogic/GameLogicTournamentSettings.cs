@@ -44,7 +44,7 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
             }
             teams = CreateListOfTeams(numberOfTeamsTotal);
             
-            string TournamentSettingsName = _inputHandler.GetMandatoryName("Name the Settings.");
+            string tournamentSettingsName = _inputHandler.GetMandatoryName("Name the Settings.");
 
             TournamentSettings tournamentSettings = new TournamentSettings
                 (
@@ -54,17 +54,17 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
                 teams, 
                 useTimer, 
                 matchDuration, 
-                TournamentSettingsName
+                tournamentSettingsName
                 );
 
             return tournamentSettings;
         }
 
-        public List<Team> CreateListOfTeams(int NumberOfTeamsTotal)
+        public List<Team> CreateListOfTeams(int numberOfTeamsTotal)
         {
             List<Team> teams = new List<Team>();
             int maxTeamMembers = _inputHandler.GetNumber("How many Teammembers would you like to have?");
-            for (int i = 1; i <= NumberOfTeamsTotal; i++)
+            for (int i = 1; i <= numberOfTeamsTotal; i++)
             {
                 teams.Add(CreateTeam(i, maxTeamMembers));
             }
@@ -93,9 +93,10 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         }
 
         /// <summary>
-        /// Used to add a Player to a Team, needs a Player Object
+        /// Used to add a Player to a Team, needs a Player object and a Team object
         /// </summary>
-        /// <param name="player"></param>
+        /// <param name="player">The player added to team</param>
+        /// <param name="team">The team to add the player to</param>
         public void AddPlayer(Player player, Team team)
         {
             if (!team.PlayerInTeam.Contains(player))

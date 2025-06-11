@@ -331,9 +331,9 @@ namespace TiKiTuTo.Model.BusinessLogic.GameLogic
         public List<Team> GenerateRanking()
         {
             Tournament tournament = TournamentModel.Tournament;
-            List<Team> Teams = tournament.TournamentSettings.TeamsInTournament;
+            List<Team> teams = tournament.TournamentSettings.TeamsInTournament;
 
-            return Teams
+            return teams
                     .OrderByDescending(t => t.NumberGamesWon)
                     .ThenByDescending(t => t.GoalDifference)
                     .ThenByDescending(t => t.NumberGoals)
