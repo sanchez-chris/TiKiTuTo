@@ -40,7 +40,7 @@ namespace TiKiTuTo
             {
 
 
-                using (XLWorkbook workbook = new XLWorkbook($"{ExcelImportFolder}\\Import_Tournament_Settings.xlsx"))
+                using (XLWorkbook workbook = new XLWorkbook($"{ExcelImportFolder}\\Settings.xlsx"))
                 {
                     IXLWorksheet? tournamentSheet = workbook.Worksheet(1);
 
