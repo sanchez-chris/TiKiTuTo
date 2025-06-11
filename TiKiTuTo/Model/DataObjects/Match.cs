@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TiKiTuTo.Model.DataObjects
 
 {
     public class Match
     {
-        public Team teamA { get; set; }
-        public Team teamB { get; set; }
-        public int goalsTeamA { get; set; } = 0;
-        public int goalsTeamB { get; set; } = 0;
+        public Team TeamA { get; set; }
+        public Team TeamB { get; set; }
+        public int GoalsTeamA { get; set; } = 0;
+        public int GoalsTeamB { get; set; } = 0;
 
-        public bool isFinished { get; set; } = false;
+        public bool IsFinished { get; set; } = false;
 
         public Match(Team teamA, Team teamB)
         {
-            this.teamA = teamA;
-            this.teamB = teamB;
+            this.TeamA = teamA;
+            this.TeamB = teamB;
         }
 
         public Match() { }

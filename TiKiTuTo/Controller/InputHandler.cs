@@ -9,8 +9,7 @@ namespace TiKiTuTo.Controller
     {
 
         public IView View { get; set; }
-        readonly int maxMenuOption = 5;
-        private InputValidator _inputValidator;
+        private readonly InputValidator _inputValidator;
 
         public InputHandler(IView view, InputValidator inputValidator)
         {
@@ -25,14 +24,14 @@ namespace TiKiTuTo.Controller
         /// <returns>A valid number of goals (between 0 and 10).</returns>
         public int GetValidGoalInput(string teamName)
         {
-            int GoalInput = GetNumber($"\nHow many goals has {teamName} made?");
+            int goalInput = GetNumber($"\nHow many goals has {teamName} made?");
 
-            while (!_inputValidator.IsValidGoalInput(GoalInput))
+            while (!_inputValidator.IsValidGoalInput(goalInput))
             {
-                GoalInput = GetNumber($"This was not a valid goal Input [italic grey]Max value is 10[/]");
+                goalInput = GetNumber("This was not a valid goal Input [italic grey]Max value is 10[/]");
             }
 
-            return GoalInput;
+            return goalInput;
         }
 
         /// <summary>
@@ -41,46 +40,46 @@ namespace TiKiTuTo.Controller
         /// <returns>The number of teams playing in a tournament, guaranteed to be a valid value.</returns>
         public int GetValidNumberOfTotalTeams()
         {
-            int NumberOfTeams = GetNumber($"How many teams are going to join this tournament? [italic grey]minimum 4, maximum 256[/]");
+            int numberOfTeams = GetNumber("How many teams are going to join this tournament? [italic grey]minimum 4, maximum 256[/]");
 
-            while (!_inputValidator.IsValidNumberOfTotalTeams(NumberOfTeams))
+            while (!_inputValidator.IsValidNumberOfTotalTeams(numberOfTeams))
             {
-                NumberOfTeams = GetNumber("This is [bold red]not[/] a valid number of teams for a tournament. [italic grey]minimum 4, maximum 256[/]");
+                numberOfTeams = GetNumber("This is [bold red]not[/] a valid number of teams for a tournament. [italic grey]minimum 4, maximum 256[/]");
             }
 
-            return NumberOfTeams;
+            return numberOfTeams;
         }
 
         /// <summary>
         /// Asks user for the number of games each team should play in the preliminaries until a valid value is entered.
         /// </summary>
-        /// <param name="NumberOfTeamsTotal"> The total number of teams in the tournament defines which values are valid</param>
+        /// <param name="numberOfTeamsTotal"> The total number of teams in the tournament defines which values are valid</param>
         /// <returns>The number of games each team has to play in the preliminaries, guaranteed to be a valid value.</returns>
-        public int GetValidNumberOfPreliminaryGames(int NumberOfTeamsTotal)
+        public int GetValidNumberOfPreliminaryGames(int numberOfTeamsTotal)
         {
-            int NumberOfPreliminaryGames = GetNumber($"How many games should each team play in the preliminaries? [italic grey]minimum 1, maximum {NumberOfTeamsTotal - 1}[/]");
+            int numberOfPreliminaryGames = GetNumber($"How many games should each team play in the preliminaries? [italic grey]minimum 1, maximum {numberOfTeamsTotal - 1}[/]");
 
-            while (!_inputValidator.IsValidNumberOfPreliminaryGamesPerTeam(NumberOfPreliminaryGames, NumberOfTeamsTotal))
+            while (!_inputValidator.IsValidNumberOfPreliminaryGamesPerTeam(numberOfPreliminaryGames, numberOfTeamsTotal))
             {
-                NumberOfPreliminaryGames = GetNumber($"This is [bold red]not[/] a valid number of games per team.");
+                numberOfPreliminaryGames = GetNumber("This is [bold red]not[/] a valid number of games per team.");
             }
-            return NumberOfPreliminaryGames;
+            return numberOfPreliminaryGames;
         }
 
         /// <summary>
         /// Asks user for the number of teams progressing into the KO round. Has to be a power of 2 and not larger than the total number of teams.
         /// </summary>
-        /// <param name="NumberOfTeamsTotal"> The total number of teams in the tournament defines an upper bound to the number of teams progressing.</param>
+        /// <param name="numberOfTeamsTotal"> The total number of teams in the tournament defines an upper bound to the number of teams progressing.</param>
         /// <returns>The number of teams progressing into KO, guaranteed to be a valid value.</returns>
-        public int GetValidNumberOfTeamsInKORound(int NumberOfTeamsTotal)
+        public int GetValidNumberOfTeamsInKORound(int numberOfTeamsTotal)
         {
-            int maxAllowed = BasicFunctions.HighestPowerOf2(NumberOfTeamsTotal);
-            int NumberOfTeamsInKO = GetNumber($"How many teams should continue into the KO phase? [italic grey]minimum 2, maximum {maxAllowed}[/]");
-            while (!_inputValidator.IsValidNumberOfTeamsInKORound(NumberOfTeamsInKO, NumberOfTeamsTotal))
+            int maxAllowed = BasicFunctions.HighestPowerOf2(numberOfTeamsTotal);
+            int numberOfTeamsInKo = GetNumber($"How many teams should continue into the KO phase? [italic grey]minimum 2, maximum {maxAllowed}[/]");
+            while (!_inputValidator.IsValidNumberOfTeamsInKORound(numberOfTeamsInKo, numberOfTeamsTotal))
             {
-                NumberOfTeamsInKO = GetNumber($"This is [bold red]not[/] a valid number of teams for the KO round. [italic grey]minimum 2, maximum {maxAllowed}[/].");
+                numberOfTeamsInKo = GetNumber($"This is [bold red]not[/] a valid number of teams for the KO round. [italic grey]minimum 2, maximum {maxAllowed}[/].");
             }
-            return NumberOfTeamsInKO;
+            return numberOfTeamsInKo;
         }
 
 
@@ -108,8 +107,8 @@ namespace TiKiTuTo.Controller
         /// <returns>True if the user approves (y/Y/yes/YES), false if the user disapproves (n/N/no/NO).</returns>
         public bool GetApproval(string prompt)
         {
-            List<string> validInputsYes = new() { "y", "Y", "YES", "yes" };
-            List<string> validInputsNo = new() { "n", "N", "NO", "no" };
+            List<string> validInputsYes = ["y", "Y", "YES", "yes"];
+            List<string> validInputsNo = ["n", "N", "NO", "no"];
 
             bool result = false;
             bool answerGiven = false;
@@ -117,14 +116,14 @@ namespace TiKiTuTo.Controller
             
             while(!answerGiven)
             {
-                string? userInput = View.ReadInput();
+                string userInput = View.ReadInput();
 
                 if (validInputsYes.Contains(userInput))
                 {
                     result = true;
                     answerGiven = true;
                 }
-                 else if (validInputsNo.Contains(userInput))
+                else if (validInputsNo.Contains(userInput))
                 {
                     result = false;
                     answerGiven = true;
@@ -145,7 +144,7 @@ namespace TiKiTuTo.Controller
             int result;
 
             View.ShowMessage(prompt);
-            string? userInput = View.ReadInput();
+            string userInput = View.ReadInput();
 
             while (!int.TryParse(userInput, out result))
             {
@@ -156,15 +155,15 @@ namespace TiKiTuTo.Controller
         }
 
         /// <summary>
-        /// Prompts the user to enter a team name. If no name is entered, generates a default name.
+        /// Prompts the user to enter a player name. If no name is entered, generates a default name.
         /// </summary>
         /// <param name="prompt">Message shown to the user to prompt input.</param>
-        /// <param name="teamNumber">Index of the team being created. Used for generating default names.</param>
-        /// <returns>The team name entered by the user or a default name if none was provided.</returns>
+        /// <param name="playerNumber">Index of the player being created. Used for generating default names.</param>
+        /// <returns>The player name entered by the user or a default name if none was provided.</returns>
         public string GetPlayerName(string prompt, int playerNumber)
         {
             View.ShowMessage(prompt);
-            string? playerName = View.ReadInput();
+            string playerName = View.ReadInput();
 
             if (string.IsNullOrEmpty(playerName))
             {
@@ -184,7 +183,7 @@ namespace TiKiTuTo.Controller
         public string GetTeamName(string prompt, int teamNumber)
         {
             View.ShowMessage(prompt);
-            string? teamName = View.ReadInput();
+            string teamName = View.ReadInput();
 
             if (string.IsNullOrEmpty(teamName))
             {

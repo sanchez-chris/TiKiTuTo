@@ -109,7 +109,7 @@ namespace TiKiTuTo.View
 
 
 
-        public int AvailableTournamentSelection(string[] availableFiles, Enum SelectLoadingType)
+        public int AvailableTournamentSelection(string[] availableFiles, Enum selectLoadingType)
         {
             List<string> headerLines = new()
             {
@@ -128,7 +128,7 @@ namespace TiKiTuTo.View
 
             options.Add("Back to Main Menu");
 
-            int userChoice = PromptSelectionMultiLine(headerLines, options, SelectLoadingType);
+            int userChoice = PromptSelectionMultiLine(headerLines, options, selectLoadingType);
 
             return userChoice;
         }
@@ -312,7 +312,7 @@ namespace TiKiTuTo.View
 
             var sortedTeams = tournament.TournamentSettings.TeamsInTournament
                 .OrderByDescending(t => t.NumberGamesWon)
-                .ThenByDescending(t => t.Goaldifference)
+                .ThenByDescending(t => t.GoalDifference)
                 .ThenByDescending(t => t.NumberGoals)
                 .ToList();
             int i = 1;
@@ -322,9 +322,9 @@ namespace TiKiTuTo.View
                     Convert.ToString(i),
                     team.TeamName,
                     team.NumberGamesWon.ToString(),
-                    team.Goaldifference.ToString(),
+                    team.GoalDifference.ToString(),
                     team.NumberGoals.ToString(),
-                    (team.NumberGoals - team.Goaldifference).ToString());
+                    (team.NumberGoals - team.GoalDifference).ToString());
                 i++;
             }
             AnsiConsole.Write(
@@ -342,7 +342,7 @@ namespace TiKiTuTo.View
         public void ShowLoadingAnimation(string message)
         {
             AnsiConsole.Status()
-                .Start(message, ctx =>
+                .Start(message, _ =>
                 {
                     Task.Delay(2000).Wait(); // Simulate work
                 });
@@ -397,7 +397,7 @@ namespace TiKiTuTo.View
         /// <param name="headerLines"> The lines making up the header</param>
         /// <param name="options"> selectable options</param>
         /// <returns>The index of the chosen option.</returns>
-        public int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options, Enum? SelectedLoadingType = null)
+        private int PromptSelectionMultiLine(IEnumerable<string> headerLines, IEnumerable<string> options, Enum? SelectedLoadingType = null)
         {
             AnsiConsole.Clear();
             ShowTikiTutoHeader();
@@ -532,7 +532,7 @@ namespace TiKiTuTo.View
                 // Add matches for the current round
                 foreach (var match in tournament.GamePlanKoRound[round])
                 {
-                    roundNode.AddNode($"[green]{match.teamA.TeamName}[/] vs [green]{match.teamB.TeamName}[/]");
+                    roundNode.AddNode($"[green]{match.TeamA.TeamName}[/] vs [green]{match.TeamB.TeamName}[/]");
                 }
             }
 

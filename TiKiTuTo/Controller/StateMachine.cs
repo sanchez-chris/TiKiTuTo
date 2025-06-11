@@ -19,7 +19,7 @@ namespace TiKiTuTo.Controller
         private GameLogicRound _gameLogicRound;
         private TournamentModel _tournamentModel;
         private JSONService _jsonService;
-        private EXCELService _excelService;
+        private ExcelService _excelService;
         private InputHandler _inputHandler;
         private GameLogicTournamentSettings _gameLogicTournamentSettings;
 
@@ -45,7 +45,7 @@ namespace TiKiTuTo.Controller
             GameLogicRound gameLogicRound, 
             TournamentModel model, 
             JSONService jsonService, 
-            EXCELService excel, 
+            ExcelService excel, 
             InputHandler inputHandler)
         {
             CurrentState = AppState.MainMenu;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TiKiTuTo.Model.DataObjects
 {
     public class TournamentSettings
@@ -16,11 +11,11 @@ namespace TiKiTuTo.Model.DataObjects
         public int MatchDuration { get; set; }
         public string SettingsName { get; set; }
 
-        public TournamentSettings(int totalteams, int preliminaryTeamNumber, int koteams, List<Team> teams, bool useTimer, int matchDuration, string settingsName)
+        public TournamentSettings(int totalTeams, int preliminaryTeamNumber, int koTeams, List<Team> teams, bool useTimer, int matchDuration, string settingsName)
         {
-            NumberOfTeamsTotal = totalteams;
+            NumberOfTeamsTotal = totalTeams;
             NumberOfPreliminaryGamesPerTeam = preliminaryTeamNumber;
-            NumberOfTeamsInKoRound = koteams;
+            NumberOfTeamsInKoRound = koTeams;
             TeamsInTournament = teams;
             UseTimer = useTimer;
             MatchDuration = matchDuration;

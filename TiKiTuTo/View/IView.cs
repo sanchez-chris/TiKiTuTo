@@ -17,7 +17,7 @@ namespace TiKiTuTo.View
 
         public int TournamentStartSelection();
 
-        public int AvailableTournamentSelection(string[] loadableFiles, Enum SelectLoadingType);
+        public int AvailableTournamentSelection(string[] loadableFiles, Enum selectLoadingType);
 
         public int SettingsCreatedSelection();
 

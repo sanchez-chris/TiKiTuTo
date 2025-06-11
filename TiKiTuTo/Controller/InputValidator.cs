@@ -74,8 +74,7 @@ namespace TiKiTuTo.Controller
         public bool HasValidTournamentSettings(Tournament tournament)
         {
             TournamentSettings settings = tournament.TournamentSettings;
-            if (settings == null ||
-                !IsValidNumberOfTotalTeams(settings.NumberOfTeamsTotal) ||
+            if (!IsValidNumberOfTotalTeams(settings.NumberOfTeamsTotal) ||
                 !IsValidNumberOfTeamsInKORound(settings.NumberOfTeamsInKoRound, settings.NumberOfTeamsTotal) ||
                 !IsValidNumberOfPreliminaryGamesPerTeam(settings.NumberOfPreliminaryGamesPerTeam, settings.NumberOfTeamsTotal))
             {

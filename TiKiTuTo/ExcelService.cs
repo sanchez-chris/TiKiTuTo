@@ -4,18 +4,18 @@ using TiKiTuTo.Model;
 
 namespace TiKiTuTo
 {
-    public class EXCELService
+    public class ExcelService
     {
-        private readonly string ProjectDirectory; 
+        private readonly string _projectDirectory; 
         public readonly string ExcelImportFolder;
 
         TournamentModel TournamentModel { get; set; }
 
 
-        public EXCELService(TournamentModel tournamentModel)
+        public ExcelService(TournamentModel tournamentModel)
         {
             TournamentModel = tournamentModel;
-            ProjectDirectory = GetProjectDirectoryPath();
+            _projectDirectory = GetProjectDirectoryPath();
             ExcelImportFolder = GetExcelImportFolderPath();
 
             InitialCreationOfFolder();
@@ -25,16 +25,16 @@ namespace TiKiTuTo
 
         public TournamentSettings ImportExcelFile()
         {
-            var tournamentSettings = TournamentModel.Tournament.TournamentSettings;
+            TournamentSettings tournamentSettings = TournamentModel.Tournament.TournamentSettings;
             tournamentSettings.TeamsInTournament = new List<Team>();
 
             try
             {
 
 
-                using (var workbook = new XLWorkbook($"{ExcelImportFolder}\\Import_Tournament_Settings.xlsx"))
+                using (XLWorkbook workbook = new XLWorkbook($"{ExcelImportFolder}\\Import_Tournament_Settings.xlsx"))
                 {
-                    var tournamentSheet = workbook.Worksheet(1);
+                    IXLWorksheet? tournamentSheet = workbook.Worksheet(1);
 
                     try
                     {
@@ -58,8 +58,8 @@ namespace TiKiTuTo
                         throw new Exception("Error reading tournament settings from the Excel file. Please ensure the format is correct.", ex);
                     }
 
-                    var teamsSheet = workbook.Worksheet(2);
-                    var lastRow = teamsSheet.LastRowUsed().RowNumber();
+                    IXLWorksheet? teamsSheet = workbook.Worksheet(2);
+                    int lastRow = teamsSheet.LastRowUsed().RowNumber();
 
                     if (lastRow < 2)
                     {
@@ -69,20 +69,20 @@ namespace TiKiTuTo
                     for (int row = 2; row <= lastRow; row++)
                     {
 
-                        var teamName = teamsSheet.Cell(row, 1).GetValue<string>();
+                        string? teamName = teamsSheet.Cell(row, 1).GetValue<string>();
 
                         if (string.IsNullOrEmpty(teamName))
                         {
                             throw new Exception($"Team name is missing in row {row}.");
                         }
 
-                        var team = new Team { TeamName = teamName };
+                        Team team = new Team { TeamName = teamName };
 
                         team.PlayerInTeam = new List<Player>();
 
                         for (int col = 2; col <= teamsSheet.LastColumnUsed().ColumnNumber(); col++)
                         {
-                            var playerName = teamsSheet.Cell(row, col).GetValue<string>();
+                            string? playerName = teamsSheet.Cell(row, col).GetValue<string>();
                             if (!string.IsNullOrEmpty(playerName))
                             {
                                 team.PlayerInTeam.Add(new Player { Name = playerName });
@@ -111,7 +111,7 @@ namespace TiKiTuTo
         private void CopyTemplateIfNotExists()
         {
             var destinationFile = Path.Combine(ExcelImportFolder, "Import_Tournament_Settings.xlsx");
-            string templatePath = Path.Combine(ProjectDirectory, "Templates", "Import_Tournament_Settings.xlsx");
+            string templatePath = Path.Combine(_projectDirectory, "Templates", "Import_Tournament_Settings.xlsx");
 
             if (!File.Exists(destinationFile))
             {
